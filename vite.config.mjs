@@ -48,7 +48,7 @@ export default defineConfig(() => {
       extensions: ['.mjs', '.js', '.ts', '.jsx', '.tsx', '.json', '.scss'],
     },
     server: {
-      port: process.env.VITE_ADMIN_PORT || '5137',
+      port: process.env.VITE_APP_ADMIN_PORT || '5137',
       host: true,
       strictPort: true,
       proxy: {
