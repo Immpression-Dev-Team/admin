@@ -1,3 +1,4 @@
+
 {
   "name": "@coreui/coreui-free-react-admin-template",
   "version": "5.2.0",
@@ -58,3 +59,4 @@
   "main": ".eslintrc.js",
   "keywords": []
 }
+
