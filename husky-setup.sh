@@ -14,9 +14,15 @@
 git config core.hooksPath .husky
 
 # To verify this worked:
-git config --get core.hooksPath
+EXPECTED_OUTPUT=".husky"
+ACTUAL_OUTPUT=$(git config --get core.hooksPath)
+
+echo "Output should be $EXPECTED_OUTPUT, output: '$ACTUAL_OUTPUT'"
+
+echo "If your output is not .husky, this script failed."
 
 # Output should be ".husky"
 
 # Additionally, the 'commit-msg' file in the .husky folder needs
-# to be executable in order to work.
+# to be executable in order to work:
+# 'chmod +x .husky/commit-msg'
