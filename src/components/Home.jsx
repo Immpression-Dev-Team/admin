@@ -1,12 +1,17 @@
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 function Home() {
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    console.log("Logging out...");
+    navigate("/"); // Redirect back to login
+  };
+
   return (
     <div>
       <h2>Welcome to the Home Page</h2>
-      <Link to="/login">
-        <button>Go to Login</button>
-      </Link>
+      <button onClick={handleLogout}>Logout</button>
     </div>
   );
 }

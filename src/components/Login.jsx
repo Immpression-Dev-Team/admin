@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import "../styles/login.css"; // Importing styles
+import "../styles/login.css"; // Ensure styles are imported
 
 function Login() {
   const [email, setEmail] = useState("");
@@ -9,8 +9,11 @@ function Login() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    
     console.log("Logging in with:", email, password);
-    navigate("/");
+    
+    // Simulate successful login
+    navigate("/home"); // Redirect to Home page after login
   };
 
   return (
