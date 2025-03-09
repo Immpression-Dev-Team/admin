@@ -39,43 +39,83 @@ function ArtDetails() {
 
   return (
     <div>
-      <Navbar email={email} /> {/* ✅ Added Navbar */}
-      <div style={styles.container}>
-        <button onClick={() => navigate(-1)} style={styles.backButton}>
-          ← Back
-        </button>
-        <img src={art.imageLink} alt={art.name} style={styles.image} />
-        <h2>{art.name}</h2>
-        <p><strong>Artist:</strong> {art.artistName}</p>
-        <p><strong>Description:</strong> {art.description}</p>
-        <p><strong>Price:</strong> ${art.price}</p>
-        <p><strong>Views:</strong> {art.views}</p>
-        <p><strong>Category:</strong> {art.category}</p>
-        <p><strong>Stage:</strong> {art.stage}</p>
+      <Navbar email={email} /> {/* ✅ Fixed Navbar */}
+
+      {/* ✅ Full Centering */}
+      <div style={styles.outerContainer}>
+        <div style={styles.innerContainer}>
+          {/* ✅ Two Columns: Back Button + Image (Left) | Data (Right) */}
+          <div style={styles.leftColumn}>
+            <button onClick={() => navigate(-1)} style={styles.backButton}>
+              ← Back
+            </button>
+            <img src={art.imageLink} alt={art.name} style={styles.image} />
+          </div>
+
+          <div style={styles.rightColumn}>
+            <h2 style={styles.title}>{art.name}</h2>
+            <p><strong>Artist:</strong> {art.artistName}</p>
+            <p><strong>Description:</strong> {art.description}</p>
+            <p><strong>Price:</strong> ${art.price}</p>
+            <p><strong>Views:</strong> {art.views}</p>
+            <p><strong>Category:</strong> {art.category}</p>
+            <p><strong>Stage:</strong> {art.stage}</p>
+          </div>
+        </div>
       </div>
     </div>
   );
 }
 
 const styles = {
-  container: {
-    maxWidth: "600px",
-    margin: "auto",
-    padding: "20px",
-    textAlign: "left",
+  /* ✅ Full Page Centering */
+  outerContainer: {
+    display: "flex",
+    justifyContent: "center", // ✅ Centers horizontally
+    alignItems: "center", // ✅ Centers vertically
+    height: "calc(100vh - 60px)", // ✅ Makes sure it's fully centered under Navbar
+    width: "100%",
+  },
+  innerContainer: {
+    display: "flex",
+    alignItems: "center", // ✅ Aligns items in the center
+    gap: "20px",
+    maxWidth: "800px", // ✅ Restricts width to keep it compact
+    width: "100%",
+  },
+  leftColumn: {
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "flex-start", // ✅ Aligns back button to the left
   },
   backButton: {
-    padding: "8px 16px",
-    marginBottom: "20px",
+    padding: "5px 10px", // ✅ Smaller width
+    fontSize: "12px",
+    marginBottom: "10px",
     cursor: "pointer",
     backgroundColor: "#ddd",
     border: "none",
+    borderRadius: "5px",
+    width: "60px", // ✅ Keeps it compact
+    textAlign: "center",
   },
   image: {
-    width: "100%",
-    height: "300px",
+    width: "250px", // ✅ Adjusted size
+    height: "auto",
     objectFit: "cover",
     border: "1px solid #ddd",
+  },
+  rightColumn: {
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "center", // ✅ Keeps text centered within column
+    textAlign: "left",
+    fontSize: "14px", // ✅ Smaller font for compact text
+    lineHeight: "1.2", // ✅ Reduced line height for tight spacing
+  },
+  title: {
+    marginBottom: "5px",
+    fontSize: "18px",
   },
 };
 
