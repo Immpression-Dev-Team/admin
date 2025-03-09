@@ -1,15 +1,16 @@
 import Navbar from "./Navbar";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
-import ArtCard from "./ArtCard"; // ✅ Import ArtCard Component
+import ArtCard from "./ArtCard"; 
 import TopPanel from "./TopPanel";
 
 function ReviewArt() {
   const navigate = useNavigate();
-  const [artworks, setArtworks] = useState([]); // Stores all artworks
-  const [filteredArtworks, setFilteredArtworks] = useState([]); // Stores filtered artworks
+  const [artworks, setArtworks] = useState([]); 
+  const [filteredArtworks, setFilteredArtworks] = useState([]); 
   const [loading, setLoading] = useState(true);
-  const [filterReview, setFilterReview] = useState(false); // ✅ Toggle for "Pending Review" filter
+  const [filterReview, setFilterReview] = useState(false);
+  const [filterApproved, setFilterApproved] = useState(false);
   const email = localStorage.getItem("userEmail") || "admin@example.com";
 
   useEffect(() => {
@@ -33,7 +34,7 @@ function ReviewArt() {
         }
 
         setArtworks(data.images || []);
-        setFilteredArtworks(data.images || []); // Initialize filtered state
+        setFilteredArtworks(data.images || []);
       } catch (err) {
         console.error("Error fetching images:", err.message);
       } finally {
@@ -47,47 +48,83 @@ function ReviewArt() {
   // ✅ Toggle Filter for "Pending Review"
   const handleFilterPending = () => {
     if (filterReview) {
-      setFilteredArtworks(artworks); // Show all images if filter is OFF
+      setFilteredArtworks(artworks);
     } else {
       setFilteredArtworks(artworks.filter((art) => art.stage === "review"));
     }
-    setFilterReview(!filterReview); // Toggle filter state
+    setFilterReview(!filterReview);
+    setFilterApproved(false);
+  };
+
+  // ✅ Toggle Filter for "Approved"
+  const handleFilterApproved = () => {
+    if (filterApproved) {
+      setFilteredArtworks(artworks);
+    } else {
+      setFilteredArtworks(artworks.filter((art) => art.stage === "approved"));
+    }
+    setFilterApproved(!filterApproved);
+    setFilterReview(false);
   };
 
   return (
-    <div>
+    <div style={styles.pageContainer}>
       <Navbar email={email} />
       <TopPanel 
         totalImages={artworks.length} 
-        totalPending={artworks.filter((art) => art.stage === "review").length} 
-        onFilterPending={handleFilterPending} // ✅ Pass filter function
+        totalPending={artworks.filter((art) => art.stage === "review").length}
+        totalApproved={artworks.filter((art) => art.stage === "approved").length} 
+        onFilterPending={handleFilterPending}
+        onFilterApproved={handleFilterApproved} 
       />
-
-      {loading ? (
-        <p>Loading...</p>
-      ) : filteredArtworks.length > 0 ? (
-        <div style={styles.grid}>
-          {filteredArtworks.map((art) => (
-            <ArtCard key={art._id} art={art} />
-          ))}
-        </div>
-      ) : (
-        <p>No artwork available.</p>
-      )}
-
-      <button onClick={() => navigate("/home")}>Back to Home</button>
+  
+      <div style={styles.contentContainer}>
+        {loading ? (
+          <p>Loading...</p>
+        ) : filteredArtworks.length > 0 ? (
+          <div style={styles.grid}>
+            {filteredArtworks.map((art) => (
+              <ArtCard key={art._id} art={art} />
+            ))}
+          </div>
+        ) : (
+          <p>No artwork available.</p>
+        )}
+      </div>
     </div>
   );
+  
 }
 
 const styles = {
-  grid: {
-    display: "flex",
-    flexWrap: "wrap",
-    justifyContent: "center",
-    gap: "16px",
-    padding: "20px",
-  },
+    pageContainer: {
+      display: "flex",
+      flexDirection: "column",
+      width: "100vw", // ✅ Full width
+      minHeight: "100vh", // ✅ Prevent shrinking
+      alignItems: "center",
+      overflowX: "hidden", // ✅ Prevents horizontal scrolling
+    },
+    contentContainer: {
+      width: "100%", // ✅ Stretches full width
+      maxWidth: "1200px", // ✅ Keeps content aligned
+      display: "flex",
+      justifyContent: "center",
+      alignItems: "center",
+      flexDirection: "column",
+      padding: "20px",
+    },
+    grid: {
+      display: "flex",
+      flexWrap: "wrap",
+      justifyContent: "center",
+      width: "100%",
+      maxWidth: "1200px", // ✅ Prevents content from overflowing
+      gap: "16px",
+      padding: "20px",
+    },
 };
+
+  
 
 export default ReviewArt;
