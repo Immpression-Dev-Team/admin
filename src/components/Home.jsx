@@ -1,16 +1,28 @@
 import { useNavigate } from "react-router-dom";
-import Navbar from "./Navbar"; // Import Navbar
+import Navbar from "./Navbar";
+import Card from "./Card"; 
 
 function Home() {
   const navigate = useNavigate();
-
-  // Retrieve the email from localStorage or state (assuming it's stored)
-  const email = localStorage.getItem("userEmail") || "admin@example.com"; // Replace with actual email state
+  const email = localStorage.getItem("userEmail") || "admin@example.com";
 
   return (
-    <div>
-      <Navbar email={email} /> {/* Navbar Component */}
-      <h2>Welcome to the Home Page</h2>
+    <div className="home-container">
+      <Navbar email={email} />
+      
+      {/* ✅ Centered Cards */}
+      <div className="card-container">
+        <Card 
+          title="Review Art"
+          description="Click here to review and approve art submissions."
+          navigateTo="/review-art"
+        />
+        <Card 
+          title="User Base"
+          description="View and manage the list of registered users."
+          navigateTo="/user-base"
+        />
+      </div>
     </div>
   );
 }
