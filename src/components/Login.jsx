@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios"; 
+import logo from "../assets/Immpression_Logo_Transparent.png";
+import ImmpressionLogo from '../assets/Immpression.png'
 import "../styles/login.css"; 
 
 function Login() {
@@ -37,8 +39,10 @@ function Login() {
 
   return (
     <div className="login-container">
+    <img src={ImmpressionLogo} alt="Impression Logo" className="ImmpressionLogo" />
+    <img src={logo} alt="Impression Logo" className="logo" />
       <div className="login-box">
-        <h2>Login</h2>
+        <h2 className="adminLogin">Admin Login</h2>
         <form onSubmit={handleSubmit}>
           <div className="input-group">
             <label>Email:</label>
