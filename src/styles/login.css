@@ -1,11 +1,15 @@
 /* styles/login.css */
 .login-container {
-  display: flex;
-  justify-content: center;  /* Center horizontally */
-  align-items: center;      /* Center vertically */
-  height: 100vh;            /* Full screen height */
-  /* background-color: #f4f4f4; */
-}
+    display: flex;
+    justify-content: center;  /* Center horizontally */
+    align-items: center;      /* Center vertically */
+    height: 100vh;            /* Full viewport height */
+    width: 100vw;             /* Full viewport width */
+    position: absolute;       /* Ensure it overlays the full screen */
+    top: 0;
+    left: 0;
+  }
+  
 
 .login-box {
   width: 350px;

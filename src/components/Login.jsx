@@ -1,19 +1,38 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import "../styles/login.css"; // Ensure styles are imported
+import axios from "axios"; 
+import "../styles/login.css"; 
 
 function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState(""); 
   const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     
-    console.log("Logging in with:", email, password);
-    
-    // Simulate successful login
-    navigate("/home"); // Redirect to Home page after login
+    setError(""); // Reset error state before API call
+
+    try {
+      // ✅ Send login request to backend
+      const response = await axios.post("http://localhost:5000/api/admin/login", {
+        email,
+        password,
+      });
+
+      console.log("Login successful:", response.data);
+
+      // ✅ Store the token in localStorage
+      localStorage.setItem("token", response.data.token);
+
+      // ✅ Redirect to home after successful login
+      navigate("/home");
+
+    } catch (err) {
+      console.error("Login error:", err.response?.data || err.message);
+      setError(err.response?.data?.message || "Login failed. Please try again.");
+    }
   };
 
   return (
@@ -39,6 +58,7 @@ function Login() {
               required
             />
           </div>
+          {error && <p className="error-message">{error}</p>} 
           <button type="submit">Login</button>
         </form>
       </div>
