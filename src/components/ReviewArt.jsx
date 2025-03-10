@@ -11,6 +11,7 @@ function ReviewArt() {
   const [artworks, setArtworks] = useState([]); 
   const [filteredArtworks, setFilteredArtworks] = useState([]); 
   const [loading, setLoading] = useState(true);
+  const [searchQuery, setSearchQuery] = useState("");
   const [filterReview, setFilterReview] = useState(false);
   const [filterApproved, setFilterApproved] = useState(false);
   const [filterRejected, setFilterRejected] = useState(false);
@@ -35,6 +36,19 @@ function ReviewArt() {
 
     fetchData();
   }, [navigate]);
+
+  // ✅ Search Function
+  const handleSearch = (query) => {
+    setSearchQuery(query.toLowerCase());
+
+    setFilteredArtworks(
+      artworks.filter(
+        (art) =>
+          art.name.toLowerCase().includes(query.toLowerCase()) ||
+          art.artistName.toLowerCase().includes(query.toLowerCase())
+      )
+    );
+  };
 
   // ✅ Toggle Filter for "Pending Review"
   const handleFilterPending = () => {
@@ -77,6 +91,7 @@ function ReviewArt() {
         onFilterPending={handleFilterPending}
         onFilterApproved={handleFilterApproved}
         onFilterRejected={handleFilterRejected}
+        onSearch={handleSearch} // ✅ Pass search function
       />
   
       <div className="contentContainer">
