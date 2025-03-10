@@ -22,13 +22,14 @@
     padding-left: 20px;
 }
 
-/* ✅ Styles the search bar */
-.searchContainer {
-    margin-left: auto; /* ✅ Pushes search to the right */
+/* ✅ Styles the right section (Search + Toggle) */
+.search-view-container {
     display: flex;
     align-items: center;
+    gap: 10px;
 }
 
+/* ✅ Styles the search bar */
 .searchInput {
     padding: 6px 10px;
     font-size: 13px;
@@ -36,4 +37,31 @@
     border-radius: 5px;
     outline: none;
     width: 200px;
+}
+
+/* ✅ Smaller toggle button */
+.viewToggleButton {
+    padding: 6px 8px;
+    font-size: 12px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    min-width: 70px; /* ✅ Keeps it small */
+}
+
+.viewToggleButton:hover {
+    background-color: #0056b3;
+}
+
+/* ✅ Clickable text styling */
+.clickable {
+    cursor: pointer;
+    transition: color 0.2s ease-in-out;
+}
+
+.clickable:hover {
+    color: #007bff;
+    text-decoration: underline;
 }

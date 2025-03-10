@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import Navbar from "./Navbar";
 import ArtCard from "./ArtCard"; 
 import TopPanel from "./TopPanel";
+import ListView from "./ListView"; // ✅ Import the new List View
 import { getAllImages } from "../api/API"; // ✅ Import API function
 import "../styles/reviewart.css"; // ✅ Import the merged CSS file
 
@@ -12,10 +13,7 @@ function ReviewArt() {
   const [filteredArtworks, setFilteredArtworks] = useState([]); 
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState("");
-  const [filterReview, setFilterReview] = useState(false);
-  const [filterApproved, setFilterApproved] = useState(false);
-  const [filterRejected, setFilterRejected] = useState(false);
-  const email = localStorage.getItem("userEmail") || "admin@example.com";
+  const [viewMode, setViewMode] = useState("grid"); // ✅ New State for View Mode
 
   useEffect(() => {
     const fetchData = async () => {
@@ -50,59 +48,37 @@ function ReviewArt() {
     );
   };
 
-  // ✅ Toggle Filter for "Pending Review"
-  const handleFilterPending = () => {
-    setFilteredArtworks(
-      filterReview ? artworks : artworks.filter((art) => art.stage === "review")
-    );
-    setFilterReview(!filterReview);
-    setFilterApproved(false);
-    setFilterRejected(false);
-  };
-
-  // ✅ Toggle Filter for "Approved"
-  const handleFilterApproved = () => {
-    setFilteredArtworks(
-      filterApproved ? artworks : artworks.filter((art) => art.stage === "approved")
-    );
-    setFilterApproved(!filterApproved);
-    setFilterReview(false);
-    setFilterRejected(false);
-  };
-
-  // ✅ Toggle Filter for "Rejected"
-  const handleFilterRejected = () => {
-    setFilteredArtworks(
-      filterRejected ? artworks : artworks.filter((art) => art.stage === "rejected")
-    );
-    setFilterRejected(!filterRejected);
-    setFilterReview(false);
-    setFilterApproved(false);
+  // ✅ Toggle View Mode
+  const toggleViewMode = () => {
+    setViewMode(viewMode === "grid" ? "list" : "grid");
   };
 
   return (
     <div className="pageContainer">
-      <Navbar email={email} />
+      <Navbar email={localStorage.getItem("userEmail") || "admin@example.com"} />
       <TopPanel 
         totalImages={artworks.length} 
         totalPending={artworks.filter((art) => art.stage === "review").length}
         totalApproved={artworks.filter((art) => art.stage === "approved").length} 
         totalRejected={artworks.filter((art) => art.stage === "rejected").length} 
-        onFilterPending={handleFilterPending}
-        onFilterApproved={handleFilterApproved}
-        onFilterRejected={handleFilterRejected}
-        onSearch={handleSearch} // ✅ Pass search function
+        onSearch={handleSearch}
+        viewMode={viewMode} 
+        toggleViewMode={toggleViewMode} // ✅ Pass View Toggle Function
       />
   
       <div className="contentContainer">
         {loading ? (
           <p>Loading...</p>
         ) : filteredArtworks.length > 0 ? (
-          <div className="grid">
-            {filteredArtworks.map((art) => (
-              <ArtCard key={art._id} art={art} />
-            ))}
-          </div>
+          viewMode === "grid" ? ( // ✅ Conditional Rendering
+            <div className="grid">
+              {filteredArtworks.map((art) => (
+                <ArtCard key={art._id} art={art} />
+              ))}
+            </div>
+          ) : (
+            <ListView artworks={filteredArtworks} /> // ✅ Show List View
+          )
         ) : (
           <p>No artwork available.</p>
         )}

@@ -9,34 +9,40 @@ function TopPanel({
   onFilterPending, 
   onFilterApproved, 
   onFilterRejected, 
-  onSearch 
+  onSearch, 
+  viewMode, 
+  toggleViewMode
 }) {
   return (
     <div className="panel">
       <div className="statsContainer">
         <p>Total Pictures: {totalImages}</p>
-        <p>
-          Pending Review: 
-          <span className="clickable" onClick={onFilterPending}> {totalPending}</span>
+        
+        {/* ✅ Entire text is now clickable */}
+        <p className="clickable" onClick={onFilterPending}>
+          Pending Review: {totalPending}
         </p>
-        <p>
-          Approved: 
-          <span className="clickable" onClick={onFilterApproved}> {totalApproved}</span>
+        
+        <p className="clickable" onClick={onFilterApproved}>
+          Approved: {totalApproved}
         </p>
-        <p>
-          Rejected: 
-          <span className="clickable" onClick={onFilterRejected}> {totalRejected}</span>
+
+        <p className="clickable" onClick={onFilterRejected}>
+          Rejected: {totalRejected}
         </p>
       </div>
 
-      {/* ✅ Search Bar */}
-      <div className="searchContainer">
+      {/* ✅ Right-aligned Search and View Toggle */}
+      <div className="search-view-container">
         <input
           type="text"
           className="searchInput"
           placeholder="Search by title or artist..."
           onChange={(e) => onSearch(e.target.value)}
         />
+        <button className="viewToggleButton" onClick={toggleViewMode}>
+          {viewMode === "grid" ? "📋 List" : "🖼️ Grid"}
+        </button>
       </div>
     </div>
   );

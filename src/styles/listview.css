@@ -1,0 +1,67 @@
+.list-view {
+    width: 100%;
+    max-width: 1200px;
+    margin-top: -10px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+thead {
+    background-color: #f8f8f8;
+}
+
+th, td {
+    padding: 0px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+/* ✅ Status Colors */
+.status.approved {
+    color: green;
+    font-weight: bold;
+    text-transform: uppercase; 
+}
+
+.status.rejected {
+    color: red;
+    font-weight: bold;
+    text-transform: uppercase; 
+}
+
+.status.review {
+    color: blue;
+    font-weight: bold;
+    text-transform: uppercase; 
+}
+
+/* ✅ Image Styling */
+.list-image {
+    width: 50px;
+    height: 50px;
+    object-fit: cover;
+}
+
+/* ✅ Clickable Row Styling */
+.clickable-row {
+    cursor: pointer;
+    transition: background-color 0.2s ease-in-out;
+}
+
+.clickable-row:hover {
+    background-color: #f0f0f0;
+}
+
+/* ✅ Make Table Headers Clickable for Sorting */
+.sortable {
+    cursor: pointer;
+    user-select: none;
+    font-weight: bold;
+}
+
+.sortable:hover {
+    color: #007bff;
+}
