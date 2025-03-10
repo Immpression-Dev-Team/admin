@@ -1,38 +1,22 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
+import "../styles/toppanel.css"; // ✅ Import the CSS file
 
-function TopPanel({ totalImages, totalPending, onFilterPending }) {
+function TopPanel({ totalImages, totalPending, totalApproved, onFilterPending, onFilterApproved }) {
   return (
-    <div style={styles.panel}>
-      <h2>Admin Dashboard</h2>
-      <div style={styles.statsContainer}>
-        <p><strong>Total Pictures:</strong> {totalImages}</p>
+    <div className="panel">
+      <div className="statsContainer">
+        <p>Total Pictures: {totalImages}</p>
         <p>
-          <strong>Pending Review:</strong> 
-          <span style={styles.clickable} onClick={onFilterPending}> {totalPending}</span> {/* ✅ Clickable */}
+          Pending Review: 
+          <span className="clickable" onClick={onFilterPending}> {totalPending}</span>
+        </p>
+        <p>
+          Approved: 
+          <span className="clickable" onClick={onFilterApproved}> {totalApproved}</span>
         </p>
       </div>
     </div>
   );
 }
-
-const styles = {
-  panel: {
-    backgroundColor: "#f8f8f8",
-    padding: "12px 20px",
-    borderBottom: "2px solid #ddd",
-    fontSize: "16px",
-    fontWeight: "bold",
-  },
-  statsContainer: {
-    display: "flex",
-    gap: "20px",
-    flexWrap: "wrap",
-  },
-  clickable: {
-    color: "blue",
-    cursor: "pointer",
-    textDecoration: "underline",
-  },
-};
 
 export default TopPanel;

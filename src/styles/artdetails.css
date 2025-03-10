@@ -1,0 +1,73 @@
+/* Outer container that centers content */
+.art-details-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: calc(100vh - 60px);
+    width: 100%;
+}
+
+/* Inner container for layout */
+.art-details-inner {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    max-width: 800px;
+    width: 100%;
+}
+
+/* Left column: Back button and image */
+.art-details-left {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+/* Back button */
+.back-button {
+    padding: 5px 10px;
+    font-size: 12px;
+    margin-bottom: 10px;
+    cursor: pointer;
+    background-color: #ddd;
+    border: none;
+    border-radius: 5px;
+    width: 60px;
+    text-align: center;
+}
+
+/* Artwork image */
+.art-image {
+    width: 250px;
+    height: auto;
+    object-fit: cover;
+    border: 1px solid #ddd;
+}
+
+/* Right column: Artwork details */
+.art-details-right {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: left;
+    font-size: 14px;
+    line-height: 1.2;
+}
+
+/* Title */
+.art-title {
+    margin-bottom: 5px;
+    font-size: 18px;
+}
+
+/* Approve button */
+.approve-button {
+    margin-top: 10px;
+    padding: 10px;
+    font-size: 14px;
+    background-color: #28a745;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
