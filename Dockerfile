@@ -20,4 +20,4 @@ EXPOSE 5173
 ENV CHOKIDAR_USEPOLLING=true
 
 # Start the Vite dev server
-CMD ["npm", "start"]
+CMD ["npm", "run", "dev"]
