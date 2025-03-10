@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import Navbar from "./Navbar"; // ✅ Import Navbar
-import "../styles/artdetails.css"; // ✅ Import the new CSS file
+import Navbar from "./Navbar"; 
+import { getArtwork, approveArtwork } from "../api/API"; // ✅ Import API functions
+import "../styles/artdetails.css"; 
 
 function ArtDetails() {
   const { id } = useParams();
@@ -11,52 +12,43 @@ function ArtDetails() {
   const email = localStorage.getItem("userEmail") || "admin@example.com";
 
   useEffect(() => {
-    const fetchArtwork = async () => {
+    const fetchArt = async () => {
+      setLoading(true);
+      const token = localStorage.getItem("token");
+
+      if (!token) {
+        console.error("No token found, redirecting to login.");
+        navigate("/login");
+        return;
+      }
+
       try {
-        const token = localStorage.getItem("token");
-        const res = await fetch(`http://localhost:5000/api/admin/art/${id}`, {
-          headers: { Authorization: `Bearer ${token}` },
-        });
-
-        const data = await res.json();
-
-        if (!res.ok) {
-          throw new Error(data.error || "Failed to fetch artwork");
-        }
-
-        setArt(data.art);
-      } catch (err) {
-        console.error("Error fetching artwork:", err.message);
+        const artwork = await getArtwork(id, token); // ✅ Fetch artwork from API
+        setArt(artwork);
+      } catch (error) {
+        console.error("Error fetching artwork:", error.message);
       } finally {
         setLoading(false);
       }
     };
 
-    fetchArtwork();
-  }, [id]);
+    fetchArt();
+  }, [id, navigate]);
 
   const handleApprove = async () => {
+    const token = localStorage.getItem("token");
+
+    if (!token) {
+      console.error("No token found, cannot approve.");
+      return;
+    }
+
     try {
-      const token = localStorage.getItem("token");
-      const res = await fetch(`http://localhost:5000/api/admin/art/${id}/approve`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-      });
-
-      const data = await res.json();
-
-      if (!res.ok) {
-        throw new Error(data.error || "Failed to approve artwork");
-      }
-
-      // ✅ Update UI to reflect the new stage
-      setArt((prevArt) => ({ ...prevArt, stage: "approved" }));
+      await approveArtwork(id, token); // ✅ Approve artwork using API
+      setArt((prevArt) => ({ ...prevArt, stage: "approved" })); // ✅ Update UI
       alert("Artwork approved!");
-    } catch (err) {
-      console.error("Error approving artwork:", err.message);
+    } catch (error) {
+      console.error("Error approving artwork:", error.message);
     }
   };
 

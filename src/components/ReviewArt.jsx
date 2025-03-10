@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import Navbar from "./Navbar";
 import ArtCard from "./ArtCard"; 
 import TopPanel from "./TopPanel";
+import { getAllImages } from "../api/API"; // ✅ Import API function
 import "../styles/reviewart.css"; // ✅ Import the merged CSS file
 
 function ReviewArt() {
@@ -15,55 +16,39 @@ function ReviewArt() {
   const email = localStorage.getItem("userEmail") || "admin@example.com";
 
   useEffect(() => {
-    const fetchArtworks = async () => {
+    const fetchData = async () => {
+      setLoading(true);
       const token = localStorage.getItem("token");
+
       if (!token) {
         console.error("No token found, redirecting to login.");
         navigate("/login");
         return;
       }
 
-      try {
-        const res = await fetch("http://localhost:5000/api/admin/all_images", {
-          headers: { Authorization: `Bearer ${token}` },
-        });
-
-        const data = await res.json();
-
-        if (!res.ok) {
-          throw new Error(data.error || "Failed to fetch images");
-        }
-
-        setArtworks(data.images || []);
-        setFilteredArtworks(data.images || []);
-      } catch (err) {
-        console.error("Error fetching images:", err.message);
-      } finally {
-        setLoading(false);
-      }
+      const images = await getAllImages(token); // ✅ Fetch from API
+      setArtworks(images);
+      setFilteredArtworks(images);
+      setLoading(false);
     };
 
-    fetchArtworks();
+    fetchData();
   }, [navigate]);
 
   // ✅ Toggle Filter for "Pending Review"
   const handleFilterPending = () => {
-    if (filterReview) {
-      setFilteredArtworks(artworks);
-    } else {
-      setFilteredArtworks(artworks.filter((art) => art.stage === "review"));
-    }
+    setFilteredArtworks(
+      filterReview ? artworks : artworks.filter((art) => art.stage === "review")
+    );
     setFilterReview(!filterReview);
     setFilterApproved(false);
   };
 
   // ✅ Toggle Filter for "Approved"
   const handleFilterApproved = () => {
-    if (filterApproved) {
-      setFilteredArtworks(artworks);
-    } else {
-      setFilteredArtworks(artworks.filter((art) => art.stage === "approved"));
-    }
+    setFilteredArtworks(
+      filterApproved ? artworks : artworks.filter((art) => art.stage === "approved")
+    );
     setFilterApproved(!filterApproved);
     setFilterReview(false);
   };

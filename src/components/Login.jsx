@@ -1,9 +1,9 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "axios"; 
+import { loginAdmin } from "../api/API"; // ✅ Import the API function
 import logo from "../assets/Immpression_Logo_Transparent.png";
-import ImmpressionLogo from '../assets/Immpression.png'
-import "../styles/login.css"; 
+import ImmpressionLogo from '../assets/Immpression.png';
+import "../styles/login.css";
 
 function Login() {
   const [email, setEmail] = useState("");
@@ -13,34 +13,30 @@ function Login() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
     setError(""); // Reset error state before API call
 
     try {
-      // ✅ Send login request to backend
-      const response = await axios.post("http://localhost:5000/api/admin/login", {
-        email,
-        password,
-      });
+      // ✅ Use the API function instead of direct axios call
+      const response = await loginAdmin(email, password);
 
-      console.log("Login successful:", response.data);
+      console.log("Login successful:", response);
 
       // ✅ Store the token in localStorage
-      localStorage.setItem("token", response.data.token);
+      localStorage.setItem("token", response.token);
 
       // ✅ Redirect to home after successful login
       navigate("/home");
 
     } catch (err) {
-      console.error("Login error:", err.response?.data || err.message);
-      setError(err.response?.data?.message || "Login failed. Please try again.");
+      console.error("Login error:", err.message);
+      setError(err.message); // ✅ Set error message from API response
     }
   };
 
   return (
     <div className="login-container">
-    <img src={ImmpressionLogo} alt="Impression Logo" className="ImmpressionLogo" />
-    <img src={logo} alt="Impression Logo" className="logo" />
+      <img src={ImmpressionLogo} alt="Impression Logo" className="ImmpressionLogo" />
+      <img src={logo} alt="Impression Logo" className="logo" />
       <div className="login-box">
         <h2 className="adminLogin">Admin Login</h2>
         <form onSubmit={handleSubmit}>
