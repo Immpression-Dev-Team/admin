@@ -2,9 +2,8 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "../styles/listview.css"; // ✅ Import List View Styles
 
-function ListView({ artworks }) {
+function ListView({ artworks }) {  // ✅ Use the filtered artworks directly
   const navigate = useNavigate();
-  const [sortedArtworks, setSortedArtworks] = useState(artworks);
   const [sortConfig, setSortConfig] = useState({ key: null, direction: null });
 
   // Sorting function
@@ -19,9 +18,9 @@ function ListView({ artworks }) {
     setSortConfig({ key, direction });
 
     if (!direction) {
-      setSortedArtworks([...artworks]); // Reset to original order
+      return; // Don't modify the order
     } else {
-      const sortedData = [...sortedArtworks].sort((a, b) => {
+      artworks.sort((a, b) => { // ✅ Sorting applied to the passed-in filtered list
         if (key === "createdAt") {
           return direction === "asc"
             ? new Date(a[key]) - new Date(b[key])
@@ -32,7 +31,6 @@ function ListView({ artworks }) {
             : b[key].localeCompare(a[key]);
         }
       });
-      setSortedArtworks(sortedData);
     }
   };
 
@@ -64,11 +62,11 @@ function ListView({ artworks }) {
           </tr>
         </thead>
         <tbody>
-          {sortedArtworks.map((art) => (
+          {artworks.map((art) => (  // ✅ Now using filtered artworks directly
             <tr
               key={art._id}
               className="clickable-row"
-              onClick={() => navigate(`/art/${art._id}`)} // ✅ Clickable Row
+              onClick={() => navigate(`/art/${art._id}`)}
             >
               <td>
                 <img src={art.imageLink} alt={art.name} className="list-image" />
