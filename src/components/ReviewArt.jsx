@@ -1,8 +1,9 @@
-import Navbar from "./Navbar";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useEffect, useState } from "react";
+import Navbar from "./Navbar";
 import ArtCard from "./ArtCard"; 
 import TopPanel from "./TopPanel";
+import "../styles/reviewart.css"; // ✅ Import the merged CSS file
 
 function ReviewArt() {
   const navigate = useNavigate();
@@ -68,7 +69,7 @@ function ReviewArt() {
   };
 
   return (
-    <div style={styles.pageContainer}>
+    <div className="pageContainer">
       <Navbar email={email} />
       <TopPanel 
         totalImages={artworks.length} 
@@ -78,11 +79,11 @@ function ReviewArt() {
         onFilterApproved={handleFilterApproved} 
       />
   
-      <div style={styles.contentContainer}>
+      <div className="contentContainer">
         {loading ? (
           <p>Loading...</p>
         ) : filteredArtworks.length > 0 ? (
-          <div style={styles.grid}>
+          <div className="grid">
             {filteredArtworks.map((art) => (
               <ArtCard key={art._id} art={art} />
             ))}
@@ -93,38 +94,6 @@ function ReviewArt() {
       </div>
     </div>
   );
-  
 }
-
-const styles = {
-    pageContainer: {
-      display: "flex",
-      flexDirection: "column",
-      width: "100vw", // ✅ Full width
-      minHeight: "100vh", // ✅ Prevent shrinking
-      alignItems: "center",
-      overflowX: "hidden", // ✅ Prevents horizontal scrolling
-    },
-    contentContainer: {
-      width: "100%", // ✅ Stretches full width
-      maxWidth: "1200px", // ✅ Keeps content aligned
-      display: "flex",
-      justifyContent: "center",
-      alignItems: "center",
-      flexDirection: "column",
-      padding: "20px",
-    },
-    grid: {
-      display: "flex",
-      flexWrap: "wrap",
-      justifyContent: "center",
-      width: "100%",
-      maxWidth: "1200px", // ✅ Prevents content from overflowing
-      gap: "16px",
-      padding: "20px",
-    },
-};
-
-  
 
 export default ReviewArt;

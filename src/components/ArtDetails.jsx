@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import Navbar from "./Navbar"; // ✅ Import Navbar
+import "../styles/artdetails.css"; // ✅ Import the new CSS file
 
 function ArtDetails() {
   const { id } = useParams();
@@ -65,15 +66,15 @@ function ArtDetails() {
   return (
     <div>
       <Navbar email={email} />
-      <div style={styles.outerContainer}>
-        <div style={styles.innerContainer}>
-          <div style={styles.leftColumn}>
-            <button onClick={() => navigate(-1)} style={styles.backButton}>← Back</button>
-            <img src={art.imageLink} alt={art.name} style={styles.image} />
+      <div className="art-details-container">
+        <div className="art-details-inner">
+          <div className="art-details-left">
+            <button onClick={() => navigate(-1)} className="back-button">← Back</button>
+            <img src={art.imageLink} alt={art.name} className="art-image" />
           </div>
 
-          <div style={styles.rightColumn}>
-            <h2 style={styles.title}>{art.name}</h2>
+          <div className="art-details-right">
+            <h2 className="art-title">{art.name}</h2>
             <p><strong>Artist:</strong> {art.artistName}</p>
             <p><strong>Description:</strong> {art.description}</p>
             <p><strong>Price:</strong> ${art.price}</p>
@@ -83,7 +84,7 @@ function ArtDetails() {
 
             {/* ✅ Show Approve Button only if it's in "review" */}
             {art.stage === "review" && (
-              <button onClick={handleApprove} style={styles.approveButton}>
+              <button onClick={handleApprove} className="approve-button">
                 Approve
               </button>
             )}
@@ -93,66 +94,5 @@ function ArtDetails() {
     </div>
   );
 }
-
-const styles = {
-  outerContainer: {
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-    height: "calc(100vh - 60px)",
-    width: "100%",
-  },
-  innerContainer: {
-    display: "flex",
-    alignItems: "center",
-    gap: "20px",
-    maxWidth: "800px",
-    width: "100%",
-  },
-  leftColumn: {
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "flex-start",
-  },
-  backButton: {
-    padding: "5px 10px",
-    fontSize: "12px",
-    marginBottom: "10px",
-    cursor: "pointer",
-    backgroundColor: "#ddd",
-    border: "none",
-    borderRadius: "5px",
-    width: "60px",
-    textAlign: "center",
-  },
-  image: {
-    width: "250px",
-    height: "auto",
-    objectFit: "cover",
-    border: "1px solid #ddd",
-  },
-  rightColumn: {
-    display: "flex",
-    flexDirection: "column",
-    justifyContent: "center",
-    textAlign: "left",
-    fontSize: "14px",
-    lineHeight: "1.2",
-  },
-  title: {
-    marginBottom: "5px",
-    fontSize: "18px",
-  },
-  approveButton: {
-    marginTop: "10px",
-    padding: "10px",
-    fontSize: "14px",
-    backgroundColor: "#28a745",
-    color: "white",
-    border: "none",
-    borderRadius: "5px",
-    cursor: "pointer",
-  },
-};
 
 export default ArtDetails;

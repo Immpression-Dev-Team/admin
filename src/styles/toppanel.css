@@ -1,0 +1,31 @@
+.panel {
+    background-color: #f8f8f8;
+    padding: 12px 20px;
+    border-bottom: 2px solid #ddd;
+    font-size: 13px;
+    width: 100%; /* ✅ Ensures full width */
+    display: flex;
+    justify-content: flex-start; /* ✅ Aligns text to the left */
+    align-items: center;
+    box-sizing: border-box;
+    min-height: 60px;
+    margin-top: 60px;
+  }
+  
+  .statsContainer {
+    display: flex; /* ✅ Ensures side-by-side layout */
+    gap: 30px; /* ✅ Adds spacing between options */
+    flex-wrap: nowrap; /* ✅ Prevents wrapping (if there's space) */
+    justify-content: flex-start; /* ✅ Aligns everything to the left */
+    align-items: center;
+    width: 100%; /* ✅ Ensures the section spans across the panel */
+    padding-left: 20px; /* ✅ Adds left padding for spacing */
+  }
+  
+  .clickable {
+    color: blue;
+    cursor: pointer;
+    text-decoration: underline;
+    margin-left: 5px; /* ✅ Small spacing for better readability */
+  }
+  
