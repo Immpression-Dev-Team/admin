@@ -1,7 +1,7 @@
 import React from "react";
 import "../styles/toppanel.css"; // ✅ Import the CSS file
 
-function TopPanel({ totalImages, totalPending, totalApproved, onFilterPending, onFilterApproved }) {
+function TopPanel({ totalImages, totalPending, totalApproved, totalRejected, onFilterPending, onFilterApproved, onFilterRejected }) {
   return (
     <div className="panel">
       <div className="statsContainer">
@@ -13,6 +13,10 @@ function TopPanel({ totalImages, totalPending, totalApproved, onFilterPending, o
         <p>
           Approved: 
           <span className="clickable" onClick={onFilterApproved}> {totalApproved}</span>
+        </p>
+        <p>
+          Rejected: 
+          <span className="clickable" onClick={onFilterRejected}> {totalRejected}</span>
         </p>
       </div>
     </div>

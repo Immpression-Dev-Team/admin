@@ -13,6 +13,7 @@ function ReviewArt() {
   const [loading, setLoading] = useState(true);
   const [filterReview, setFilterReview] = useState(false);
   const [filterApproved, setFilterApproved] = useState(false);
+  const [filterRejected, setFilterRejected] = useState(false);
   const email = localStorage.getItem("userEmail") || "admin@example.com";
 
   useEffect(() => {
@@ -42,6 +43,7 @@ function ReviewArt() {
     );
     setFilterReview(!filterReview);
     setFilterApproved(false);
+    setFilterRejected(false);
   };
 
   // ✅ Toggle Filter for "Approved"
@@ -51,6 +53,17 @@ function ReviewArt() {
     );
     setFilterApproved(!filterApproved);
     setFilterReview(false);
+    setFilterRejected(false);
+  };
+
+  // ✅ Toggle Filter for "Rejected"
+  const handleFilterRejected = () => {
+    setFilteredArtworks(
+      filterRejected ? artworks : artworks.filter((art) => art.stage === "rejected")
+    );
+    setFilterRejected(!filterRejected);
+    setFilterReview(false);
+    setFilterApproved(false);
   };
 
   return (
@@ -60,8 +73,10 @@ function ReviewArt() {
         totalImages={artworks.length} 
         totalPending={artworks.filter((art) => art.stage === "review").length}
         totalApproved={artworks.filter((art) => art.stage === "approved").length} 
+        totalRejected={artworks.filter((art) => art.stage === "rejected").length} 
         onFilterPending={handleFilterPending}
-        onFilterApproved={handleFilterApproved} 
+        onFilterApproved={handleFilterApproved}
+        onFilterRejected={handleFilterRejected}
       />
   
       <div className="contentContainer">

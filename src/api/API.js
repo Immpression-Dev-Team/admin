@@ -68,3 +68,20 @@ export async function approveArtwork(id, token) {
     throw new Error(error.response?.data?.message || "Failed to approve artwork.");
   }
 }
+
+export const rejectArtwork = async (id, token) => {
+    const response = await fetch(`${API_URL}/api/admin/art/${id}/reject`, {
+        method: "PUT",
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+        },
+    });
+
+    if (!response.ok) {
+        throw new Error("Failed to reject artwork");
+    }
+
+    return await response.json();
+};
+
