@@ -6,6 +6,7 @@ function TopPanel({
   totalPending, 
   totalApproved, 
   totalRejected, 
+  onShowAllArt,  // ✅ New function prop
   onFilterPending, 
   onFilterApproved, 
   onFilterRejected, 
@@ -16,9 +17,11 @@ function TopPanel({
   return (
     <div className="panel">
       <div className="statsContainer">
-        <p>Total Pictures: {totalImages}</p>
+        {/* ✅ Now Clickable! Shows all art */}
+        <p className="clickable" onClick={onShowAllArt}>
+          Total Pictures: {totalImages}
+        </p>
         
-        {/* ✅ Entire text is now clickable */}
         <p className="clickable" onClick={onFilterPending}>
           Pending Review: {totalPending}
         </p>
@@ -32,7 +35,6 @@ function TopPanel({
         </p>
       </div>
 
-      {/* ✅ Right-aligned Search and View Toggle */}
       <div className="search-view-container">
         <input
           type="text"
