@@ -1,0 +1,31 @@
+.pageContainer {
+    display: flex;
+    flex-direction: column;
+    width: 100vw;
+    min-height: 100vh;
+    align-items: center;
+    overflow-x: hidden;
+    padding: 0; /* ✅ Remove extra padding */
+    margin: 0;  /* ✅ Remove extra margin */
+}
+
+/* ✅ Ensures the Top Panel is directly below Navbar */
+.panel {
+    width: 100%;
+    max-width: 1200px;
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 20px;
+    margin-top: 0; /* ✅ Remove extra margin */
+}
+
+/* ✅ Fixes table positioning */
+.contentContainer {
+    width: 100%;
+    max-width: 1200px;
+    display: flex;
+    flex-direction: column;
+    padding: 0px 20px;
+    margin: 0 auto;
+    align-items: flex-start;
+}
