@@ -10,11 +10,15 @@
 /* Inner container - Keeping your width but centering the columns */
 .art-details-inner {
     display: flex;
-    flex-direction: row;  /* Ensures horizontal alignment */
+    flex-direction: row;
     align-items: center;
-    justify-content: center; /* Centers the entire section */
-    width: 50%;  /* Ensuring it doesn’t stretch too much */
+    justify-content: center;  /* Centers the content horizontally */
     background: white;
+    padding: 20px;
+    border-radius: 0px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 50%;  /* Reduce width for better centering */
+    max-width: 800px;  /* Prevents excessive stretching */
 }
 
 /* Left section (Image) */

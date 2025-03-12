@@ -2,8 +2,9 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-d
 import Login from "./components/Login";
 import Home from "./components/Home";
 import ReviewArt from "./components/ReviewArt";
-import UserBase from "./components/UserBase"; // ✅ Import the UserBase page
+import UserBase from "./components/UserBase";
 import ArtDetails from "./components/ArtDetails";
+import UserDetails from "./components/UserDetails"; // ✅ Import UserDetails
 
 function PrivateRoute({ children }) {
   const token = localStorage.getItem("token");
@@ -20,6 +21,7 @@ function App() {
         <Route path="/review-art" element={<PrivateRoute><ReviewArt /></PrivateRoute>} />
         <Route path="/user-base" element={<PrivateRoute><UserBase /></PrivateRoute>} />
         <Route path="/art/:id" element={<ArtDetails />} />
+        <Route path="/user/:id" element={<PrivateRoute><UserDetails /></PrivateRoute>} /> {/* ✅ New route */}
         <Route path="*" element={<h2>404 - Page Not Found</h2>} />
       </Routes>
     </Router>

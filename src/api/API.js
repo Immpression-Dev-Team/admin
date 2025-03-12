@@ -106,5 +106,20 @@ export async function getAllUsers(token) {
       return [];
     }
   }
+
+  export async function getUserDetails(id, token) {
+    try {
+        const response = await axios.get(`${API_URL}/api/admin/user/${id}`, {
+            headers: { Authorization: `Bearer ${token}` },
+        });
+
+        return response.data.user;
+    } catch (error) {
+        console.error("Error fetching user details:", error.response?.data || error.message);
+        throw new Error("Failed to fetch user details.");
+    }
+}
+
+
   
   
