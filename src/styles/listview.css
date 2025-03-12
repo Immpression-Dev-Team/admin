@@ -1,7 +1,10 @@
 .list-view {
     width: 100%;
-    max-width: 1200px;
+    max-width: 1200px; /* Keeps it responsive */
+    margin: 0 auto; /* ✅ Centers the container */
     margin-top: -10px;
+    display: flex;
+    justify-content: center;
 }
 
 table {
@@ -40,8 +43,8 @@ th, td {
 
 /* ✅ Image Styling */
 .list-image {
-    width: 50px;
-    height: 50px;
+    width: 40px;
+    height: 40px;
     object-fit: cover;
 }
 
@@ -65,3 +68,12 @@ th, td {
 .sortable:hover {
     color: #007bff;
 }
+
+.profile-image {
+    width: 40px;
+    height: 40px;
+    object-fit: cover; /* Ensures images don’t stretch */
+    display: block;
+  }
+  
+  

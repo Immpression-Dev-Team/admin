@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import Navbar from "./Navbar";
 import ArtCard from "./ArtCard";
 import TopPanel from "./TopPanel";
-import ListView from "./ListView"; // ✅ Import the new List View
+import ListView from "./ListView"; // ✅ Import the List View
 import { getAllImages } from "../api/API"; // ✅ Import API function
 import "../styles/reviewart.css"; // ✅ Import the merged CSS file
 
@@ -85,7 +85,7 @@ function ReviewArt() {
                             ))}
                         </div>
                     ) : (
-                        <ListView artworks={filteredArtworks} />
+                        <ListView data={filteredArtworks} type="artworks" /> // ✅ FIXED: Correct prop name
                     )
                 ) : (
                     <p>No artwork available.</p>

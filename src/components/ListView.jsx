@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import "../styles/listview.css"; // ✅ Import List View Styles
+import "../styles/listview.css"; // ✅ Import styles
 
-function ListView({ artworks }) {  // ✅ Use the filtered artworks directly
+function ListView({ data, type }) {
   const navigate = useNavigate();
   const [sortConfig, setSortConfig] = useState({ key: null, direction: null });
 
@@ -17,28 +17,25 @@ function ListView({ artworks }) {  // ✅ Use the filtered artworks directly
 
     setSortConfig({ key, direction });
 
-    if (!direction) {
-      return; // Don't modify the order
-    } else {
-      artworks.sort((a, b) => { // ✅ Sorting applied to the passed-in filtered list
-        if (key === "createdAt") {
-          return direction === "asc"
-            ? new Date(a[key]) - new Date(b[key])
-            : new Date(b[key]) - new Date(a[key]);
-        } else {
-          return direction === "asc"
-            ? a[key].localeCompare(b[key])
-            : b[key].localeCompare(a[key]);
-        }
-      });
-    }
+    if (!direction) return; // Don't modify the order
+
+    data.sort((a, b) => {
+      if (key === "createdAt") {
+        return direction === "asc"
+          ? new Date(a[key]) - new Date(b[key])
+          : new Date(b[key]) - new Date(a[key]);
+      } else {
+        return direction === "asc"
+          ? (a[key] || "").localeCompare(b[key] || "")
+          : (b[key] || "").localeCompare(a[key] || "");
+      }
+    });
   };
 
   // Render sorting arrow based on current state
   const getArrow = (key) => {
     if (sortConfig.key === key) {
-      if (sortConfig.direction === "asc") return " ⬇️";
-      if (sortConfig.direction === "desc") return " ⬆️";
+      return sortConfig.direction === "asc" ? " ⬇️" : " ⬆️";
     }
     return "";
   };
@@ -48,36 +45,72 @@ function ListView({ artworks }) {  // ✅ Use the filtered artworks directly
       <table>
         <thead>
           <tr>
-            <th>Image</th> {/* ✅ New column for images */}
-            <th className="sortable" onClick={() => handleSort("name")}>
-              Title {getArrow("name")}
-            </th>
-            <th className="sortable" onClick={() => handleSort("artistName")}>
-              Artist {getArrow("artistName")}
-            </th>
-            <th>Status</th>
-            <th className="sortable" onClick={() => handleSort("createdAt")}>
-              Date Uploaded {getArrow("createdAt")}
-            </th>
+            {type === "users" ? (
+              <>
+                <th>Profile</th> {/* ✅ New Profile Picture Column */}
+                <th className="sortable" onClick={() => handleSort("name")}>
+                  Name {getArrow("name")}
+                </th>
+                <th className="sortable" onClick={() => handleSort("email")}>
+                  Email {getArrow("email")}
+                </th>
+                <th className="sortable" onClick={() => handleSort("role")}>
+                  Role {getArrow("role")}
+                </th>
+                <th className="sortable" onClick={() => handleSort("createdAt")}>
+                  Joined {getArrow("createdAt")}
+                </th>
+              </>
+            ) : (
+              <>
+                <th>Image</th>
+                <th className="sortable" onClick={() => handleSort("name")}>
+                  Title {getArrow("name")}
+                </th>
+                <th className="sortable" onClick={() => handleSort("artistName")}>
+                  Artist {getArrow("artistName")}
+                </th>
+                <th>Status</th>
+                <th className="sortable" onClick={() => handleSort("createdAt")}>
+                  Date Uploaded {getArrow("createdAt")}
+                </th>
+              </>
+            )}
           </tr>
         </thead>
         <tbody>
-          {artworks.map((art) => (  // ✅ Now using filtered artworks directly
-            <tr
-              key={art._id}
-              className="clickable-row"
-              onClick={() => navigate(`/art/${art._id}`)}
-            >
-              <td>
-                <img src={art.imageLink} alt={art.name} className="list-image" />
-              </td>
-              <td>{art.name}</td>
-              <td>{art.artistName}</td>
-              <td className={`status ${art.stage}`}>{art.stage}</td>
-              <td>{new Date(art.createdAt).toLocaleDateString()}</td>
-            </tr>
-          ))}
-        </tbody>
+  {data.map((item) => (
+    <tr key={item._id} className="clickable-row">
+      {type === "users" ? (
+        <>
+          <td>
+            <img
+              src={item.profilePictureLink}
+              alt={item.name}
+              className="profile-image"
+              onError={(e) => { e.target.src = "https://via.placeholder.com/50"; }} // ✅ Show placeholder if image fails
+            />
+          </td>
+          <td>{item.name}</td>
+          <td>{item.email}</td>
+          <td>{item.role}</td>
+          <td>{new Date(item.createdAt).toLocaleDateString()}</td>
+        </>
+      ) : (
+        <>
+          <td>
+            <img src={item.imageLink} alt={item.name} className="list-image" />
+          </td>
+          <td>{item.name}</td>
+          <td>{item.artistName}</td>
+          <td className={`status ${item.stage}`}>{item.stage}</td>
+          <td>{new Date(item.createdAt).toLocaleDateString()}</td>
+        </>
+      )}
+    </tr>
+  ))}
+</tbody>
+
       </table>
     </div>
   );
