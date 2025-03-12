@@ -3,127 +3,112 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    height: calc(100vh - 60px);
+    height: 100vh;
     width: 100%;
 }
 
-/* Inner container for layout */
+/* Inner container - Keeping your width but centering the columns */
 .art-details-inner {
     display: flex;
+    flex-direction: row;  /* Ensures horizontal alignment */
     align-items: center;
-    gap: 20px;
-    max-width: 800px;
-    width: 100%;
+    justify-content: center; /* Centers the entire section */
+    width: 50%;  /* Ensuring it doesn’t stretch too much */
+    background: white;
 }
 
-/* Left column: Back button and image */
+/* Left section (Image) */
 .art-details-left {
     display: flex;
     flex-direction: column;
-    align-items: flex-start;
-}
-
-/* Back button */
-.back-button {
-    padding: 5px 10px;
-    font-size: 12px;
-    margin-bottom: 10px;
-    cursor: pointer;
-    background-color: #ddd;
-    border: none;
-    border-radius: 5px;
-    width: 60px;
+    align-items: center;
     text-align: center;
+    justify-content: center;
+    flex: 1;
 }
 
-/* Artwork image */
-.art-image {
-    width: 250px;
-    height: auto;
-    object-fit: cover;
-    border: 1px solid #ddd;
-}
-
-/* Right column: Artwork details */
+/* Right section (Artwork details) */
 .art-details-right {
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    align-items: flex-start;
     text-align: left;
-    font-size: 14px;
-    line-height: 1.2;
+    justify-content: center;
+    flex: 1;
+    gap: 3px; /* Reduces spacing between items */
+    margin-left: 20px;
 }
 
 /* Title */
 .art-title {
-    margin-bottom: 5px;
+    margin-bottom: 0px;
     font-size: 18px;
 }
 
-/* Outer container that centers content */
-.art-details-container {
+/* Text elements */
+.art-details-right p {
+    margin: 2px 0; /* Reduces space between text lines */
+    line-height: 1.2; /* Reduces line height for tighter text */
+    font-size: 14px; /* Optional: Make text slightly smaller */
+}
+
+/* Buttons should be closer together */
+.admin-actions {
+    margin-top: 60px;
     display: flex;
-    justify-content: center;
-    align-items: center;
-    height: calc(100vh - 60px);
-    width: 100%;
+    justify-content: flex-start;
+    gap: 5px; /* Reduces gap between buttons */
 }
 
-/* Inner container for layout */
-.art-details-inner {
-    display: flex;
-    align-items: center;
-    gap: 20px;
-    max-width: 800px;
-    width: 100%;
-}
-
-/* Left column: Back button and image */
-.art-details-left {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-}
-
-/* Back button */
-.back-button {
-    padding: 5px 10px;
-    font-size: 12px;
-    margin-bottom: 10px;
-    cursor: pointer;
-    background-color: #ddd;
-    border: none;
-    border-radius: 5px;
-    width: 60px;
-    text-align: center;
-}
-
-/* Artwork image */
+/* Adjust the image */
 .art-image {
-    width: 250px;
-    height: auto;
+    width: 300px;
+    height: 300px;
     object-fit: cover;
     border: 1px solid #ddd;
+    margin-bottom: 10px; /* Reduce space below image */
 }
 
-/* Right column: Artwork details */
-.art-details-right {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    text-align: left;
-    font-size: 14px;
-    line-height: 1.2;
-}
-
-/* Approve button */
 .approve-button {
-    margin-top: 10px;
-    padding: 10px;
-    font-size: 14px;
+    border-radius: 0;
     background-color: #28a745;
     color: white;
+    padding: 10px 15px;
     border: none;
-    border-radius: 5px;
     cursor: pointer;
+    transition: background-color 0.2s ease-in-out;
+}
+
+.approve-button:hover {
+    background-color: #1e7e34; /* Darker green */
+}
+
+.reject-button {
+    border-radius: 0;
+    background-color: #ff1803;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.2s ease-in-out;
+}
+
+.reject-button:hover {
+    background-color: #c21502; /* Darker red */
+}
+
+/* Back button - Smaller and positioned at top left */
+.back-button {
+    position: absolute;
+    height: 30px;
+    width: 80px;
+    top: 100px;
+    left: 20px;
+    padding: 5px 12px;
+    font-size: 10px;
+    background-color: #007bff;
+    color: white;
+    border-radius: 0px;
+    cursor: pointer;
+    text-transform: uppercase;
 }
