@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import Navbar from "./Navbar";
+import ScreenTemplate from "./ScreenTemplate";
 import { getArtwork, approveArtwork, rejectArtwork } from "../api/API"; // ✅ Import API functions
 import "@styles/artdetails.css";
 
@@ -72,39 +72,38 @@ function ArtDetails() {
     if (loading) return <p>Loading Art Details...</p>;
     if (!art) return <p>Artwork not found.</p>;
 
-return (
-    <div>
-        <Navbar email={email} />
-        <div className="art-details-container">
-            <div className="art-details-inner">
-                <button onClick={() => navigate(-1)} className="back-button">← Back</button>
-                
-                <img src={art.imageLink} alt={art.name} className="art-image" />
+    return (
+        <ScreenTemplate>
+            <div className="art-details-container">
+                <div className="art-details-inner">
+                    <button onClick={() => navigate(-1)} className="back-button">← Back</button>
+                    
+                    <img src={art.imageLink} alt={art.name} className="art-image" />
 
-                <div className="art-details-right">
-                    <h2 className="art-title">{art.name}</h2>
-                    <p><strong>Artist:</strong> {art.artistName}</p>
-                    <p><strong>Description:</strong> {art.description}</p>
-                    <p><strong>Price:</strong> ${art.price}</p>
-                    <p><strong>Views:</strong> {art.views}</p>
-                    <p><strong>Category:</strong> {art.category}</p>
-                    <p><strong>Stage:</strong> {art.stage}</p>
+                    <div className="art-details-right">
+                        <h2 className="art-title">{art.name}</h2>
+                        <p><strong>Artist:</strong> {art.artistName}</p>
+                        <p><strong>Description:</strong> {art.description}</p>
+                        <p><strong>Price:</strong> ${art.price}</p>
+                        <p><strong>Views:</strong> {art.views}</p>
+                        <p><strong>Category:</strong> {art.category}</p>
+                        <p><strong>Stage:</strong> {art.stage}</p>
 
-                    {art.reviewedByEmail && (
-                        <p><strong>Reviewed By:</strong> {art.reviewedByEmail} on {new Date(art.reviewedAt).toLocaleString()}</p>
-                    )}
+                        {art.reviewedByEmail && (
+                            <p><strong>Reviewed By:</strong> {art.reviewedByEmail} on {new Date(art.reviewedAt).toLocaleString()}</p>
+                        )}
 
-                    {art.stage === "review" && (
-                        <div className="admin-actions">
-                            <button onClick={handleApprove} className="approve-button">Approve</button>
-                            <button onClick={handleReject} className="reject-button">Reject</button>
-                        </div>
-                    )}
+                        {art.stage === "review" && (
+                            <div className="admin-actions">
+                                <button onClick={handleApprove} className="approve-button">Approve</button>
+                                <button onClick={handleReject} className="reject-button">Reject</button>
+                            </div>
+                        )}
+                    </div>
                 </div>
             </div>
-        </div>
-    </div>
-);
+        </ScreenTemplate>
+    );
 
 }
 

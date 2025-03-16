@@ -76,7 +76,7 @@ th, td {
     object-fit: cover; /* Ensures images don’t stretch */
 }
 
-@media (max-width: 768px) {
+@media (max-width: 480px) {
     /* Make the table container scrollable */
     .table-container {
       overflow-x: auto;  /* Enables horizontal scrolling */

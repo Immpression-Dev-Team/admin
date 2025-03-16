@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import Navbar from "./Navbar";
+import ScreenTemplate from "./ScreenTemplate";
 import { getUserDetails } from "../api/API";
 import "@styles/userdetails.css"; // ✅ Add custom styles for user details
 
@@ -39,8 +39,7 @@ function UserDetails() {
     if (!user) return <p>User not found.</p>;
 
     return (
-        <div>
-            <Navbar email={email} />
+        <ScreenTemplate>
             <div className="user-details-container">
                 <button onClick={() => navigate(-1)} className="back-button">← Back</button>
 
@@ -70,7 +69,7 @@ function UserDetails() {
                     </div>
                 </div>
             </div>
-        </div>
+        </ScreenTemplate>
     );
 }
 
