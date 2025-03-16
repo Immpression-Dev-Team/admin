@@ -80,3 +80,16 @@
 .back-button:hover {
     background-color: #0056b3;
 }
+
+/* display details vertically on phone */
+@media (max-width: 480px) {
+    .user-details-inner{
+        width: 80%;
+        margin-top: 75px;
+        flex-direction: column;
+    }
+
+    .user-details-right {
+        padding-left: 0;
+    }
+}

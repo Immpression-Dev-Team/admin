@@ -1,10 +1,13 @@
 /* Outer container that centers content */
 .art-details-container {
+    flex-grow: 1;
+    height: 100%;
+    width: 100%;
+
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
-    height: 100vh;
-    width: 100%;
 }
 
 /* Inner container - Keeping your width but centering the columns */
@@ -115,4 +118,22 @@
     border-radius: 0px;
     cursor: pointer;
     text-transform: uppercase;
+}
+
+/* display details vertically on phone */
+@media (max-width: 480px) {
+    .art-details-inner{
+        width: 80%;
+        margin-top: 50px;
+        flex-direction: column;
+    }
+
+    .art-details-right {
+        margin-left: 0;
+    }
+
+    .art-image {
+        width: 90%;
+        height: auto;
+    }
 }

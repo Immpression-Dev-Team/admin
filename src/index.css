@@ -11,18 +11,23 @@
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+
+  /* define color var */
+  --font-color: #213547;
+  --hover-color: #747bff;
+  --button-bg-color: #f9f9f9;
 }
 
 
 @media (prefers-color-scheme: light) {
   :root {
-    color: #213547;
-    background-color: #ffffff;
+    color: var(--font-color);
+    background-color: #fff;
   }
   a:hover {
-    color: #747bff;
+    color: var(--hover-color);
   }
   button {
-    background-color: #f9f9f9;
+    background-color: var(--button-bg-color);
   }
 }

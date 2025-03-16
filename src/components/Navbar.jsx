@@ -1,14 +1,19 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import "../styles/navbar.css"; // ✅ Import the CSS file
+import { useAuth } from "../context/authContext";
 
-function Navbar({ email }) {
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+import logo from '@assets/Logo_T.png';
+import "@styles/navbar.css"; // ✅ Import the CSS file
+
+function Navbar({ email, height }) {
   const navigate = useNavigate();
+  const { logout } = useAuth();
+  
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   const handleLogout = () => {
     console.log("Logging out...");
-    localStorage.removeItem("token");
+    logout();
     navigate("/");
   };
 
@@ -17,11 +22,11 @@ function Navbar({ email }) {
   };
 
   return (
-    <nav className="navbar">
+    <nav className="navbar" style={{ height: `${height}px`}}>
       {/* Left Side: Clickable Logo */}
       <div className="left-section">
         <img
-          src="src/assets/Logo_T.png"
+          src={logo}
           alt="Logo"
           className="logo-img"
           onClick={handleLogoClick} // ✅ Make the logo clickable

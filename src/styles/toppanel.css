@@ -1,15 +1,16 @@
 .panel {
+    width: 100%; /* ✅ Full width */
+    min-height: 60px;
+
     background-color: #f8f8f8;
     padding: 12px 20px;
     border-bottom: 2px solid #ddd;
     font-size: 13px;
-    width: 100%; /* ✅ Full width */
+    
     display: flex;
     justify-content: space-between; /* ✅ Ensures left and right alignment */
     align-items: center;
     box-sizing: border-box;
-    min-height: 60px;
-    margin-top: 60px;
 }
 
 /* ✅ Keeps statistics aligned to the left */
@@ -64,4 +65,24 @@
 .clickable:hover {
     color: #007bff;
     text-decoration: underline;
+}
+
+/* display panel vertically (1 row stats, 1 row search bar) on phone */
+@media (max-width: 480px) {
+    .panel{
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .statsContainer{
+        padding-left: 0;
+    }
+
+    .search-view-container{
+        width: 100%;
+    }
+
+    .searchInput{
+        width: 100%;
+    }
 }

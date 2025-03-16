@@ -1,7 +1,8 @@
 import React from "react";
-import "../styles/toppanel.css"; // ✅ Import the CSS file
+import "@styles/toppanel.css"; // ✅ Import the CSS file
+import StatsList from "./StatsList";
 
-function UserTopPanel({ 
+export default function UserTopPanel({ 
   totalUsers, 
   totalVerified, 
   totalUnverified, 
@@ -10,23 +11,18 @@ function UserTopPanel({
   onFilterUnverified, 
   onSearch
 }) {
+  // render 3 types of stats for user
+  const stats = [
+    { label: "Total Users", value: totalUsers, filter: onShowAllUsers },
+    { label: "Verified Users", value: totalVerified, filter: onFilterVerified },
+    { label: "Unverified Users", value: totalUnverified, filter: onFilterUnverified },
+  ];
+
   return (
     <div className="panel">
-      <div className="statsContainer">
-        {/* ✅ Now Clickable! Shows all users */}
-        <p className="clickable" onClick={onShowAllUsers}>
-          Total Users: {totalUsers}
-        </p>
-        
-        <p className="clickable" onClick={onFilterVerified}>
-          Verified Users: {totalVerified}
-        </p>
-        
-        <p className="clickable" onClick={onFilterUnverified}>
-          Unverified Users: {totalUnverified}
-        </p>
-      </div>
-
+      {/* ✅ Now Clickable! Shows all users */}
+      <StatsList stats={stats}/>
+      
       <div className="search-view-container">
         <input
           type="text"
@@ -38,5 +34,3 @@ function UserTopPanel({
     </div>
   );
 }
-
-export default UserTopPanel;

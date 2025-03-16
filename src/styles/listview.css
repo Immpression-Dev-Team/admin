@@ -1,10 +1,10 @@
 .list-view {
-    width: 100%;
-    max-width: 1200px; /* Keeps it responsive */
+    width: 90%;
     margin: 0 auto; /* ✅ Centers the container */
     margin-top: -10px;
     display: flex;
     justify-content: center;
+    overflow-x: auto; /* Allow users to scroll table in phone breakpoint */
 }
 
 table {
@@ -70,10 +70,22 @@ th, td {
 }
 
 .profile-image {
+    display: block;
     width: 40px;
     height: 40px;
     object-fit: cover; /* Ensures images don’t stretch */
-    display: block;
-  }
+}
+
+@media (max-width: 480px) {
+    /* Make the table container scrollable */
+    .table-container {
+      overflow-x: auto;  /* Enables horizontal scrolling */
+      -webkit-overflow-scrolling: touch; /* Smooth scrolling for iOS devices */
+    }
   
-  
+    /* Optional: If you need vertical scrolling as well */
+    .table-container {
+      max-height: 400px;  /* Set a max height for vertical scroll */
+      overflow-y: auto;   /* Enable vertical scrolling */
+    }
+}

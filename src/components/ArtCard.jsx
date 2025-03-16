@@ -1,6 +1,6 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import "../styles/artcard.css"; // ✅ Import the CSS file
+import "@styles/artcard.css"; // ✅ Import the CSS file
 
 function ArtCard({ art }) {
     const navigate = useNavigate();

@@ -6,6 +6,9 @@ import UserBase from "./components/UserBase";
 import ArtDetails from "./components/ArtDetails";
 import UserDetails from "./components/UserDetails"; // ✅ Import UserDetails
 
+// import global stylesheet
+import './App.css';
+
 function PrivateRoute({ children }) {
   const token = localStorage.getItem("token");
   return token ? children : <Navigate to="/login" replace />;
