@@ -1,21 +1,3 @@
-/* ✅ Prevent horizontal scrolling */
-html, body {
-    overflow-x: hidden; /* ✅ Disables left-right scrolling */
-    width: 100vw; /* ✅ Ensures no extra width */
-}
-
-/* ✅ Adjust to move cards higher while keeping them centered */
-.home-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: flex-start; /* ✅ Moves content towards the top */
-    height: 100vh;
-    width: 100vw;
-    padding-top: 100px; /* ✅ Adds space below navbar */
-    overflow: hidden;
-}
-
 /* ✅ Card Container */
 .card-container {
     display: flex;
