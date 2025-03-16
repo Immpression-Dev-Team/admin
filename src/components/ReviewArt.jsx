@@ -1,39 +1,42 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import Navbar from "./Navbar";
 import ArtCard from "./ArtCard";
 import TopPanel from "./TopPanel";
 import ListView from "./ListView"; // ✅ Import the List View
 import { getAllImages } from "../api/API"; // ✅ Import API function
-import "../styles/reviewart.css"; // ✅ Import the merged CSS file
+
+import ScreenTemplate from './ScreenTemplate';
+import { useAuth } from "../context/authContext";
+import "@styles/reviewart.css"; // ✅ Import the merged CSS file
 
 function ReviewArt() {
     const navigate = useNavigate();
+    const { authState } = useAuth();
+
     const [artworks, setArtworks] = useState([]);
     const [filteredArtworks, setFilteredArtworks] = useState([]);
     const [loading, setLoading] = useState(true);
     const [searchQuery, setSearchQuery] = useState("");
     const [viewMode, setViewMode] = useState("grid");
 
+    // fetch arts when auth token is available
     useEffect(() => {
         const fetchData = async () => {
-            setLoading(true);
-            const token = localStorage.getItem("token");
-
-            if (!token) {
+            if (!authState || !authState.token) {
                 console.error("No token found, redirecting to login.");
                 navigate("/login");
                 return;
             }
 
-            const images = await getAllImages(token);
+            setLoading(true);
+            const images = await getAllImages(authState.token);
             setArtworks(images);
             setFilteredArtworks(images);
             setLoading(false);
         };
 
         fetchData();
-    }, [navigate]);
+    }, [authState?.token]);
 
     // ✅ Show All Artworks (Reset Filter)
     const handleShowAllArt = () => {
@@ -58,9 +61,34 @@ function ReviewArt() {
         setViewMode(viewMode === "grid" ? "list" : "grid");
     };
 
+    // render all art & their approval status
+    const renderArtStatus = () => {
+        if(loading){
+            return <p>Loading Art Statuses...</p>;
+    }
+
+        if(filteredArtworks.length === 0){
+            return <p>No artwork available.</p>
+        }
+        
+        // return arts status in grid/list view
+        return(
+            (viewMode === "grid") ? 
+                (
+                    <div className="grid">
+                        {filteredArtworks.map((art) => (
+                            <ArtCard key={art._id} art={art} />
+                        ))}
+                    </div>
+                ) :
+                (
+                    <ListView data={filteredArtworks} type="artworks" /> // ✅ FIXED: Correct prop name
+                )
+        )
+    }
+
     return (
-        <div className="pageContainer">
-            <Navbar email={localStorage.getItem("userEmail") || "admin@example.com"} />
+        <ScreenTemplate>
             <TopPanel
                 totalImages={artworks.length}
                 totalPending={artworks.filter((art) => art.stage === "review").length}
@@ -74,24 +102,10 @@ function ReviewArt() {
                 toggleViewMode={toggleViewMode}
             />
 
-            <div className="contentContainer">
-                {loading ? (
-                    <p>Loading...</p>
-                ) : filteredArtworks.length > 0 ? (
-                    viewMode === "grid" ? (
-                        <div className="grid">
-                            {filteredArtworks.map((art) => (
-                                <ArtCard key={art._id} art={art} />
-                            ))}
-                        </div>
-                    ) : (
-                        <ListView data={filteredArtworks} type="artworks" /> // ✅ FIXED: Correct prop name
-                    )
-                ) : (
-                    <p>No artwork available.</p>
-                )}
+            <div className="reviewArtsContent">
+                { renderArtStatus() }
             </div>
-        </div>
+        </ScreenTemplate>
     );
 }
 

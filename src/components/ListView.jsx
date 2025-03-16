@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import "../styles/listview.css"; // ✅ Import styles
+import "@styles/listview.css"; // ✅ Import styles
 
 function ListView({ data, type }) {
     const navigate = useNavigate();

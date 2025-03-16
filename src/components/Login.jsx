@@ -1,14 +1,17 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { loginAdmin } from "../api/API"; // ✅ Import the API function
-import logo from "../assets/Immpression_Logo_Transparent.png";
-import ImmpressionLogo from '../assets/Immpression.png';
-import "../styles/login.css";
+import logo from "@assets/Immpression_Logo_Transparent.png";
+import ImmpressionLogo from '@assets/Immpression.png';
+import "@styles/login.css";
+
+import { useAuth } from '@/context/authContext';
 
 function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState(""); 
+  const { login } = useAuth();
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
@@ -21,8 +24,8 @@ function Login() {
 
       console.log("Login successful:", response);
 
-      // ✅ Store the token in localStorage
-      localStorage.setItem("token", response.token);
+      // ✅ Store token & email in global state + localStorage
+      login(response.token, response.email);
 
       // ✅ Redirect to home after successful login
       navigate("/home");

@@ -1,5 +1,5 @@
 import React from "react";
-import "../styles/toppanel.css"; // ✅ Import the CSS file
+import "@styles/toppanel.css"; // ✅ Import the CSS file
 
 function TopPanel({ 
   totalImages, 

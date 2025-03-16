@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import Navbar from "./Navbar";
 import { getUserDetails } from "../api/API";
-import "../styles/userdetails.css"; // ✅ Add custom styles for user details
+import "@styles/userdetails.css"; // ✅ Add custom styles for user details
 
 function UserDetails() {
     const { id } = useParams();
@@ -35,7 +35,7 @@ function UserDetails() {
         fetchUser();
     }, [id, navigate]);
 
-    if (loading) return <p>Loading...</p>;
+    if (loading) return <p>Loading User Details...</p>;
     if (!user) return <p>User not found.</p>;
 
     return (

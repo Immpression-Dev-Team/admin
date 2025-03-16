@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import Navbar from "./Navbar";
 import { getArtwork, approveArtwork, rejectArtwork } from "../api/API"; // ✅ Import API functions
-import "../styles/artdetails.css";
+import "@styles/artdetails.css";
 
 function ArtDetails() {
     const { id } = useParams();
@@ -69,7 +69,7 @@ function ArtDetails() {
         }
     };
 
-    if (loading) return <p>Loading...</p>;
+    if (loading) return <p>Loading Art Details...</p>;
     if (!art) return <p>Artwork not found.</p>;
 
 return (

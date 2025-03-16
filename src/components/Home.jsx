@@ -1,16 +1,10 @@
-import { useNavigate } from "react-router-dom";
-import Navbar from "./Navbar";
 import Card from "./Card"; 
+import ScreenTemplate from "./ScreenTemplate";
+import '@/styles/home.css';
 
 function Home() {
-  const navigate = useNavigate();
-  const email = localStorage.getItem("userEmail") || "admin@example.com";
-
   return (
-    <div className="home-container">
-      <Navbar email={email} />
-      
-      {/* ✅ Centered Cards */}
+    <ScreenTemplate>
       <div className="card-container">
         <Card 
           title="Review Art"
@@ -23,7 +17,7 @@ function Home() {
           navigateTo="/user-base"
         />
       </div>
-    </div>
+    </ScreenTemplate>
   );
 }
 
