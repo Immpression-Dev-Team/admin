@@ -5,7 +5,7 @@ import TopPanel from "./TopPanel";
 import ListView from "./ListView"; // ✅ Import the List View
 import { getAllImages } from "../api/API"; // ✅ Import API function
 
-import ScreenTemplate from './ScreenTemplate';
+import ScreenTemplate from "./Template/ScreenTemplate";
 import { useAuth } from "../context/authContext";
 import "@styles/reviewart.css"; // ✅ Import the merged CSS file
 
@@ -16,7 +16,6 @@ function ReviewArt() {
     const [artworks, setArtworks] = useState([]);
     const [filteredArtworks, setFilteredArtworks] = useState([]);
     const [loading, setLoading] = useState(true);
-    const [searchQuery, setSearchQuery] = useState("");
     const [viewMode, setViewMode] = useState("grid");
 
     // fetch arts when auth token is available
@@ -54,6 +53,19 @@ function ReviewArt() {
 
     const handleFilterRejected = () => {
         setFilteredArtworks(artworks.filter((art) => art.stage === "rejected"));
+    };
+
+    // ✅ Search Functionality
+    const handleSearch = (query) => {
+        const lowerCaseQuery = query.trim().toLowerCase();
+    
+        setFilteredArtworks(
+            artworks.filter((artwork) => {
+                const artistMatch = (artwork.artistName) ? artwork.artistName.toLowerCase().includes(lowerCaseQuery) : false;
+                const titleMatch = (artwork.name) ? artwork.name.toLowerCase().includes(lowerCaseQuery) : false;
+                return artistMatch || titleMatch;
+            })
+        );
     };
 
     // ✅ Toggle View Mode
@@ -98,6 +110,7 @@ function ReviewArt() {
                 onFilterPending={handleFilterPending}
                 onFilterApproved={handleFilterApproved}
                 onFilterRejected={handleFilterRejected}
+                onSearch={handleSearch}
                 viewMode={viewMode}
                 toggleViewMode={toggleViewMode}
             />

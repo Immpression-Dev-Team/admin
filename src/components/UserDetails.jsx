@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import ScreenTemplate from "./ScreenTemplate";
+import ScreenTemplate from "./Template/ScreenTemplate";
 import { getUserDetails } from "../api/API";
 import "@styles/userdetails.css"; // ✅ Add custom styles for user details
 

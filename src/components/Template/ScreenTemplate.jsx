@@ -1,11 +1,12 @@
-
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { useAuth } from '@/context/authContext';
 
-import Navbar from "./Navbar";
+import Navbar from "../Navbar";
 import '@/styles/template.css';
 
 export default function ScreenTemplate({ children }) {
+    const navigate = useNavigate();
     const { authState } = useAuth();
 
     const [loading, setLoading] = useState(true);

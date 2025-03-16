@@ -1,4 +1,4 @@
-import React from "react";
+import StatsList from "./StatsList";
 import "@styles/toppanel.css"; // ✅ Import the CSS file
 
 function TopPanel({ 
@@ -14,26 +14,18 @@ function TopPanel({
   viewMode, 
   toggleViewMode
 }) {
+  // render 4 types of stats for arts
+  const stats = [
+    { label: "Total Pictures", value: totalImages, filter: onShowAllArt },
+    { label: "Pending Review", value: totalPending, filter: onFilterPending },
+    { label: "Approved", value: totalApproved, filter: onFilterApproved },
+    { label: "Rejected", value: totalRejected, filter: onFilterRejected },
+  ];
+
   return (
     <div className="panel">
-      <div className="statsContainer">
-        {/* ✅ Now Clickable! Shows all art */}
-        <p className="clickable" onClick={onShowAllArt}>
-          Total Pictures: {totalImages}
-        </p>
-        
-        <p className="clickable" onClick={onFilterPending}>
-          Pending Review: {totalPending}
-        </p>
-        
-        <p className="clickable" onClick={onFilterApproved}>
-          Approved: {totalApproved}
-        </p>
-
-        <p className="clickable" onClick={onFilterRejected}>
-          Rejected: {totalRejected}
-        </p>
-      </div>
+      {/* ✅ Now Clickable! Shows all arts */}
+      <StatsList stats={stats}/>
 
       <div className="search-view-container">
         <input

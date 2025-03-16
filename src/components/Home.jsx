@@ -1,5 +1,5 @@
 import Card from "./Card"; 
-import ScreenTemplate from "./ScreenTemplate";
+import ScreenTemplate from "./Template/ScreenTemplate";
 import '@/styles/home.css';
 
 function Home() {

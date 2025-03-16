@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import ScreenTemplate from "./ScreenTemplate";
+import ScreenTemplate from "./Template/ScreenTemplate";
 import { getArtwork, approveArtwork, rejectArtwork } from "../api/API"; // ✅ Import API functions
 import "@styles/artdetails.css";
 
