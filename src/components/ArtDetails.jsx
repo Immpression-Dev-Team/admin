@@ -9,7 +9,6 @@ function ArtDetails() {
     const navigate = useNavigate();
     const [art, setArt] = useState(null);
     const [loading, setLoading] = useState(true);
-    const email = localStorage.getItem("userEmail") || "admin@example.com";
 
     useEffect(() => {
         const fetchArt = async () => {

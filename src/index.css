@@ -13,6 +13,8 @@
   -moz-osx-font-smoothing: grayscale;
 
   /* define color var */
+  --primary-color: #007bff;
+  --secondary-color: #0056b3;
   --font-color: #213547;
   --hover-color: #747bff;
   --button-bg-color: #f9f9f9;

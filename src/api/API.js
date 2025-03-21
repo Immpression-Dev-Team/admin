@@ -6,15 +6,33 @@ const API_URL = import.meta.env.VITE_API_URL;
 console.log("🔍 API URL:", API_URL); // ✅ Debugging Step
 
 // ✅ Function to fetch all images
-export async function getAllImages(token) {
+export async function getAllImages(token, page=1, limit=50, stage) {
   try {
+    // set up pagination query
+    const params = { page, limit, stage };
+
     const response = await axios.get(`${API_URL}/api/admin/all_images`, {
       headers: { Authorization: `Bearer ${token}` },
+      params,
     });
 
-    return response.data.images || [];
+    return response.data;
   } catch (error) {
     console.error("Error fetching images:", error.response?.data || error);
+    return [];
+  }
+}
+
+// ✅ Function to load statistics of all images
+export async function getAllImagesStats(token) {
+  try {
+    const response = await axios.get(`${API_URL}/api/admin/all_images/stats`, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    return response.data;
+  }
+  catch (error) {
+    console.error("Error fetching images stats:", error.response?.data || error);
     return [];
   }
 }
