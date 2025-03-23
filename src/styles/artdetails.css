@@ -113,7 +113,7 @@
     left: 20px;
     padding: 5px 12px;
     font-size: 10px;
-    background-color: #007bff;
+    background-color: var(--primary-color);
     color: white;
     border-radius: 0px;
     cursor: pointer;
