@@ -1,0 +1,50 @@
+.overlay{
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 2000;
+}
+
+.modal{
+    min-width: 600px;
+    min-height: 200px;
+    padding: 25px 50px;
+    background-color: white;
+    border-radius: 10px;
+
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+}
+
+.title{
+    margin: 0px;
+}
+
+.message{
+    font-size: 1.1em;
+}
+
+.authBtnGrp{
+    width: 100%;
+    display: flex;
+    justify-content: end;
+    gap: 15px;
+}
+
+.authBtn{
+    width: 30%;
+}
+
+.authBtn.logout{
+    color: var(--primary-color);
+    background-color: white;
+}

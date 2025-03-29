@@ -10,13 +10,11 @@ import { useAuth } from '@/context/authContext';
 function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState(""); 
-  const { login } = useAuth();
+  const { login, msg, setMsg } = useAuth();
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError(""); // Reset error state before API call
 
     try {
       // ✅ Use the API function instead of direct axios call
@@ -32,7 +30,11 @@ function Login() {
 
     } catch (err) {
       console.error("Login error:", err.message);
-      setError(err.message); // ✅ Set error message from API response
+      // ✅ Set error message from API response
+      setMsg({
+        type: 'error',
+        message: err.message
+      });
     }
   };
 
@@ -61,7 +63,7 @@ function Login() {
               required
             />
           </div>
-          {error && <p className="error-message">{error}</p>} 
+          {msg && <p className={(msg.type === 'error') ? "error-message": "general-message"}>{msg.message}</p>} 
           <button type="submit">Login</button>
         </form>
       </div>

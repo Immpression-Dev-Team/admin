@@ -52,6 +52,21 @@ export async function loginAdmin(email, password) {
   }
 }
 
+// ✅ Function to renew auth user token before session expired
+export async function renewToken(token){
+  try{
+    const response = await axios.post(`${API_URL}/api/admin/renew_token`,
+      {},
+      { headers: { Authorization: `Bearer ${token}` }, }
+    );
+    return response.data;
+  }
+  catch(error){
+    console.error("Renew token error:", error.response?.data || error.message);
+    throw new Error(error.response?.data?.message || "Renew token failed. Please try again.");
+  }
+}
+
 // ✅ Function to fetch a single artwork by ID
 export async function getArtwork(id, token) {
   try {

@@ -8,6 +8,8 @@ export const useAuth = () => {
 
 // global state on retrieving user auth token and email
 export const AuthProvider = ({ children }) => {
+    const [msg, setMsg] = useState(null);
+
     const [authState, setAuthState] = useState(() => {
         const token = localStorage.getItem("token");
         const email = localStorage.getItem("email");

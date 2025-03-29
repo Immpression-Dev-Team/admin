@@ -125,13 +125,21 @@ button:active {
 }
 
 /* Error message styling */
-.error-message {
-  color: #dc3545;
+.general-message, .error-message{
   font-size: 14px;
   margin: 10px 0 15px;
   padding: 8px;
-  background: #ffe5e7;
   border-radius: 5px;
+}
+
+.error-message {
+  color: #dc3545;
+  background: #ffe5e7;
+}
+
+.general-message{
+  color: #1fa361;
+  background: #e5ffeb;
 }
 
 /* Responsive design */
