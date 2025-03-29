@@ -41,8 +41,17 @@ export const AuthProvider = ({ children }) => {
         localStorage.removeItem("email");
     }
 
+    // update w/ new token
+    const renewAuthToken = (token) => {
+        console.log(token);
+        setAuthState((prevAuthState) => (
+            { ...prevAuthState, token: token }
+        ));
+        localStorage.setItem("token", token);
+    }
+
     return (
-        <AuthContext.Provider value={{ authState, login, logout }}>
+        <AuthContext.Provider value={{ authState, msg, setMsg, login, logout, renewAuthToken }}>
             { children }
         </AuthContext.Provider>
     )

@@ -6,10 +6,16 @@ const API_URL = import.meta.env.VITE_API_URL;
 console.log("🔍 API URL:", API_URL); // ✅ Debugging Step
 
 // ✅ Function to fetch all images
-export async function getAllImages(token, page=1, limit=50, stage) {
+// ✅ Function to fetch all images
+export async function getAllImages(token, page=1, limit=50, query) {
   try {
     // set up pagination query
-    const params = { page, limit, stage };
+    const params = {
+      page: page,
+      limit: limit,
+      input: query.input,
+      stage: query.stage,
+    };
 
     const response = await axios.get(`${API_URL}/api/admin/all_images`, {
       headers: { Authorization: `Bearer ${token}` },
