@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "../context/authContext";
+import { useAuth } from "@/context/authContext";
 import { getAllImagesStats } from "../api/API";
 
 import StatsList from "./StatsList";
@@ -28,17 +28,13 @@ function TopPanel({
 
   useEffect(() => {
     const loadStats = async () => {
-      if (!authState || !authState.token) {
-        console.error("No token found, redirecting to login.");
-        navigate("/login");
-        return;
+      if (authState?.token) {
+        const response = await getAllImagesStats(authState.token);
+        setTotalImages(response.stats.total);
+        setTotalPending(response.stats.pending);
+        setTotalApproved(response.stats.approved);
+        setTotalRejected(response.stats.rejected);
       }
-
-      const response = await getAllImagesStats(authState.token);
-      setTotalImages(response.stats.total);
-      setTotalPending(response.stats.pending);
-      setTotalApproved(response.stats.approved);
-      setTotalRejected(response.stats.rejected);
     };
 
     loadStats();

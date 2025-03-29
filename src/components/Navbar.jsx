@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "../context/authContext";
+import { useAuth } from "@/context/authContext";
 
 import logo from '@assets/Logo_T.png';
 import "@styles/navbar.css"; // ✅ Import the CSS file

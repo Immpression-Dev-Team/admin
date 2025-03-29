@@ -6,10 +6,16 @@ const API_URL = import.meta.env.VITE_API_URL;
 console.log("🔍 API URL:", API_URL); // ✅ Debugging Step
 
 // ✅ Function to fetch all images
-export async function getAllImages(token, page=1, limit=50, stage) {
+// ✅ Function to fetch all images
+export async function getAllImages(token, page=1, limit=50, query) {
   try {
     // set up pagination query
-    const params = { page, limit, stage };
+    const params = {
+      page: page,
+      limit: limit,
+      input: query.input,
+      stage: query.stage,
+    };
 
     const response = await axios.get(`${API_URL}/api/admin/all_images`, {
       headers: { Authorization: `Bearer ${token}` },
@@ -49,6 +55,21 @@ export async function loginAdmin(email, password) {
   } catch (error) {
     console.error("Login error:", error.response?.data || error.message);
     throw new Error(error.response?.data?.message || "Login failed. Please try again.");
+  }
+}
+
+// ✅ Function to renew auth user token before session expired
+export async function renewToken(token){
+  try{
+    const response = await axios.post(`${API_URL}/api/admin/renew_token`,
+      {},
+      { headers: { Authorization: `Bearer ${token}` }, }
+    );
+    return response.data;
+  }
+  catch(error){
+    console.error("Renew token error:", error.response?.data || error.message);
+    throw new Error(error.response?.data?.message || "Renew token failed. Please try again.");
   }
 }
 

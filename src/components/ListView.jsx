@@ -40,39 +40,68 @@ function ListView({ data, type }) {
         return "";
     };
 
+    // render table headers
+    const HEADERS = (type === "users" )? 
+    [
+        { label: "Profile", sortable: false },
+        { label: "Name", sortable: true, onClick: () => handleSort("name"), arrow: getArrow("name") },
+        { label: "Email", sortable: true, onClick: () => handleSort("email"), arrow: getArrow("email") },
+        { label: "Joined", sortable: true, onClick: () => handleSort("createdAt"), arrow: getArrow("createdAt") }
+    ] :
+    [
+        { label: "Image", sortable: false },
+        { label: "Title", sortable: true, onClick: () => handleSort("name"), arrow: getArrow("name") },
+        { label: "Artist", sortable: true, onClick: () => handleSort("artistName"), arrow: getArrow("artistName") },
+        { label: "Status", sortable: false },
+        { label: "Date Uploaded", sortable: true, onClick: () => handleSort("createdAt"), arrow: getArrow("createdAt") }
+    ];
+
+    // render a single table row
+    const renderTableRowContent = (item) => {
+        return(
+            (type === "users") ? (
+                <>
+                    <td>
+                        <img
+                            src={item.profilePictureLink || "https://via.placeholder.com/50"}
+                            alt={item.name}
+                            className="profile-image"
+                        />
+                    </td>
+                    <td>{item.name}</td>
+                    <td>{item.email}</td>
+                    <td>{new Date(item.createdAt).toLocaleDateString()}</td>
+                </>
+            ) : (
+                <>
+                    <td>
+                        <img src={item.imageLink} alt={item.name} className="list-image" />
+                    </td>
+                    <td>{item.name}</td>
+                    <td>{item.artistName}</td>
+                    <td className={`status ${item.stage}`}>{item.stage}</td>
+                    <td>{new Date(item.createdAt).toLocaleDateString()}</td>
+                </>
+            )
+        )
+    }
+
     return (
         <div className="list-view">
             <table>
+                {/* render table header */}
                 <thead>
                     <tr>
-                        {type === "users" ? (
-                            <>
-                                <th>Profile</th> {/* ✅ Profile Picture Column */}
-                                <th className="sortable" onClick={() => handleSort("name")}>
-                                    Name {getArrow("name")}
+                        {
+                            HEADERS.map((header, index) => (
+                                <th
+                                    key={index} className={header.sortable ? "sortable" : ""}
+                                    onClick={header.sortable ? header.onClick : undefined}
+                                >
+                                    {header.label} {header.arrow}
                                 </th>
-                                <th className="sortable" onClick={() => handleSort("email")}>
-                                    Email {getArrow("email")}
-                                </th>
-                                <th className="sortable" onClick={() => handleSort("createdAt")}>
-                                    Joined {getArrow("createdAt")}
-                                </th>
-                            </>
-                        ) : (
-                            <>
-                                <th>Image</th>
-                                <th className="sortable" onClick={() => handleSort("name")}>
-                                    Title {getArrow("name")}
-                                </th>
-                                <th className="sortable" onClick={() => handleSort("artistName")}>
-                                    Artist {getArrow("artistName")}
-                                </th>
-                                <th>Status</th>
-                                <th className="sortable" onClick={() => handleSort("createdAt")}>
-                                    Date Uploaded {getArrow("createdAt")}
-                                </th>
-                            </>
-                        )}
+                            ))
+                        }
                     </tr>
                 </thead>
                 <tbody>
@@ -82,30 +111,7 @@ function ListView({ data, type }) {
                             className="clickable-row"
                             onClick={() => type === "users" ? navigate(`/user/${item._id}`) : navigate(`/art/${item._id}`)}
                         >
-                            {type === "users" ? (
-                                <>
-                                    <td>
-                                        <img
-                                            src={item.profilePictureLink || "https://via.placeholder.com/50"}
-                                            alt={item.name}
-                                            className="profile-image"
-                                        />
-                                    </td>
-                                    <td>{item.name}</td>
-                                    <td>{item.email}</td>
-                                    <td>{new Date(item.createdAt).toLocaleDateString()}</td>
-                                </>
-                            ) : (
-                                <>
-                                    <td>
-                                        <img src={item.imageLink} alt={item.name} className="list-image" />
-                                    </td>
-                                    <td>{item.name}</td>
-                                    <td>{item.artistName}</td>
-                                    <td className={`status ${item.stage}`}>{item.stage}</td>
-                                    <td>{new Date(item.createdAt).toLocaleDateString()}</td>
-                                </>
-                            )}
+                            { renderTableRowContent(item) }
                         </tr>
                     ))}
                 </tbody>
