@@ -159,6 +159,36 @@ export async function getAllUsers(token) {
     }
 }
 
+// ✅ Function to delete an artwork by ID (admin only)
+export async function deleteArtwork(id, token) {
+  try {
+    const response = await axios.delete(`${API_URL}/api/admin/art/${id}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
 
-  
+    return response.data; // Returns success message
+  } catch (error) {
+    console.error("Error deleting artwork:", error.response?.data || error.message);
+    throw new Error(error.response?.data?.error || "Failed to delete artwork.");
+  }
+}
+
+  // ✅ Function to delete a user by ID (admin only)
+export async function deleteUser(id, token) {
+  try {
+    const response = await axios.delete(`${API_URL}/api/admin/user/${id}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    return response.data; // Returns success message
+  } catch (error) {
+    console.error("Error deleting user:", error.response?.data || error.message);
+    throw new Error(error.response?.data?.error || "Failed to delete user.");
+  }
+}
+
   

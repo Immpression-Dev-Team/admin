@@ -1,7 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import ScreenTemplate from "./Template/ScreenTemplate";
-import { getArtwork, approveArtwork, rejectArtwork } from "../api/API"; // ✅ Import API functions
+import {
+    getArtwork,
+    approveArtwork,
+    rejectArtwork,
+    deleteArtwork, // ✅ Import delete function
+} from "../api/API";
 import "@styles/artdetails.css";
 
 function ArtDetails() {
@@ -22,7 +27,7 @@ function ArtDetails() {
             }
 
             try {
-                const artwork = await getArtwork(id, token); // ✅ Fetch artwork from API
+                const artwork = await getArtwork(id, token);
                 setArt(artwork);
             } catch (error) {
                 console.error("Error fetching artwork:", error.message);
@@ -36,15 +41,11 @@ function ArtDetails() {
 
     const handleApprove = async () => {
         const token = localStorage.getItem("token");
-
-        if (!token) {
-            console.error("No token found, cannot approve.");
-            return;
-        }
+        if (!token) return console.error("No token found, cannot approve.");
 
         try {
-            await approveArtwork(id, token); // ✅ Approve artwork using API
-            setArt((prevArt) => ({ ...prevArt, stage: "approved" })); // ✅ Update UI
+            await approveArtwork(id, token);
+            setArt((prevArt) => ({ ...prevArt, stage: "approved" }));
             alert("Artwork approved!");
         } catch (error) {
             console.error("Error approving artwork:", error.message);
@@ -53,20 +54,45 @@ function ArtDetails() {
 
     const handleReject = async () => {
         const token = localStorage.getItem("token");
-
-        if (!token) {
-            console.error("No token found, cannot reject.");
-            return;
-        }
+        if (!token) return console.error("No token found, cannot reject.");
 
         try {
-            await rejectArtwork(id, token); // ✅ Reject artwork using API
-            setArt((prevArt) => ({ ...prevArt, stage: "rejected" })); // ✅ Update UI
+            await rejectArtwork(id, token);
+            setArt((prevArt) => ({ ...prevArt, stage: "rejected" }));
             alert("Artwork rejected.");
         } catch (error) {
             console.error("Error rejecting artwork:", error.message);
         }
     };
+
+    // ✅ Helper to extract public_id including folder from full URL
+    const getCloudinaryPublicId = (url) => {
+        const parts = url.split('/');
+        const folder = parts[parts.length - 2];
+        const file = parts[parts.length - 1].split('.')[0];
+        return `${folder}/${file}`; // e.g. artists/image_xyz
+    };
+
+    const handleDelete = async () => {
+        const confirmed = window.confirm("Are you sure you want to delete this artwork?");
+        if (!confirmed) return;
+    
+        const token = localStorage.getItem("token");
+        if (!token) {
+            console.error("No token found, cannot delete.");
+            return;
+        }
+    
+        try {
+            await deleteArtwork(id, token);
+            alert("Artwork and image deleted successfully.");
+            navigate("/admin");
+        } catch (error) {
+            console.error("Error during delete process:", error.message);
+            alert("Failed to delete artwork.");
+        }
+    };
+    
 
     if (loading) return <p>Loading Art Details...</p>;
     if (!art) return <p>Artwork not found.</p>;
@@ -76,7 +102,7 @@ function ArtDetails() {
             <div className="art-details-container">
                 <div className="art-details-inner">
                     <button onClick={() => navigate(-1)} className="back-button">← Back</button>
-                    
+
                     <img src={art.imageLink} alt={art.name} className="art-image" />
 
                     <div className="art-details-right">
@@ -98,12 +124,15 @@ function ArtDetails() {
                                 <button onClick={handleReject} className="reject-button">Reject</button>
                             </div>
                         )}
+
+                        <div className="admin-actions">
+                            <button onClick={handleDelete} className="delete-button">Delete</button>
+                        </div>
                     </div>
                 </div>
             </div>
         </ScreenTemplate>
     );
-
 }
 
 export default ArtDetails;
