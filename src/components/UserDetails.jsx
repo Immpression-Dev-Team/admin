@@ -72,7 +72,7 @@ function UserDetails() {
             // 2. Delete user from DB
             await deleteUser(id, token);
             alert("User deleted successfully.");
-            navigate("/admin"); // or change path if needed
+            navigate("/Home"); // or change path if needed
         } catch (error) {
             console.error("Error deleting user:", error.message);
             alert("Failed to delete user.");
