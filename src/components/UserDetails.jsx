@@ -1,15 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import ScreenTemplate from "./Template/ScreenTemplate";
-import { getUserDetails } from "../api/API";
-import "@styles/userdetails.css"; // ✅ Add custom styles for user details
+import { getUserDetails, deleteUser } from "../api/API"; // ✅ include deleteUser
+import "@styles/userdetails.css";
 
 function UserDetails() {
     const { id } = useParams();
     const navigate = useNavigate();
     const [user, setUser] = useState(null);
     const [loading, setLoading] = useState(true);
-    const email = localStorage.getItem("userEmail") || "admin@example.com";
 
     useEffect(() => {
         const fetchUser = async () => {
@@ -23,7 +22,7 @@ function UserDetails() {
             }
 
             try {
-                const userData = await getUserDetails(id, token); // ✅ Fetch user data
+                const userData = await getUserDetails(id, token);
                 setUser(userData);
             } catch (error) {
                 console.error("Error fetching user details:", error.message);
@@ -34,6 +33,51 @@ function UserDetails() {
 
         fetchUser();
     }, [id, navigate]);
+
+    // ✅ Helper to extract Cloudinary public_id from profile picture URL
+    const getCloudinaryPublicId = (url) => {
+        if (!url) return null;
+        const parts = url.split("/");
+        const folder = parts[parts.length - 2]; // should be "artists"
+        const filename = parts[parts.length - 1].split(".")[0];
+        return `${folder}/${filename}`;
+    };
+
+    const handleDeleteUser = async () => {
+        const confirmed = window.confirm("Are you sure you want to delete this user?");
+        if (!confirmed) return;
+
+        const token = localStorage.getItem("token");
+        if (!token) {
+            console.error("No token found, cannot delete user.");
+            return;
+        }
+
+        try {
+            // 1. Delete profile picture from Cloudinary if exists
+            const publicId = getCloudinaryPublicId(user.profilePictureLink);
+            if (publicId) {
+                const formData = new FormData();
+                formData.append("public_id", publicId);
+
+                const cloudDeleteRes = await fetch("https://api.cloudinary.com/v1_1/dttomxwev/image/destroy", {
+                    method: "POST",
+                    body: formData,
+                });
+
+                const cloudResult = await cloudDeleteRes.json();
+                console.log("🗑️ Cloudinary deletion result:", cloudResult);
+            }
+
+            // 2. Delete user from DB
+            await deleteUser(id, token);
+            alert("User deleted successfully.");
+            navigate("/admin"); // or change path if needed
+        } catch (error) {
+            console.error("Error deleting user:", error.message);
+            alert("Failed to delete user.");
+        }
+    };
 
     if (loading) return <p>Loading User Details...</p>;
     if (!user) return <p>User not found.</p>;
@@ -60,12 +104,17 @@ function UserDetails() {
                         <p><strong>Account Type:</strong> {user.accountType || "N/A"}</p>
                         <p><strong>Art Categories:</strong> {user.artCategories.length > 0 ? user.artCategories.join(", ") : "None"}</p>
                         <p>
-                            <strong>Verification Status:</strong> 
-                            {user.verified ? 
-                                <span className="verified"> Verified ✅</span> : 
+                            <strong>Verification Status:</strong>
+                            {user.verified ?
+                                <span className="verified"> Verified ✅</span> :
                                 <span className="unverified"> Unverified ❌</span>
                             }
                         </p>
+
+                        {/* 🚨 Delete button UI */}
+                        <div className="admin-actions">
+                            <button onClick={handleDeleteUser} className="delete-button">Delete User</button>
+                        </div>
                     </div>
                 </div>
             </div>
