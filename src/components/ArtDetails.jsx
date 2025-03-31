@@ -86,7 +86,7 @@ function ArtDetails() {
         try {
             await deleteArtwork(id, token);
             alert("Artwork and image deleted successfully.");
-            navigate("/admin");
+            navigate("/review-art");
         } catch (error) {
             console.error("Error during delete process:", error.message);
             alert("Failed to delete artwork.");
