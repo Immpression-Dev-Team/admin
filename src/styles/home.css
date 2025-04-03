@@ -1,11 +1,11 @@
 /* ✅ Card Container */
 .card-container {
     display: flex;
-    justify-content: center;
-    align-items: center;
+    justify-content: flex-start; /* Align to the left */
+    align-items: flex-start;
     gap: 30px;
     width: 100%;
-    max-width: 800px;
-    margin-top: 20px; /* ✅ Moves cards slightly below the navbar */
+    padding-left: 40px; /* Optional: push it in from the left a bit */
+    margin-top: 20px;
     flex-wrap: wrap;
 }

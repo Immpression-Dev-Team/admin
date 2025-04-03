@@ -6,6 +6,7 @@ import { renewToken } from "@/api/API";
 
 import Navbar from "../Navbar";
 import Modal from "../Modal";
+import Sidebar from "../Sidebar";
 import '@/styles/template.css';
 
 export default function ScreenTemplate({ children }) {
@@ -44,10 +45,10 @@ export default function ScreenTemplate({ children }) {
     }
 
     // display loading screen if on load
-    if(loading){
-        return(
+    if (loading) {
+        return (
             <div className="container" style={{ paddingTop: `${navHeight}px` }}>
-                <Navbar height={navHeight}/>
+                <Navbar height={navHeight} />
                 <h1>Loading information...</h1>
             </div>
         )
@@ -62,12 +63,16 @@ export default function ScreenTemplate({ children }) {
                 title={'Session Expiring'}
                 message={'You will be logged out in less than 1 minute due to inactivity, do you wish to stay logged in?'}
             />
-            
-            <Navbar email={email} height={navHeight}/>
-            
-            <div className="content">
-                { children }
+
+            <Navbar email={email} height={navHeight} />
+
+            <div className="content-row">
+                <Sidebar />
+                <div className="main-panel">
+                    {children}
+                </div>
             </div>
+
         </div>
     )
 }
