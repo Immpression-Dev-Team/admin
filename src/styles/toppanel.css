@@ -1,17 +1,17 @@
 .panel {
-    width: 100%; /* ✅ Full width */
+    width: 100%;
     min-height: 60px;
-
     background-color: #f8f8f8;
-    padding: 12px 20px;
+    padding: 12px 16px; /* from 20px to 16px */
     border-bottom: 2px solid #ddd;
     font-size: 13px;
     
     display: flex;
-    justify-content: space-between; /* ✅ Ensures left and right alignment */
+    justify-content: space-between;
     align-items: center;
     box-sizing: border-box;
 }
+
 
 /* ✅ Keeps statistics aligned to the left */
 .statsContainer {

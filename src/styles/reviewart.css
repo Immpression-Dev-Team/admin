@@ -8,9 +8,8 @@
     justify-content: center;
     align-items: center; /* ✅ Aligns content to the left */
 
-    padding: 20px;
+    padding-left: 0px;
     margin: 0 auto; /* ✅ Centers the container */
-    gap: 20px;
 }
 
 /* Grid layout for displaying artworks */

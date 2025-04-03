@@ -27,7 +27,9 @@
 /* Main content area next to sidebar */
 .main-panel {
     flex-grow: 1;
-    padding: 20px;
-    margin-left: 220px; /* Matches sidebar width */
+    padding: 0 0 40px 0; /* remove left and right padding */
+    margin-left: 220px;
     box-sizing: border-box;
+    width: calc(100% - 220px);
 }
+

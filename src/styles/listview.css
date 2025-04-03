@@ -1,64 +1,60 @@
+/* ✅ Container */
 .list-view {
-    width: 90%;
-    margin: 0 auto; /* ✅ Centers the container */
-    margin-top: -10px;
-    display: flex;
-    justify-content: center;
-    overflow-x: auto; /* Allow users to scroll table in phone breakpoint */
+    width: 100%;
+    padding: 0;
+    box-sizing: border-box;
+    overflow-x: auto;
+    margin-top: 0; /* Aligns to TopPanel */
 }
 
+.table-container {
+    width: 100%;
+    overflow-x: auto;
+}
+
+/* ✅ Table Layout */
 table {
     width: 100%;
     border-collapse: collapse;
+    font-size: 13px;
+    margin: 0;
 }
 
 thead {
     background-color: #f8f8f8;
 }
 
+thead th {
+    position: sticky;
+    top: 0;
+    background-color: #f8f8f8;
+    z-index: 2;
+}
+
 th, td {
-    padding: 0px;
+    padding: 8px 10px;
     text-align: left;
     border-bottom: 1px solid #ddd;
+    white-space: nowrap;
+    border-radius: 0; /* Remove any rounding */
 }
 
-/* ✅ Status Colors */
-.status.approved {
-    color: green;
-    font-weight: bold;
-    text-transform: uppercase; 
+/* ✅ Zebra striping */
+tbody tr:nth-child(even) {
+    background-color: #fcfcfc;
 }
 
-.status.rejected {
-    color: red;
-    font-weight: bold;
-    text-transform: uppercase; 
-}
-
-.status.review {
-    color: blue;
-    font-weight: bold;
-    text-transform: uppercase; 
-}
-
-/* ✅ Image Styling */
-.list-image {
-    width: 40px;
-    height: 40px;
-    object-fit: cover;
-}
-
-/* ✅ Clickable Row Styling */
+/* ✅ Hover effect */
 .clickable-row {
     cursor: pointer;
     transition: background-color 0.2s ease-in-out;
 }
 
 .clickable-row:hover {
-    background-color: #f0f0f0;
+    background-color: #eef2f7;
 }
 
-/* ✅ Make Table Headers Clickable for Sorting */
+/* ✅ Sortable headers */
 .sortable {
     cursor: pointer;
     user-select: none;
@@ -69,23 +65,43 @@ th, td {
     color: var(--primary-color);
 }
 
+/* ✅ Image Styling */
+.list-image,
 .profile-image {
+    width: 50px;
+    height: 50px;
+    object-fit: cover;
+    border-radius: 0; /* Remove rounded corners */
+    box-shadow: none;
     display: block;
-    width: 40px;
-    height: 40px;
-    object-fit: cover; /* Ensures images don’t stretch */
 }
 
+/* ✅ Status colors */
+.status {
+    font-size: 12px;
+    font-weight: bold;
+    letter-spacing: 0.4px;
+    text-transform: uppercase;
+}
+
+.status.approved {
+    color: green;
+}
+
+.status.review {
+    color: blue;
+}
+
+.status.rejected {
+    color: red;
+}
+
+/* ✅ Mobile responsiveness */
 @media (max-width: 480px) {
-    /* Make the table container scrollable */
     .table-container {
-      overflow-x: auto;  /* Enables horizontal scrolling */
-      -webkit-overflow-scrolling: touch; /* Smooth scrolling for iOS devices */
-    }
-  
-    /* Optional: If you need vertical scrolling as well */
-    .table-container {
-      max-height: 400px;  /* Set a max height for vertical scroll */
-      overflow-y: auto;   /* Enable vertical scrolling */
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        max-height: 400px;
+        overflow-y: auto;
     }
 }
