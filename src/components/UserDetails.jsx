@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import ScreenTemplate from "./Template/ScreenTemplate";
 import { getUserDetails, deleteUser } from "../api/API"; // ✅ include deleteUser
+import { useAuth } from '@/context/authContext';
 import "@styles/userdetails.css";
 
 function UserDetails() {
@@ -9,13 +10,12 @@ function UserDetails() {
     const navigate = useNavigate();
     const [user, setUser] = useState(null);
     const [loading, setLoading] = useState(true);
+    const { authState } = useAuth();
 
     useEffect(() => {
         const fetchUser = async () => {
             setLoading(true);
-            const token = localStorage.getItem("token");
-
-            if (!token) {
+            if (!authState?.token) {
                 console.error("No token found, redirecting to login.");
                 navigate("/login");
                 return;
@@ -47,8 +47,7 @@ function UserDetails() {
         const confirmed = window.confirm("Are you sure you want to delete this user?");
         if (!confirmed) return;
 
-        const token = localStorage.getItem("token");
-        if (!token) {
+        if (!authState?.token) {
             console.error("No token found, cannot delete user.");
             return;
         }
