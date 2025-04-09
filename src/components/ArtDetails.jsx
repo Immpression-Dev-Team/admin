@@ -8,19 +8,20 @@ import {
     deleteArtwork, // ✅ Import delete function
 } from "../api/API";
 import "@styles/artdetails.css";
+import { useAuth } from '@/context/authContext';
 
 function ArtDetails() {
     const { id } = useParams();
     const navigate = useNavigate();
     const [art, setArt] = useState(null);
     const [loading, setLoading] = useState(true);
+    const { authState } = useAuth();
 
     useEffect(() => {
         const fetchArt = async () => {
             setLoading(true);
-            const token = localStorage.getItem("token");
 
-            if (!token) {
+            if (!authState?.token) {
                 console.error("No token found, redirecting to login.");
                 navigate("/login");
                 return;
@@ -40,8 +41,7 @@ function ArtDetails() {
     }, [id, navigate]);
 
     const handleApprove = async () => {
-        const token = localStorage.getItem("token");
-        if (!token) return console.error("No token found, cannot approve.");
+        if (!authState?.token) return console.error("No token found, cannot approve.");
 
         try {
             await approveArtwork(id, token);
@@ -53,8 +53,7 @@ function ArtDetails() {
     };
 
     const handleReject = async () => {
-        const token = localStorage.getItem("token");
-        if (!token) return console.error("No token found, cannot reject.");
+        if (!authState?.token) return console.error("No token found, cannot reject.");
 
         try {
             await rejectArtwork(id, token);
@@ -77,8 +76,7 @@ function ArtDetails() {
         const confirmed = window.confirm("Are you sure you want to delete this artwork?");
         if (!confirmed) return;
     
-        const token = localStorage.getItem("token");
-        if (!token) {
+        if (!authState?.token) {
             console.error("No token found, cannot delete.");
             return;
         }
