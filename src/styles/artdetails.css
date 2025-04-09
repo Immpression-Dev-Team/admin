@@ -1,139 +1,132 @@
-/* Outer container that centers content */
 .art-details-container {
     flex-grow: 1;
     height: 100%;
     width: 100%;
-
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-}
-
-/* Inner container - Keeping your width but centering the columns */
-.art-details-inner {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: center;  /* Centers the content horizontally */
-    background: white;
-    padding: 20px;
-    border-radius: 0px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    width: 50%;  /* Reduce width for better centering */
-    max-width: 800px;  /* Prevents excessive stretching */
-}
-
-/* Left section (Image) */
-.art-details-left {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-    justify-content: center;
-    flex: 1;
-}
-
-/* Right section (Artwork details) */
-.art-details-right {
+    padding: 40px 60px;
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    text-align: left;
-    justify-content: center;
-    flex: 1;
-    gap: 3px; /* Reduces spacing between items */
-    margin-left: 20px;
+    background-color: transparent; /* 🔥 No background */
 }
 
-/* Title */
-.art-title {
-    margin-bottom: 0px;
-    font-size: 18px;
+.back-button {
+    padding: 4px 12px;
+    font-size: 12px;
+    background-color: transparent;
+    color: var(--primary-color, #007bff);
+    border: 1px solid var(--primary-color, #007bff);
+    border-radius: 0;
+    cursor: pointer;
+    margin-bottom: 20px;
+    font-weight: 500;
+    text-transform: uppercase;
+    width: auto;
 }
 
-/* Text elements */
-.art-details-right p {
-    margin: 2px 0; /* Reduces space between text lines */
-    line-height: 1.2; /* Reduces line height for tighter text */
-    font-size: 14px; /* Optional: Make text slightly smaller */
+.back-button:hover {
+    background-color: var(--primary-color, #007bff);
+    color: white;
 }
 
-/* Buttons should be closer together */
-.admin-actions {
-    margin-top: 60px;
+.art-details-inner {
     display: flex;
+    flex-direction: row;
+    align-items: flex-start;
     justify-content: flex-start;
-    gap: 5px; /* Reduces gap between buttons */
+    gap: 40px;
+    width: 100%;
 }
 
-/* Adjust the image */
 .art-image {
-    width: 300px;
-    height: 300px;
+    width: 280px;
+    height: 280px;
     object-fit: cover;
-    border: 1px solid #ddd;
-    margin-bottom: 10px; /* Reduce space below image */
+    border: 1px solid #ccc;
+}
+
+.art-details-right {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    flex: 1;
+}
+
+.art-title {
+    font-size: 22px;
+    font-weight: 600;
+    margin-bottom: 10px;
+}
+
+.art-details-right p {
+    margin: 0;
+    line-height: 1.4;
+    font-size: 14px;
+}
+
+.admin-actions {
+    margin-top: 20px;
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.approve-button,
+.reject-button,
+.delete-button {
+    padding: 6px 12px;           /* 🔹 Smaller padding */
+    font-size: 12px;             /* 🔹 Smaller font */
+    border: none;
+    border-radius: 0;
+    cursor: pointer;
+    transition: background 0.2s ease-in-out;
+    font-weight: 500;
+    min-width: auto;
+    width: auto;
 }
 
 .approve-button {
-    border-radius: 0;
     background-color: #28a745;
     color: white;
-    padding: 10px 15px;
-    border: none;
-    cursor: pointer;
-    transition: background-color 0.2s ease-in-out;
 }
 
 .approve-button:hover {
-    background-color: #1e7e34; /* Darker green */
+    background-color: #1e7e34;
 }
 
 .reject-button {
-    border-radius: 0;
-    background-color: #ff1803;
+    background-color: #dc3545;
     color: white;
-    padding: 10px 15px;
-    border: none;
-    cursor: pointer;
-    transition: background-color 0.2s ease-in-out;
 }
 
 .reject-button:hover {
-    background-color: #c21502; /* Darker red */
+    background-color: #b52b38;
 }
 
-/* Back button - Smaller and positioned at top left */
-.back-button {
-    position: absolute;
-    height: 30px;
-    width: 80px;
-    top: 100px;
-    left: 20px;
-    padding: 5px 12px;
-    font-size: 10px;
-    background-color: var(--primary-color);
+.delete-button {
+    background-color: #6c757d;
     color: white;
-    border-radius: 0px;
-    cursor: pointer;
-    text-transform: uppercase;
 }
 
-/* display details vertically on phone */
-@media (max-width: 480px) {
-    .art-details-inner{
-        width: 80%;
-        margin-top: 50px;
-        flex-direction: column;
+.delete-button:hover {
+    background-color: #565e64;
+}
+
+@media (max-width: 768px) {
+    .art-details-container {
+        padding: 30px 20px;
     }
 
-    .art-details-right {
-        margin-left: 0;
+    .art-details-inner {
+        flex-direction: column;
+        align-items: flex-start;
     }
 
     .art-image {
-        width: 90%;
+        width: 100%;
         height: auto;
+    }
+
+    .art-details-right {
+        width: 100%;
     }
 }
