@@ -9,6 +9,7 @@ function Sidebar() {
       <ul className="sidebar-links">
         <li><Link to="/review-art">🎨 Review Art</Link></li>
         <li><Link to="/user-base">👤 User Base</Link></li>
+        <li><Link to="/orders">🧾 Orders</Link></li>
         <li><Link to="/analytics">📊 Analytics</Link></li>
         <li><Link to="/settings">⚙️ Settings</Link></li>
       </ul>

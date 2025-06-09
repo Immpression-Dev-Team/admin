@@ -16,6 +16,11 @@ function Home() {
           description="View and manage the list of registered users."
           navigateTo="/user-base"
         />
+        <Card 
+          title="Orders"
+          description="Track and manage customer orders."
+          navigateTo="/orders"
+        />
       </div>
     </ScreenTemplate>
   );

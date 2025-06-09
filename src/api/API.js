@@ -191,4 +191,28 @@ export async function deleteUser(id, token) {
   }
 }
 
-  
+export async function getAllOrders(token, page = 1, limit = 50) {
+  try {
+    const params = { page, limit };
+    const response = await axios.get(`${API_URL}/orders`, {
+      headers: { Authorization: `Bearer ${token}` },
+      params,
+    });
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching orders:", error.response?.data || error.message);
+    return { data: [], pagination: { totalPages: 1 } };
+  }
+}
+
+export async function getOrderById(orderId, token) {
+  try {
+    const response = await axios.get(`${API_URL}/orderDetails/${orderId}`, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    return response.data.data;
+  } catch (error) {
+    console.error("Error fetching order by ID:", error.response?.data || error);
+    throw new Error("Failed to fetch order.");
+  }
+}
