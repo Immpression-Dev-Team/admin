@@ -24,12 +24,35 @@
     height: 100%;
 }
 
-/* Main content area next to sidebar */
+/* Main content area with responsive sidebar */
 .main-panel {
     flex-grow: 1;
-    padding: 0 0 40px 0; /* remove left and right padding */
-    margin-left: 220px;
+    padding: 0 0 40px 0;
     box-sizing: border-box;
-    width: calc(100% - 220px);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+}
+
+.main-panel.sidebar-open {
+    margin-left: 260px;
+    width: calc(100% - 260px);
+}
+
+.main-panel.sidebar-closed {
+    margin-left: 70px;
+    width: calc(100% - 70px);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .main-panel.sidebar-open {
+        margin-left: 0;
+        width: 100%;
+    }
+    
+    .main-panel.sidebar-closed {
+        margin-left: 0;
+        width: 100%;
+    }
 }
 

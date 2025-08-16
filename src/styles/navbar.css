@@ -14,29 +14,147 @@
 }
 
 
-/* Left Section (Clickable Logo) */
+/* Left Section */
 .left-section {
     display: flex;
     align-items: center;
     flex-shrink: 0;
+    padding-left: 20px;
+    position: relative;
+}
+
+/* Navbar Arrow Button */
+.navbar-arrow-btn {
+    width: 28px;
+    height: 32px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-radius: 0 16px 16px 0;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 2px 0 12px rgba(102, 126, 234, 0.25);
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    position: absolute;
+    left: 45px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(10px);
+}
+
+@media (max-width: 768px) {
+    .navbar-arrow-btn {
+        left: -20px;
+    }
+}
+
+.navbar-arrow-btn:hover {
+    width: 40px;
+    box-shadow: 4px 0 20px rgba(102, 126, 234, 0.4);
+    background: linear-gradient(135deg, #5a67d8 0%, #6b46c1 100%);
+    border-color: rgba(255, 255, 255, 0.3);
+    transform: translateY(-1px);
+}
+
+.navbar-arrow-icon {
+    color: white;
+    font-size: 14px;
+    font-weight: bold;
+    transition: all 0.3s ease;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+    filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.1));
+}
+
+.navbar-arrow-btn:hover .navbar-arrow-icon {
+    transform: translateX(3px) scale(1.1);
+    color: #f8fafc;
+}
+
+/* Navbar Close Arrow - positioned at right edge of sidebar */
+.navbar-close-arrow {
+    position: absolute;
+    left: 240px;
+    width: 28px;
+    height: 32px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-radius: 0 16px 16px 0;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 2px 0 12px rgba(102, 126, 234, 0.25);
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(10px);
+}
+
+.navbar-close-arrow:hover {
+    width: 40px;
+    box-shadow: 4px 0 20px rgba(102, 126, 234, 0.4);
+    background: linear-gradient(135deg, #5a67d8 0%, #6b46c1 100%);
+    border-color: rgba(255, 255, 255, 0.3);
+    transform: translateY(-1px);
+}
+
+.navbar-close-arrow:hover .navbar-arrow-icon {
+    transform: translateX(-3px) scale(1.1);
+    color: #f8fafc;
 }
 
 .logo-img {
-    height: 40px;
+    height: 36px;
     object-fit: contain;
-    cursor: pointer; /* ✅ Make the logo clickable */
+    cursor: pointer;
+    transition: transform 0.2s ease;
 }
 
-/* Right Section (User Email & Dropdown) */
-.user-section {
+.logo-img:hover {
+    transform: scale(1.05);
+}
+
+/* Navbar Toggle Button */
+.navbar-toggle-btn {
+    width: 40px;
+    height: 40px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    color: white;
+    transition: all 0.3s ease;
+    font-weight: bold;
+}
+
+.navbar-toggle-btn:hover {
+    transform: scale(1.05);
+}
+
+
+/* Right Section */
+.right-section {
     position: relative;
     display: flex;
     align-items: center;
     justify-content: flex-end;
     flex-grow: 1;
-    min-width: 200px;
-    max-width: 400px;
+    gap: 8px;
+    padding-right: 20px;
 }
+
+.immpression-logo {
+    height: 28px;
+    object-fit: contain;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+}
+
+.immpression-logo:hover {
+    transform: scale(1.05);
+}
+
 
 .user-section:hover{
     cursor: pointer;

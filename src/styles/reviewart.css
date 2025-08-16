@@ -1,37 +1,151 @@
-/* Styles for the main container */
-.reviewArtsContent {
-    width: 100%; /* Stretches full width */
-    max-width: 100vw;
 
+/* Responsive Viewport Main Content Container */
+.reviewArtsContent {
+    width: 100%;
+    padding: 0;
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    align-items: center; /* ✅ Aligns content to the left */
-
-    padding-left: 0px;
-    margin: 0 auto; /* ✅ Centers the container */
+    background-color: #f8fafc;
+    height: calc(100vh - 240px);
+    overflow: hidden;
 }
 
-/* Grid layout for displaying artworks */
+/* Very Compact Artworks Container */
+.artworks-container {
+    padding: 12px;
+    background-color: #ffffff;
+    margin: 0 12px 0 12px;
+    border-radius: 8px;
+    border: 1px solid #e2e8f0;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    flex: 1;
+    overflow-y: auto;
+    min-height: 0;
+}
+
+/* Very Compact Grid layout */
 .grid {
-    width: 90%;
-
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    align-items: center;
-
-    gap: 16px;
-    padding: 20px;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 12px;
+    width: 100%;
 }
 
-/* Back button styles */
-.back-btn {
-    margin-top: 20px;
-    padding: 10px 15px;
-    background-color: blue;
+/* Loading States */
+.loading-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 60px;
+    color: #718096;
+}
+
+.loading-spinner {
+    width: 40px;
+    height: 40px;
+    border: 4px solid #e2e8f0;
+    border-top: 4px solid #667eea;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin-bottom: 16px;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* No Results State */
+.no-results {
+    text-align: center;
+    padding: 60px;
+    color: #718096;
+}
+
+.no-results-icon {
+    font-size: 64px;
+    margin-bottom: 16px;
+    opacity: 0.5;
+}
+
+.no-results p {
+    font-size: 18px;
+    margin-bottom: 20px;
+}
+
+.reset-filter-btn {
+    background-color: #667eea;
     color: white;
     border: none;
-    border-radius: 5px;
+    padding: 12px 24px;
+    border-radius: 6px;
     cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+    transition: background-color 0.2s ease;
+}
+
+.reset-filter-btn:hover {
+    background-color: #5a67d8;
+}
+
+/* Height-based responsive design for different screen sizes */
+@media (max-height: 800px) {
+    .reviewArtsContent {
+        height: calc(100vh - 260px);
+    }
+}
+
+@media (max-height: 768px) {
+    .reviewArtsContent {
+        height: calc(100vh - 280px);
+    }
+    
+    .artworks-container {
+        padding: 10px;
+    }
+}
+
+@media (max-height: 700px) {
+    .reviewArtsContent {
+        height: calc(100vh - 300px);
+    }
+    
+    .artworks-container {
+        padding: 8px;
+    }
+    
+    .grid {
+        gap: 10px;
+    }
+}
+
+/* Width-based responsive design */
+@media (max-width: 768px) {
+    .artworks-container {
+        margin: 0 10px 0 10px;
+        padding: 10px;
+    }
+    
+    .grid {
+        grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+        gap: 10px;
+    }
+}
+
+@media (max-width: 480px) {
+    .reviewArtsContent {
+        height: calc(100vh - 320px);
+    }
+    
+    .grid {
+        grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+        gap: 8px;
+    }
+    
+    .artworks-container {
+        padding: 8px;
+        margin: 0 8px 0 8px;
+    }
 }

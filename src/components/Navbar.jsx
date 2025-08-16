@@ -3,9 +3,10 @@ import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/context/authContext";
 
 import logo from '@assets/Logo_T.png';
+import immpressionLogo from '@assets/Immpression.png';
 import "@styles/navbar.css"; // ✅ Import the CSS file
 
-function Navbar({ email, height }) {
+function Navbar({ height, toggleSidebar, sidebarOpen }) {
   const navigate = useNavigate();
   const { logout } = useAuth();
   
@@ -23,30 +24,25 @@ function Navbar({ email, height }) {
 
   return (
     <nav className="navbar" style={{ height: `${height}px`}}>
-      {/* Left Side: Clickable Logo */}
+      {/* Left Side: Arrow Buttons */}
       <div className="left-section">
-        <img
-          src={logo}
-          alt="Logo"
-          className="logo-img"
-          onClick={handleLogoClick} // ✅ Make the logo clickable
-        />
-      </div>
-
-      {/* Right Side: User Dropdown */}
-      <div className="user-section" onClick={() => setIsDropdownOpen(!isDropdownOpen)}>
-        <div className="user-info">
-          <span className="user-email">{email}</span>
-        </div>
-
-        {/* Dropdown Menu */}
-        {isDropdownOpen && (
-          <div className="dropdown">
-            <button onClick={handleLogout} className="logout-btn">
-              Logout
-            </button>
+        {/* Open arrow - visible when sidebar is closed */}
+        {!sidebarOpen && (
+          <div className="navbar-arrow-btn" onClick={toggleSidebar}>
+            <span className="navbar-arrow-icon">▶</span>
           </div>
         )}
+        
+        {/* Close arrow - visible when sidebar is open */}
+        {sidebarOpen && (
+          <div className="navbar-close-arrow" onClick={toggleSidebar}>
+            <span className="navbar-arrow-icon">◀</span>
+          </div>
+        )}
+      </div>
+
+      {/* Right Side: Empty */}
+      <div className="right-section">
       </div>
     </nav>
   );

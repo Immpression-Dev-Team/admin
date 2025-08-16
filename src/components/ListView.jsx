@@ -140,7 +140,9 @@ function ListView({ data, type }) {
           </td>
           <td>{item.artName}</td>
           <td>{item.artistName}</td>
-          <td className={`status ${item.status}`}>{item.status}</td>
+          <td className="status-cell">
+            <span className={`status ${item.status}`}>{item.status}</span>
+          </td>
           <td>{new Date(item.createdAt).toLocaleDateString()}</td>
         </>
       );
@@ -156,7 +158,9 @@ function ListView({ data, type }) {
           </td>
           <td>{item.name}</td>
           <td>{item.artistName}</td>
-          <td className={`status ${item.stage}`}>{item.stage}</td>
+          <td className="status-cell">
+            <span className={`status ${item.stage}`}>{item.stage}</span>
+          </td>
           <td>{new Date(item.createdAt).toLocaleDateString()}</td>
         </>
       );

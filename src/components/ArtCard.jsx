@@ -24,19 +24,27 @@ function ArtCard({ art }) {
 
     return (
       <div onClick={handleClick} className="art-card">
-        <img src={art.imageLink} alt={art.name} />
-        <h3 className="art-card-title">{art.name}</h3>
-        <p className="art-card-artist">{art.artistName}</p>
+        <div className="art-card-image-container">
+          <img src={art.imageLink} alt={art.name} />
+        </div>
         
-        {/* ✅ Stage indicator at bottom-right */}
-        <div className="art-stage-container">{getStageLabel()}</div>
-
-        {/* ✅ Show Reviewer Info if Available */}
-        {art.reviewedByEmail && (
-          <p className="art-reviewer">
-            <strong>Reviewed By:</strong> {art.reviewedByEmail}
-          </p>
-        )}
+        <div className="art-card-content">
+          <div className="art-card-main-info">
+            <div className="art-card-text">
+              <h3 className="art-card-title">{art.name}</h3>
+              <p className="art-card-artist">{art.artistName}</p>
+            </div>
+            {/* ✅ Status badge aligned with text */}
+            <div className="art-stage-container">{getStageLabel()}</div>
+          </div>
+          
+          {/* ✅ Show Reviewer Info if Available */}
+          {art.reviewedByEmail && (
+            <p className="art-reviewer">
+              <strong>Reviewed By:</strong> {art.reviewedByEmail}
+            </p>
+          )}
+        </div>
       </div>
     );
 }

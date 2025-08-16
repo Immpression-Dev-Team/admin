@@ -15,6 +15,7 @@ export default function ScreenTemplate({ children }) {
 
     const [loading, setLoading] = useState(true);
     const [email, setEmail] = useState(null);
+    const [sidebarOpen, setSidebarOpen] = useState(true);
 
     // set up nav bar height, warning & logout time threshold
     const navHeight = 80;
@@ -44,6 +45,11 @@ export default function ScreenTemplate({ children }) {
         resetIdleTime();
     }
 
+    // toggle sidebar open/closed
+    const toggleSidebar = () => {
+        setSidebarOpen(!sidebarOpen);
+    }
+
     // display loading screen if on load
     if (loading) {
         return (
@@ -64,11 +70,11 @@ export default function ScreenTemplate({ children }) {
                 message={'You will be logged out in less than 1 minute due to inactivity, do you wish to stay logged in?'}
             />
 
-            <Navbar email={email} height={navHeight} />
+            <Navbar height={navHeight} toggleSidebar={toggleSidebar} sidebarOpen={sidebarOpen} />
 
             <div className="content-row">
-                <Sidebar />
-                <div className="main-panel">
+                <Sidebar isOpen={sidebarOpen} toggleSidebar={toggleSidebar} email={email} logout={logoutUser} />
+                <div className={`main-panel ${sidebarOpen ? 'sidebar-open' : 'sidebar-closed'}`}>
                     {children}
                 </div>
             </div>

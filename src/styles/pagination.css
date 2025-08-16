@@ -1,54 +1,159 @@
-.paginationContainer{
-    width: 70%;
+/* Compact Fixed Pagination */
+.paginationContainer {
+    width: 100%;
+    max-width: 400px;
+    margin: 6px auto;
     display: flex;
     justify-content: center;
     align-items: center;
-    gap: 15px;
+    gap: 4px;
+    padding: 6px;
+    background: white;
+    border-radius: 6px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    border: 1px solid #e2e8f0;
+    flex-shrink: 0;
+    height: 44px;
+    box-sizing: border-box;
 }
 
+/* Very Compact Page Buttons */
 .page {
-    height: 50px;
-    width: 50px;
-    border: none;
-    background-color: transparent;
-    color: var(--font-color);
-    border-radius: 100%;
-
-    &:hover{
-        box-shadow: none;
-        border-color: none;
-        background-color: #e7e7e7;
-        transform: translateY(-2px);
-    }
+    height: 28px;
+    width: 28px;
+    border: 1px solid #e2e8f0;
+    background-color: white;
+    color: #4a5568;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-size: 12px;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
-.page.curr{
+.page:hover {
+    background-color: #f7fafc;
+    border-color: #cbd5e0;
+    transform: translateY(-1px);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Current Page Styling */
+.page.curr {
     color: white;
-    border-radius: 100%;
-    background-color: var(--primary-color);
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-color: #667eea;
+    box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);
+}
 
-    &:hover{
-        background-color: var(--secondary-color);
+.page.curr:hover {
+    background: linear-gradient(135deg, #5a67d8 0%, #6b46c1 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+}
+
+/* Very Compact Navigation Arrows */
+.page.caret {
+    font-size: 12px;
+    font-weight: 600;
+    width: 26px;
+    background-color: #f8fafc;
+    border-color: #e2e8f0;
+}
+
+.page.caret:hover {
+    background-color: #edf2f7;
+    border-color: #cbd5e0;
+}
+
+.page.caret:disabled {
+    color: #a0aec0;
+    background-color: #f7fafc;
+    border-color: #edf2f7;
+    cursor: not-allowed;
+    opacity: 0.5;
+}
+
+.page.caret:disabled:hover {
+    transform: none;
+    background-color: #f7fafc;
+    box-shadow: none;
+}
+
+/* Ellipsis Styling */
+.paginationContainer span {
+    color: #a0aec0;
+    font-weight: 500;
+    padding: 0 4px;
+    font-size: 14px;
+}
+
+/* Height-based responsive design */
+@media (max-height: 768px) {
+    .paginationContainer {
+        margin: 4px auto;
+        padding: 4px;
+        height: 36px;
     }
-}
-
-.page.caret{
-    font-size: large;
-}
-
-.page.caret:disabled{
-    color: rgb(185, 185, 185);
-
-    &:hover{
-        transform: none;
-        background-color: transparent;
-    }
-}
-
-/* display smaller pagination on phone */
-@media (max-width: 480px) {
+    
     .page {
-        height: 40px;
-        width: 40px;
+        height: 24px;
+        width: 24px;
+        font-size: 11px;
+    }
+    
+    .page.caret {
+        width: 22px;
+        font-size: 11px;
+    }
+}
+
+@media (max-height: 700px) {
+    .paginationContainer {
+        margin: 2px auto;
+        padding: 3px;
+        height: 32px;
+    }
+    
+    .page {
+        height: 22px;
+        width: 22px;
+        font-size: 10px;
+    }
+    
+    .page.caret {
+        width: 20px;
+        font-size: 10px;
+    }
+}
+
+/* Width-based responsive design */
+@media (max-width: 768px) {
+    .paginationContainer {
+        max-width: 350px;
+        gap: 3px;
+    }
+}
+
+@media (max-width: 480px) {
+    .paginationContainer {
+        max-width: 300px;
+        margin: 4px auto;
+        padding: 4px;
+        gap: 2px;
+    }
+    
+    .page {
+        height: 26px;
+        width: 26px;
+        font-size: 11px;
+    }
+    
+    .page.caret {
+        width: 24px;
+        font-size: 11px;
     }
 }

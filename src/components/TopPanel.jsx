@@ -1,13 +1,7 @@
-import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { useAuth } from "@/context/authContext";
-import { getAllImagesStats } from "../api/API";
-
-import StatsList from "./StatsList";
-import "@styles/toppanel.css"; // ✅ Import the CSS file
+import "@styles/toppanel.css";
 
 function TopPanel({ 
-  onShowAllArt,  // ✅ New function prop
+  onShowAllArt,
   onFilterPending, 
   onFilterApproved, 
   onFilterRejected, 
@@ -16,64 +10,105 @@ function TopPanel({
   toggleViewMode,
   pageSize,
   handlePageSizeChange,
+  activeFilter = 'all',
+  stats = { total: 0, pending: 0, approved: 0, rejected: 0 },
+  statsLoading = false,
 }) {
-  // 
-  const { authState } = useAuth();
-  const navigate = useNavigate();
   
-  const [totalImages, setTotalImages] = useState(0);
-  const [totalPending, setTotalPending] = useState(0);
-  const [totalApproved, setTotalApproved] = useState(0);
-  const [totalRejected, setTotalRejected] = useState(0);
 
-  useEffect(() => {
-    const loadStats = async () => {
-      if (authState?.token) {
-        const response = await getAllImagesStats(authState.token);
-        setTotalImages(response.stats.total);
-        setTotalPending(response.stats.pending);
-        setTotalApproved(response.stats.approved);
-        setTotalRejected(response.stats.rejected);
+  // Render stats overview cards
+  const renderStatsOverview = () => {
+    const statCards = [
+      {
+        title: "Total Submitted",
+        value: stats.total,
+        filter: 'all',
+        color: '#3498db',
+        icon: '📊',
+        onClick: onShowAllArt
+      },
+      {
+        title: "Pending Review",
+        value: stats.pending,
+        filter: 'pending',
+        color: '#f39c12',
+        icon: '⏳',
+        onClick: onFilterPending
+      },
+      {
+        title: "Approved",
+        value: stats.approved,
+        filter: 'approved',
+        color: '#27ae60',
+        icon: '✅',
+        onClick: onFilterApproved
+      },
+      {
+        title: "Rejected",
+        value: stats.rejected,
+        filter: 'rejected',
+        color: '#e74c3c',
+        icon: '❌',
+        onClick: onFilterRejected
       }
-    };
+    ];
 
-    loadStats();
-  }, [authState?.token])
-
-  // render 4 types of stats for arts
-  const stats = [
-    { label: "Total Pictures", value: totalImages, filter: onShowAllArt },
-    { label: "Pending Review", value: totalPending, filter: onFilterPending },
-    { label: "Approved", value: totalApproved, filter: onFilterApproved },
-    { label: "Rejected", value: totalRejected, filter: onFilterRejected },
-  ];
+    return (
+      <>
+        {statCards.map((stat) => (
+          <div 
+            key={stat.filter}
+            className={`stat-item ${activeFilter === stat.filter ? 'active' : ''}`}
+            onClick={stat.onClick}
+            style={{ borderLeftColor: stat.color }}
+          >
+            <div className="stat-icon">{stat.icon}</div>
+            <div className="stat-content">
+              <div className="stat-value">
+                {statsLoading ? '...' : stat.value.toLocaleString()}
+              </div>
+              <div className="stat-title">{stat.title}</div>
+            </div>
+          </div>
+        ))}
+      </>
+    );
+  };
 
   return (
-    <div className="panel">
-      {/* ✅ Now Clickable! Shows all arts */}
-      <StatsList stats={stats}/>
+    <div className="top-panel-container">
+      <div className="admin-header">
+        <h1>Artwork Review Dashboard</h1>
+        <p>Manage and review submitted artworks</p>
+      </div>
+      
+      <div className="panel">
+        <div className="stats-container">
+          {renderStatsOverview()}
+        </div>
+        
+        <div className="search-view-container">
+          <input
+            type="text"
+            className="searchInput"
+            placeholder="Search by title or artist..."
+            onChange={(e) => onSearch(e.target.value)}
+          />
+          <button className="viewToggleButton" onClick={toggleViewMode}>
+            {viewMode === "grid" ? "📋 List" : "🖼️ Grid"}
+          </button>
 
-      <div className="search-view-container">
-        <input
-          type="text"
-          className="searchInput"
-          placeholder="Search by title or artist..."
-          onChange={(e) => onSearch(e.target.value)}
-        />
-        <button className="viewToggleButton" onClick={toggleViewMode}>
-          {viewMode === "grid" ? "📋 List" : "🖼️ Grid"}
-        </button>
-
-        <div className="selectPageSize">
-          <label>Images per page: </label>
-          <select 
-            value={pageSize}
-            onChange={handlePageSizeChange}
-          >
-            <option value={10}>10</option>
-            <option value={25}>25</option>
-            <option value={50}>50</option>
-          </select>
+          <div className="selectPageSize">
+            <label>Images per page: </label>
+            <select 
+              value={pageSize}
+              onChange={handlePageSizeChange}
+            >
+              <option value={10}>10</option>
+              <option value={25}>25</option>
+              <option value={50}>50</option>
+            </select>
+          </div>
         </div>
       </div>
     </div>
