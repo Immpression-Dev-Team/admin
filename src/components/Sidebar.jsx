@@ -1,5 +1,6 @@
 // components/Sidebar.jsx
 import { Link, useLocation, useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
 import logo from "@/assets/Logo_T.png";
 import immpressionLogo from "@/assets/Immpression.png";
 import "@/styles/sidebar.css";
@@ -7,6 +8,13 @@ import "@/styles/sidebar.css";
 function Sidebar({ isOpen, toggleSidebar, email, logout }) {
   const location = useLocation();
   const navigate = useNavigate();
+  const [isUserPanelOpen, setIsUserPanelOpen] = useState(false);
+
+  useEffect(() => {
+    if (!isOpen) {
+      setIsUserPanelOpen(false);
+    }
+  }, [isOpen]);
 
   const menuItems = [
     { path: "/review-art", label: "Review Art", icon: "🎨" },
@@ -18,6 +26,13 @@ function Sidebar({ isOpen, toggleSidebar, email, logout }) {
 
   const handleLogoClick = () => {
     navigate("/home");
+  };
+
+  const toggleUserPanel = () => {
+    if (!isOpen) {
+      toggleSidebar();
+    }
+    setIsUserPanelOpen(!isUserPanelOpen);
   };
 
   return (
@@ -49,20 +64,22 @@ function Sidebar({ isOpen, toggleSidebar, email, logout }) {
           </ul>
         </nav>
         
-        {isOpen && (
-          <div className="sidebar-footer">
-            <div className="user-info">
-              <span className="user-avatar">👤</span>
+        <div className="sidebar-footer">
+          <div className={`user-info ${isUserPanelOpen ? 'expanded' : ''}`} onClick={toggleUserPanel}>
+            <span className="user-avatar">👤</span>
+            {(isOpen || isUserPanelOpen) && (
               <div className="user-details">
                 <span className="user-name">Admin User</span>
                 <span className="user-email">{email}</span>
               </div>
-            </div>
+            )}
+          </div>
+          {(isOpen || isUserPanelOpen) && (
             <button className="sidebar-logout-btn" onClick={logout}>
               Logout
             </button>
-          </div>
-        )}
+          )}
+        </div>
       </div>
     </>
   );
