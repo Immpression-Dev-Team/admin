@@ -15,7 +15,7 @@ export default function ScreenTemplate({ children }) {
 
     const [loading, setLoading] = useState(true);
     const [email, setEmail] = useState(null);
-    const [sidebarOpen, setSidebarOpen] = useState(true);
+    const [sidebarOpen, setSidebarOpen] = useState(false);
 
     // set up nav bar height, warning & logout time threshold
     const navHeight = 80;

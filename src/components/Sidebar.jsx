@@ -1,11 +1,12 @@
 // components/Sidebar.jsx
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import logo from "@/assets/Logo_T.png";
 import immpressionLogo from "@/assets/Immpression.png";
 import "@/styles/sidebar.css";
 
 function Sidebar({ isOpen, toggleSidebar, email, logout }) {
   const location = useLocation();
+  const navigate = useNavigate();
 
   const menuItems = [
     { path: "/review-art", label: "Review Art", icon: "🎨" },
@@ -15,6 +16,10 @@ function Sidebar({ isOpen, toggleSidebar, email, logout }) {
     { path: "/settings", label: "Settings", icon: "⚙️" }
   ];
 
+  const handleLogoClick = () => {
+    navigate("/home");
+  };
+
   return (
     <>
       <div className={`sidebar-overlay ${isOpen ? 'show' : ''}`} onClick={toggleSidebar}></div>
@@ -23,7 +28,7 @@ function Sidebar({ isOpen, toggleSidebar, email, logout }) {
       <div className={`sidebar ${isOpen ? 'open' : 'closed'}`}>
         <div className="sidebar-header">
           <div className="sidebar-logo">
-            <img src={logo} alt="Immpression Logo" className="logo-icon" />
+            <img src={logo} alt="Immpression Logo" className="logo-icon clickable-logo-icon" onClick={handleLogoClick} />
             {isOpen && <img src={immpressionLogo} alt="Immpression" className="sidebar-title-img" />}
           </div>
           <button className="mobile-close-btn" onClick={toggleSidebar}>
