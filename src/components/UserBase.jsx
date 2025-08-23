@@ -78,7 +78,16 @@ function UserBase() {
       
       {/* ✅ Keep content aligned */}
       <div className="userBaseContent">
-        {loading ? <p>Loading Users...</p> : <ListView data={filteredUsers} type="users" />}
+        {loading ? (
+          <div className="loading-container">
+            <div className="loading-spinner"></div>
+            <p>Loading users...</p>
+          </div>
+        ) : (
+          <div className="users-container">
+            <ListView data={filteredUsers} type="users" />
+          </div>
+        )}
       </div>
     </ScreenTemplate>
   );

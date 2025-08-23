@@ -1,5 +1,5 @@
 /* Responsive Viewport Main Content Container */
-.userBaseContent {
+.ordersContent {
     width: 100%;
     padding: 0;
     display: flex;
@@ -9,8 +9,8 @@
     overflow: hidden;
 }
 
-/* Very Compact Users Container */
-.users-container {
+/* Very Compact Orders Container */
+.orders-container {
     padding: 12px;
     background-color: #ffffff;
     margin: 0 12px 0 12px;
@@ -47,47 +47,81 @@
     100% { transform: rotate(360deg); }
 }
 
+/* No Results State */
+.no-results {
+    text-align: center;
+    padding: 60px;
+    color: #718096;
+}
+
+.no-results-icon {
+    font-size: 64px;
+    margin-bottom: 16px;
+    opacity: 0.5;
+}
+
+.no-results p {
+    font-size: 18px;
+    margin-bottom: 20px;
+}
+
+.reset-filter-btn {
+    background-color: #667eea;
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+    transition: background-color 0.2s ease;
+}
+
+.reset-filter-btn:hover {
+    background-color: #5a67d8;
+}
+
 /* Height-based responsive design for different screen sizes */
 @media (max-height: 800px) {
-    .userBaseContent {
+    .ordersContent {
         height: calc(100vh - 260px);
     }
 }
 
 @media (max-height: 768px) {
-    .userBaseContent {
+    .ordersContent {
         height: calc(100vh - 280px);
     }
     
-    .users-container {
+    .orders-container {
         padding: 10px;
     }
 }
 
 @media (max-height: 700px) {
-    .userBaseContent {
+    .ordersContent {
         height: calc(100vh - 300px);
     }
     
-    .users-container {
+    .orders-container {
         padding: 8px;
     }
 }
 
 /* Width-based responsive design */
 @media (max-width: 768px) {
-    .users-container {
+    .orders-container {
         margin: 0 10px 0 10px;
         padding: 10px;
     }
 }
 
 @media (max-width: 480px) {
-    .userBaseContent {
+    .ordersContent {
         height: calc(100vh - 320px);
     }
     
-    .users-container {
+    .orders-container {
         padding: 8px;
         margin: 0 8px 0 8px;
     }

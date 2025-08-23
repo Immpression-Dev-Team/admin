@@ -1,14 +1,18 @@
 import React, { useState } from "react";
-import "@styles/toppanel.css"; // ✅ Import the CSS file
+import "@styles/toppanel.css";
 
-export default function UserTopPanel({ 
-  totalUsers, 
-  totalVerified, 
-  totalUnverified, 
-  onShowAllUsers,  
-  onFilterVerified, 
-  onFilterUnverified, 
-  onSearch
+export default function OrdersTopPanel({ 
+  totalOrders = 0,
+  completedOrders = 0,
+  pendingOrders = 0,
+  cancelledOrders = 0,
+  onShowAllOrders,  
+  onFilterCompleted, 
+  onFilterPending,
+  onFilterCancelled,
+  onSearch,
+  pageSize,
+  handlePageSizeChange
 }) {
   const [activeFilter, setActiveFilter] = useState('all');
 
@@ -21,28 +25,36 @@ export default function UserTopPanel({
   const renderStatsOverview = () => {
     const statCards = [
       {
-        title: "Total Users",
-        value: totalUsers,
+        title: "Total Orders",
+        value: totalOrders,
         filter: 'all',
         color: '#3498db',
-        icon: '👥',
-        onClick: () => handleFilterClick('all', onShowAllUsers)
+        icon: '📦',
+        onClick: () => handleFilterClick('all', onShowAllOrders)
       },
       {
-        title: "Verified Users",
-        value: totalVerified,
-        filter: 'verified',
+        title: "Completed",
+        value: completedOrders,
+        filter: 'completed',
         color: '#27ae60',
         icon: '✅',
-        onClick: () => handleFilterClick('verified', onFilterVerified)
+        onClick: () => handleFilterClick('completed', onFilterCompleted)
       },
       {
-        title: "Unverified Users",
-        value: totalUnverified,
-        filter: 'unverified',
+        title: "Pending",
+        value: pendingOrders,
+        filter: 'pending',
+        color: '#f39c12',
+        icon: '⏳',
+        onClick: () => handleFilterClick('pending', onFilterPending)
+      },
+      {
+        title: "Cancelled",
+        value: cancelledOrders,
+        filter: 'cancelled',
         color: '#e74c3c',
         icon: '❌',
-        onClick: () => handleFilterClick('unverified', onFilterUnverified)
+        onClick: () => handleFilterClick('cancelled', onFilterCancelled)
       }
     ];
 
@@ -71,8 +83,8 @@ export default function UserTopPanel({
   return (
     <div className="top-panel-container">
       <div className="admin-header">
-        <h1>User Management Dashboard</h1>
-        <p>Manage and monitor platform users</p>
+        <h1>Orders Management Dashboard</h1>
+        <p>Monitor and manage customer orders</p>
       </div>
       
       <div className="panel">
@@ -84,9 +96,21 @@ export default function UserTopPanel({
           <input
             type="text"
             className="searchInput"
-            placeholder="Search by name or email..."
+            placeholder="Search by order ID or customer..."
             onChange={(e) => onSearch(e.target.value)}
           />
+
+          <div className="selectPageSize">
+            <label>Orders per page: </label>
+            <select 
+              value={pageSize}
+              onChange={handlePageSizeChange}
+            >
+              <option value={10}>10</option>
+              <option value={25}>25</option>
+              <option value={50}>50</option>
+            </select>
+          </div>
         </div>
       </div>
     </div>
