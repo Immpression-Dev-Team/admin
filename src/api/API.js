@@ -216,3 +216,20 @@ export async function getOrderById(orderId, token) {
     throw new Error("Failed to fetch order.");
   }
 }
+
+// ✅ Function to delete an order by ID (admin only)
+export async function deleteOrder(id, token) {
+  try {
+    const response = await axios.delete(`${API_URL}/order/${id}`, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    return response.data; // Returns success message
+  } catch (error) {
+    console.error("Error deleting order:", error.response?.data || error.message);
+    throw new Error(error.response?.data?.error || error.response?.data?.message || "Failed to delete order.");
+  }
+}

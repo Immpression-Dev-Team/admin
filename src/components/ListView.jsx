@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "@styles/listview.css";
 
-function ListView({ data, type }) {
+function ListView({ data, type, onDelete }) {
   const navigate = useNavigate();
   const [sortConfig, setSortConfig] = useState({ key: null, direction: null });
 
@@ -88,6 +88,7 @@ function ListView({ data, type }) {
             onClick: () => handleSort("createdAt"),
             arrow: getArrow("createdAt"),
           },
+          { label: "Actions", sortable: false },
         ]
       : [
           { label: "Image", sortable: false },
@@ -144,6 +145,20 @@ function ListView({ data, type }) {
             <span className={`status ${item.status}`}>{item.status}</span>
           </td>
           <td>{new Date(item.createdAt).toLocaleDateString()}</td>
+          <td className="actions-cell">
+            <button
+              className="delete-btn"
+              onClick={(e) => {
+                e.stopPropagation();
+                if (window.confirm('Are you sure you want to delete this order?')) {
+                  onDelete && onDelete(item._id);
+                }
+              }}
+              title="Delete Order"
+            >
+              🗑️
+            </button>
+          </td>
         </>
       );
     } else {

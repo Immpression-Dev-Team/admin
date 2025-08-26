@@ -6,7 +6,7 @@ import ScreenTemplate from "./Template/ScreenTemplate";
 import { Pagination } from "./Pagination";
 import { useAuth } from "@/context/authContext";
 import { useDebounce } from "@/hooks/useDebounce";
-import { getAllOrders } from "../api/API"; // Add this function below
+import { getAllOrders, deleteOrder } from "../api/API";
 
 import "@styles/orders.css";
 
@@ -118,6 +118,34 @@ function Orders() {
     setFilteredOrders(orders.filter(order => order.status === 'cancelled'));
   };
 
+  const handleDeleteOrder = async (orderId) => {
+    try {
+      await deleteOrder(orderId, authState.token);
+      
+      // Remove the deleted order from both orders and filteredOrders
+      const updatedOrders = orders.filter(order => order._id !== orderId);
+      const updatedFilteredOrders = filteredOrders.filter(order => order._id !== orderId);
+      
+      setOrders(updatedOrders);
+      setFilteredOrders(updatedFilteredOrders);
+      
+      // Update stats
+      const completed = updatedOrders.filter(order => order.status === 'completed').length;
+      const pending = updatedOrders.filter(order => order.status === 'pending' || order.status === 'processing').length;
+      const cancelled = updatedOrders.filter(order => order.status === 'cancelled').length;
+      
+      setStats({
+        total: updatedOrders.length,
+        completed,
+        pending,
+        cancelled
+      });
+      
+    } catch (error) {
+      alert('Failed to delete order: ' + error.message);
+    }
+  };
+
   return (
     <ScreenTemplate>
       <OrdersTopPanel
@@ -147,7 +175,7 @@ function Orders() {
           </div>
         ) : (
           <div className="orders-container">
-            <ListView data={filteredOrders} type="orders" />
+            <ListView data={filteredOrders} type="orders" onDelete={handleDeleteOrder} />
           </div>
         )}
         {filteredOrders.length > 0 && (
