@@ -28,12 +28,12 @@ function Orders() {
   const [query, setQuery] = useState("");
   const debouncedQuery = useDebounce({ value: query, delay: DELAY_TIME });
 
-  // Stats state
+  // Stats
   const [stats, setStats] = useState({
     total: 0,
     completed: 0,
     pending: 0,
-    cancelled: 0
+    cancelled: 0,
   });
 
   useEffect(() => {
@@ -50,28 +50,25 @@ function Orders() {
       setLoading(true);
       const response = await getAllOrders(authState.token, page, pageSize);
       const orderData = response.data || [];
-      
+
       setOrders(orderData);
       setFilteredOrders(orderData);
       setTotalPages(response.pagination?.totalPages || 1);
-      
-      // Calculate stats
-      const completed = orderData.filter(order => order.status === 'completed').length;
-      const pending = orderData.filter(order => order.status === 'pending' || order.status === 'processing').length;
-      const cancelled = orderData.filter(order => order.status === 'cancelled').length;
-      
-      setStats({
-        total: orderData.length,
-        completed,
-        pending,
-        cancelled
-      });
-      
+
+      // Stats
+      const completed = orderData.filter(o => (o.status || "").toLowerCase() === "completed").length;
+      const pending = orderData.filter(o => {
+        const s = (o.status || "").toLowerCase();
+        return s === "pending" || s === "processing";
+      }).length;
+      const cancelled = orderData.filter(o => (o.status || "").toLowerCase() === "cancelled").length;
+
+      setStats({ total: orderData.length, completed, pending, cancelled });
       setLoading(false);
     };
 
     fetchData();
-  }, [authState?.token, page, pageSize, debouncedQuery]);
+  }, [authState?.token, page, pageSize, debouncedQuery, navigate]);
 
   const handlePageChange = (value) => {
     if (value < 1 || value > totalPages) return;
@@ -83,67 +80,89 @@ function Orders() {
     setPage(1);
   };
 
-  const handleSearch = (query) => {
-    const lowerCaseQuery = query.trim().toLowerCase();
-    setQuery(lowerCaseQuery);
-    
-    if (lowerCaseQuery === '') {
+  const handleSearch = (q) => {
+    const lower = q.trim().toLowerCase();
+    setQuery(lower);
+
+    if (!lower) {
       setFilteredOrders(orders);
-    } else {
-      setFilteredOrders(
-        orders.filter((order) => {
-          const idMatch = order._id?.toLowerCase().includes(lowerCaseQuery);
-          const customerMatch = order.customer?.toLowerCase().includes(lowerCaseQuery);
-          const emailMatch = order.customerEmail?.toLowerCase().includes(lowerCaseQuery);
-          return idMatch || customerMatch || emailMatch;
-        })
-      );
+      return;
     }
+
+    setFilteredOrders(
+      orders.filter((o) => {
+        const idMatch = o._id?.toLowerCase().includes(lower);
+        const customerMatch = o.customer?.toLowerCase().includes(lower);
+        const emailMatch = o.customerEmail?.toLowerCase().includes(lower);
+        return idMatch || customerMatch || emailMatch;
+      })
+    );
   };
 
-  // Filter functions
-  const handleShowAllOrders = () => {
-    setFilteredOrders(orders);
-  };
+  // Filters
+  const handleShowAllOrders = () => setFilteredOrders(orders);
+  const handleFilterCompleted = () =>
+    setFilteredOrders(orders.filter(o => (o.status || "").toLowerCase() === "completed"));
+  const handleFilterPending = () =>
+    setFilteredOrders(orders.filter(o => {
+      const s = (o.status || "").toLowerCase();
+      return s === "pending" || s === "processing";
+    }));
+  const handleFilterCancelled = () =>
+    setFilteredOrders(orders.filter(o => (o.status || "").toLowerCase() === "cancelled"));
 
-  const handleFilterCompleted = () => {
-    setFilteredOrders(orders.filter(order => order.status === 'completed'));
-  };
-
-  const handleFilterPending = () => {
-    setFilteredOrders(orders.filter(order => order.status === 'pending' || order.status === 'processing'));
-  };
-
-  const handleFilterCancelled = () => {
-    setFilteredOrders(orders.filter(order => order.status === 'cancelled'));
-  };
-
+  // Delete
   const handleDeleteOrder = async (orderId) => {
     try {
       await deleteOrder(orderId, authState.token);
-      
-      // Remove the deleted order from both orders and filteredOrders
-      const updatedOrders = orders.filter(order => order._id !== orderId);
-      const updatedFilteredOrders = filteredOrders.filter(order => order._id !== orderId);
-      
+      const updatedOrders = orders.filter(o => o._id !== orderId);
+      const updatedFiltered = filteredOrders.filter(o => o._id !== orderId);
       setOrders(updatedOrders);
-      setFilteredOrders(updatedFilteredOrders);
-      
-      // Update stats
-      const completed = updatedOrders.filter(order => order.status === 'completed').length;
-      const pending = updatedOrders.filter(order => order.status === 'pending' || order.status === 'processing').length;
-      const cancelled = updatedOrders.filter(order => order.status === 'cancelled').length;
-      
-      setStats({
-        total: updatedOrders.length,
-        completed,
-        pending,
-        cancelled
-      });
-      
-    } catch (error) {
-      alert('Failed to delete order: ' + error.message);
+      setFilteredOrders(updatedFiltered);
+
+      // Recompute stats
+      const completed = updatedOrders.filter(o => (o.status || "").toLowerCase() === "completed").length;
+      const pending = updatedOrders.filter(o => {
+        const s = (o.status || "").toLowerCase();
+        return s === "pending" || s === "processing";
+      }).length;
+      const cancelled = updatedOrders.filter(o => (o.status || "").toLowerCase() === "cancelled").length;
+      setStats({ total: updatedOrders.length, completed, pending, cancelled });
+    } catch (e) {
+      alert("Failed to delete order: " + e.message);
     }
+  };
+
+  // ✅ After payout, optimistically update “transferred / remaining” if present
+  const handlePayoutDone = (orderId, data) => {
+    setOrders(prev =>
+      prev.map(o =>
+        o._id === orderId
+          ? {
+              ...o,
+              sellerTransferredCents: (o.sellerTransferredCents || 0) + Number(data.amountCents || 0),
+              sellerRemainingCents: Math.max(
+                0,
+                (o.sellerRemainingCents ?? 0) - Number(data.amountCents || 0)
+              ),
+            }
+          : o
+      )
+    );
+    setFilteredOrders(prev =>
+      prev.map(o =>
+        o._id === orderId
+          ? {
+              ...o,
+              sellerTransferredCents: (o.sellerTransferredCents || 0) + Number(data.amountCents || 0),
+              sellerRemainingCents: Math.max(
+                0,
+                (o.sellerRemainingCents ?? 0) - Number(data.amountCents || 0)
+              ),
+            }
+          : o
+      )
+    );
   };
 
   return (
@@ -161,7 +180,7 @@ function Orders() {
         pageSize={pageSize}
         handlePageSizeChange={handlePageSizeChange}
       />
-      
+
       <div className="ordersContent">
         {loading ? (
           <div className="loading-container">
@@ -175,15 +194,16 @@ function Orders() {
           </div>
         ) : (
           <div className="orders-container">
-            <ListView data={filteredOrders} type="orders" onDelete={handleDeleteOrder} />
+            <ListView
+              data={filteredOrders}
+              type="orders"
+              onDelete={handleDeleteOrder}
+              onPayout={handlePayoutDone} 
+            />
           </div>
         )}
         {filteredOrders.length > 0 && (
-          <Pagination
-            page={page}
-            totalPages={totalPages}
-            onChange={handlePageChange}
-          />
+          <Pagination page={page} totalPages={totalPages} onChange={handlePageChange} />
         )}
       </div>
     </ScreenTemplate>

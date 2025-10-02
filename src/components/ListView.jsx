@@ -145,12 +145,12 @@ function ListView({ data, type, onDelete }) {
             <span className={`status ${item.status}`}>{item.status}</span>
           </td>
           <td>{new Date(item.createdAt).toLocaleDateString()}</td>
-          <td className="actions-cell">
+          <td className="actions-cell" onClick={(e) => e.stopPropagation()}>
             <button
               className="delete-btn"
               onClick={(e) => {
                 e.stopPropagation();
-                if (window.confirm('Are you sure you want to delete this order?')) {
+                if (window.confirm("Are you sure you want to delete this order?")) {
                   onDelete && onDelete(item._id);
                 }
               }}

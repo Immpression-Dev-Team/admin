@@ -233,3 +233,47 @@ export async function deleteOrder(id, token) {
     throw new Error(error.response?.data?.error || error.response?.data?.message || "Failed to delete order.");
   }
 }
+
+// ========= Payouts (Admin) =========
+
+// Preview the seller payout for an order (after Stripe fee, minus tax, minus 3% base hold)
+export async function getPayoutPreview(orderId, token) {
+  try {
+    const res = await axios.get(`${API_URL}/order/${orderId}/payout-preview`, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    // Server returns:
+    // { success, data: { base, shipping, tax, stripeFee, platformHoldOnBase,
+    //   sellerDueCents, sellerTransferredCents, sellerRemainingCents, currency, chargeId, transferGroup } }
+    return res.data;
+  } catch (error) {
+    console.error("Error loading payout preview:", error?.response?.data || error);
+    throw new Error(
+      error?.response?.data?.error || "Failed to load payout preview."
+    );
+  }
+}
+
+// Execute the payout to the seller for this order.
+// By default the server will send the full remaining amount.
+// Pass { amountCents } to send a partial or custom amount (in cents).
+export async function payoutOrder(orderId, token, { amountCents } = {}) {
+  try {
+    const body = {};
+    if (Number.isFinite(amountCents)) body.amountCents = Math.max(0, Math.round(Number(amountCents)));
+
+    const res = await axios.post(
+      `${API_URL}/order/${orderId}/payout`,
+      body,
+      { headers: { Authorization: `Bearer ${token}`, "Content-Type": "application/json" } }
+    );
+    // Server returns:
+    // { success, data: { transferId, amountCents, currency, sellerTransferredCents, sellerRemainingCents } }
+    return res.data;
+  } catch (error) {
+    console.error("Error executing payout:", error?.response?.data || error);
+    throw new Error(
+      error?.response?.data?.error || "Failed to execute payout."
+    );
+  }
+}
