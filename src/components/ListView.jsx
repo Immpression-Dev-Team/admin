@@ -41,28 +41,28 @@ function ListView({ data, type, onDelete }) {
   const HEADERS =
     type === "users"
       ? [
-          { label: "Profile", sortable: false },
-          {
-            label: "Name",
-            sortable: true,
-            onClick: () => handleSort("name"),
-            arrow: getArrow("name"),
-          },
-          {
-            label: "Email",
-            sortable: true,
-            onClick: () => handleSort("email"),
-            arrow: getArrow("email"),
-          },
-          {
-            label: "Joined",
-            sortable: true,
-            onClick: () => handleSort("createdAt"),
-            arrow: getArrow("createdAt"),
-          },
-        ]
+        { label: "Profile", sortable: false },
+        {
+          label: "Name",
+          sortable: true,
+          onClick: () => handleSort("name"),
+          arrow: getArrow("name"),
+        },
+        {
+          label: "Email",
+          sortable: true,
+          onClick: () => handleSort("email"),
+          arrow: getArrow("email"),
+        },
+        {
+          label: "Joined",
+          sortable: true,
+          onClick: () => handleSort("createdAt"),
+          arrow: getArrow("createdAt"),
+        },
+      ]
       : type === "orders"
-      ? [
+        ? [
           { label: "Image", sortable: false },
           {
             label: "Title",
@@ -90,7 +90,7 @@ function ListView({ data, type, onDelete }) {
           },
           { label: "Actions", sortable: false },
         ]
-      : [
+        : [
           { label: "Image", sortable: false },
           {
             label: "Title",
@@ -142,7 +142,9 @@ function ListView({ data, type, onDelete }) {
           <td>{item.artName}</td>
           <td>{item.artistName}</td>
           <td className="status-cell">
-            <span className={`status ${item.status}`}>{item.status}</span>
+            <span className={`status ${String(item.status || "").toLowerCase()}`}>
+              {(item.status || "").toUpperCase()}
+            </span>
           </td>
           <td>{new Date(item.createdAt).toLocaleDateString()}</td>
           <td className="actions-cell" onClick={(e) => e.stopPropagation()}>
@@ -209,10 +211,10 @@ function ListView({ data, type, onDelete }) {
                   type === "users"
                     ? navigate(`/user/${item._id}`)
                     : type === "orders"
-                    ? navigate(`/order/${item._id}`, {
+                      ? navigate(`/order/${item._id}`, {
                         state: { imageLink: item.imageLink }, // ✅ pass imageLink to OrderDetails
                       })
-                    : navigate(`/art/${item._id}`)
+                      : navigate(`/art/${item._id}`)
                 }
               >
                 {renderTableRowContent(item)}

@@ -1,4 +1,3 @@
-// src/components/PayoutButton.jsx
 import React, { useEffect, useMemo, useState } from "react";
 import { getPayoutPreview, payoutOrder } from "../api/API";
 
@@ -7,7 +6,7 @@ const toUSD = (cents) => `$${(Number(cents || 0) / 100).toFixed(2)}`;
 export default function PayoutButton({
   orderId,
   token,
-  onPayout,              // optional callback(result)
+  onPayout,                 // optional callback(result)
   className = "",
 }) {
   const [loadingPreview, setLoadingPreview] = useState(false);
@@ -16,18 +15,14 @@ export default function PayoutButton({
   const [doingPayout, setDoingPayout] = useState(false);
   const [customUsd, setCustomUsd] = useState(""); // optional override in USD
 
-  // --- Load payout preview (advisory only; does NOT gate the button) ---
   async function loadPreview() {
     if (!orderId || !token) return;
     setLoadingPreview(true);
     setError("");
     try {
       const res = await getPayoutPreview(orderId, token);
-      if (res?.success) {
-        setPreview(res.data);
-      } else {
-        setError(res?.error || "Failed to load payout preview.");
-      }
+      if (res?.success) setPreview(res.data);
+      else setError(res?.error || "Failed to load payout preview.");
     } catch (e) {
       setError(e?.message || "Failed to load payout preview.");
     } finally {
@@ -40,18 +35,15 @@ export default function PayoutButton({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [orderId, token]);
 
-  // --- Derived display values from new nested shape ---
   const remainingCents = Number(preview?.seller?.remaining || 0);
-  const suggestedCents = remainingCents; // suggest full remaining by default
+  const suggestedCents = remainingCents;
 
   const remainingUsd = useMemo(() => toUSD(remainingCents), [remainingCents]);
   const suggestedUsd = useMemo(() => toUSD(suggestedCents), [suggestedCents]);
 
-  // --- Send payout ---
   async function handlePayout() {
     if (!orderId || !token) return;
 
-    // Decide amount
     let amountCents;
     const trimmed = String(customUsd || "").trim();
     if (trimmed) {
@@ -63,11 +55,9 @@ export default function PayoutButton({
       amountCents = parsed;
     } else if (Number.isFinite(remainingCents) && remainingCents > 0) {
       amountCents = remainingCents;
-    } // else omit to let server choose default
+    }
 
-    const human =
-      amountCents != null ? toUSD(amountCents) : "the remaining amount";
-
+    const human = amountCents != null ? toUSD(amountCents) : "the remaining amount";
     if (!window.confirm(`Send a payout of ${human} to the seller?`)) return;
 
     try {
@@ -78,7 +68,7 @@ export default function PayoutButton({
       alert(`✅ Payout sent: ${amt}`);
       setCustomUsd("");
       onPayout && onPayout(res);
-      await loadPreview(); // refresh numbers after payout
+      await loadPreview();
     } catch (e) {
       alert("❌ " + (e?.message || "Payout failed."));
     } finally {
@@ -86,36 +76,35 @@ export default function PayoutButton({
     }
   }
 
-  // Quick reads for the info line
   const stripeFee = preview?.stripe?.fee;
   const tax = preview?.amounts?.tax;
   const platformHold = preview?.policy?.platformHoldOnBase;
 
   return (
-    <div className={`payout-card ${className}`} style={styles.card}>
-      <div style={styles.row}>
-        <div style={styles.metaCol}>
-          <div style={styles.line}>
+    <div className={`payout-card ${className}`} style={ui.card}>
+      <div style={ui.topRow}>
+        <div style={ui.metaCol}>
+          <div style={ui.line}>
             <strong>Remaining to seller:</strong>{" "}
             {loadingPreview ? "Loading…" : remainingUsd}
           </div>
-          <div style={styles.line}>
+          <div style={ui.line}>
             <strong>Suggested payout:</strong> {suggestedUsd}
           </div>
 
           {(stripeFee != null || tax != null || platformHold != null) && (
-            <div style={{ ...styles.line, opacity: 0.85 }}>
+            <div style={{ ...ui.line, opacity: 0.85 }}>
               {stripeFee != null && <>Stripe fee: {toUSD(stripeFee)} • </>}
               {tax != null && <>Tax held: {toUSD(tax)} • </>}
               {platformHold != null && <>Platform hold (3% base): {toUSD(platformHold)}</>}
             </div>
           )}
 
-          {!!error && <div style={styles.error}>{error}</div>}
+          {!!error && <div style={ui.error}>{error}</div>}
         </div>
 
-        <div style={styles.controlsCol}>
-          <div style={styles.inline}>
+        <div style={ui.controlsCol}>
+          <div style={ui.inline}>
             <input
               type="number"
               min="0"
@@ -123,12 +112,12 @@ export default function PayoutButton({
               placeholder="Custom USD (optional)"
               value={customUsd}
               onChange={(e) => setCustomUsd(e.target.value)}
-              style={styles.input}
+              style={ui.input}
             />
             <button
               onClick={() => setCustomUsd(String((suggestedCents / 100).toFixed(2)))}
               type="button"
-              style={styles.smallBtn}
+              style={ui.smallBtn}
               title="Fill with suggested"
             >
               Use suggested
@@ -140,7 +129,7 @@ export default function PayoutButton({
             onClick={handlePayout}
             disabled={doingPayout || !token}
             style={{
-              ...styles.payoutBtn,
+              ...ui.payoutBtn,
               opacity: doingPayout || !token ? 0.7 : 1,
               cursor: doingPayout || !token ? "not-allowed" : "pointer",
             }}
@@ -153,17 +142,14 @@ export default function PayoutButton({
   );
 }
 
-/* inline styles for quick drop-in */
-const styles = {
+const ui = {
   card: {
-    marginTop: 16,
-    padding: 16,
-    borderRadius: 10,
+    padding: 14,
+    borderRadius: 12,
     border: "1px solid #e5e7eb",
-    background: "#fff",
-    boxShadow: "0 2px 8px rgba(0,0,0,0.05)",
+    background: "#f8fafc",
   },
-  row: { display: "flex", gap: 20, alignItems: "flex-start", flexWrap: "wrap" },
+  topRow: { display: "flex", gap: 20, alignItems: "flex-start", flexWrap: "wrap" },
   metaCol: { flex: 1, minWidth: 280 },
   controlsCol: { display: "flex", flexDirection: "column", gap: 10, minWidth: 280 },
   line: { marginBottom: 6, fontSize: 14 },
@@ -171,28 +157,29 @@ const styles = {
   inline: { display: "flex", gap: 8, alignItems: "center" },
   input: {
     flex: 1,
-    padding: "8px 10px",
-    borderRadius: 8,
+    padding: "10px 12px",
+    borderRadius: 10,
     border: "1px solid #d1d5db",
     fontSize: 14,
+    background: "#fff",
   },
   smallBtn: {
-    padding: "8px 10px",
-    borderRadius: 8,
+    padding: "10px 12px",
+    borderRadius: 10,
     background: "#eef2ff",
     border: "1px solid #c7d2fe",
     color: "#3730a3",
     fontSize: 13,
-    fontWeight: 600,
+    fontWeight: 700,
   },
   payoutBtn: {
     width: "100%",
     padding: "12px 14px",
     border: "none",
-    borderRadius: 10,
+    borderRadius: 12,
     background: "#1e293b",
     color: "#fff",
-    fontWeight: 700,
+    fontWeight: 800,
     letterSpacing: 0.3,
     textTransform: "uppercase",
   },
