@@ -125,26 +125,28 @@ export const rejectArtwork = async (id, token) => {
 };
 
 export async function getAllUsers(token) {
-    try {
-      const response = await axios.get(`${API_URL}/api/admin/users`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-  
-      console.log("📸 Users fetched:", response.data.users); // Debugging: Check if profilePictureLink exists
-  
-      return response.data.users.map(user => ({
-        _id: user._id,
-        name: user.name,
-        email: user.email,
-        role: user.role,
-        createdAt: user.createdAt,
-        profilePictureLink: user.profilePictureLink || "https://via.placeholder.com/50", // Fallback image
-      }));
-    } catch (error) {
-      console.error("Error fetching users:", error.response?.data || error.message);
-      return [];
-    }
+  try {
+    const response = await axios.get(`${API_URL}/api/admin/users`, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+
+    return response.data.users.map(user => ({
+      _id: user._id,
+      name: user.name,
+      email: user.email,
+      role: user.role,
+      createdAt: user.createdAt,
+      profilePictureLink: user.profilePictureLink || "https://via.placeholder.com/50",
+      // NEW
+      stripeAccountId: user.stripeAccountId || null,
+      stripeLinked: Boolean(user.stripeAccountId),
+      stripeOnboardingCompleted: Boolean(user.stripeOnboardingCompleted),
+    }));
+  } catch (error) {
+    console.error("Error fetching users:", error.response?.data || error.message);
+    return [];
   }
+}
 
   export async function getUserDetails(id, token) {
     try {

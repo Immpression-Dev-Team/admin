@@ -5,8 +5,8 @@ import { getUserDetails, deleteUser } from "../api/API";
 import { useAuth } from "@/context/authContext";
 import "@styles/userdetails.css";
 
-function pillClass(verified) {
-  return verified ? "pill verified" : "pill unverified";
+function pillClass(ok) {
+  return ok ? "pill verified" : "pill unverified";
 }
 
 export default function UserDetails() {
@@ -54,6 +54,9 @@ export default function UserDetails() {
     }
   };
 
+  const stripeLinked = Boolean(user?.stripeAccountId);
+  const onboardingText = user?.stripeOnboardingCompleted ? "Completed" : "Incomplete";
+
   if (loading)
     return (
       <ScreenTemplate>
@@ -84,8 +87,9 @@ export default function UserDetails() {
               </div>
             </div>
           </div>
-          <span className={pillClass(!!user.verified)}>
-            {user.verified ? "VERIFIED" : "UNVERIFIED"}
+          {/* FIX: use isVerified from schema */}
+          <span className={pillClass(!!user.isVerified)}>
+            {user.isVerified ? "VERIFIED" : "UNVERIFIED"}
           </span>
         </div>
 
@@ -150,6 +154,51 @@ export default function UserDetails() {
               </div>
             </div>
 
+            {/* Stripe */}
+            <div className="card">
+              <div className="card-head">
+                <h3>Stripe</h3>
+              </div>
+              <div className="card-body">
+                <dl className="kv">
+                  <dt>Status</dt>
+                  <dd>
+                    <span className={pillClass(stripeLinked)}>
+                      {stripeLinked ? "LINKED" : "NOT LINKED"}
+                    </span>
+                  </dd>
+
+                  {stripeLinked && (
+                    <>
+                      <dt>Account ID</dt>
+                      <dd className="mono" style={{ display: "flex", gap: 8, alignItems: "center" }}>
+                        <span>{user.stripeAccountId}</span>
+                        <button
+                          className="btn small"
+                          onClick={() => navigator.clipboard.writeText(user.stripeAccountId)}
+                          title="Copy Stripe Account ID"
+                        >
+                          Copy
+                        </button>
+                      </dd>
+
+                      <dt>Onboarding</dt>
+                      <dd>{onboardingText}</dd>
+
+                      {user.stripeOnboardingCompletedAt && (
+                        <>
+                          <dt>Onboarded At</dt>
+                          <dd>
+                            {new Date(user.stripeOnboardingCompletedAt).toLocaleString()}
+                          </dd>
+                        </>
+                      )}
+                    </>
+                  )}
+                </dl>
+              </div>
+            </div>
+
             {/* Security / Verification */}
             <div className="card">
               <div className="card-head">
@@ -159,8 +208,8 @@ export default function UserDetails() {
                 <dl className="kv">
                   <dt>Verification</dt>
                   <dd>
-                    <span className={pillClass(!!user.verified)}>
-                      {user.verified ? "VERIFIED" : "UNVERIFIED"}
+                    <span className={pillClass(!!user.isVerified)}>
+                      {user.isVerified ? "VERIFIED" : "UNVERIFIED"}
                     </span>
                   </dd>
                   <dt>User ID</dt>
