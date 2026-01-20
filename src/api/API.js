@@ -279,3 +279,136 @@ export async function payoutOrder(orderId, token, { amountCents } = {}) {
     );
   }
 }
+
+// ========= Reports Management (Admin - Apple Guideline 1.2 Compliance) =========
+
+// Get all reports with pagination and filters
+export async function getAllReports(token, page = 1, limit = 20, filters = {}) {
+  try {
+    const params = { page, limit, ...filters };
+    const response = await axios.get(`${API_URL}/api/admin/reports`, {
+      headers: { Authorization: `Bearer ${token}` },
+      params,
+    });
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching reports:", error.response?.data || error.message);
+    return { success: false, data: [], pagination: { totalPages: 1 } };
+  }
+}
+
+// Get reports dashboard statistics
+export async function getReportsStats(token) {
+  try {
+    const response = await axios.get(`${API_URL}/api/admin/reports/stats`, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching reports stats:", error.response?.data || error.message);
+    return { success: false, data: null };
+  }
+}
+
+// Get single report by ID
+export async function getReportById(id, token) {
+  try {
+    const response = await axios.get(`${API_URL}/api/admin/reports/${id}`, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching report:", error.response?.data || error.message);
+    throw new Error(error.response?.data?.error || "Failed to fetch report.");
+  }
+}
+
+// Update report status
+export async function updateReportStatus(id, status, token) {
+  try {
+    const response = await axios.patch(
+      `${API_URL}/api/admin/reports/${id}/status`,
+      { status },
+      { headers: { Authorization: `Bearer ${token}` } }
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Error updating report status:", error.response?.data || error.message);
+    throw new Error(error.response?.data?.error || "Failed to update report status.");
+  }
+}
+
+// Warn user for reported content
+export async function warnReportedUser(reportId, message, token) {
+  try {
+    const response = await axios.post(
+      `${API_URL}/api/admin/reports/${reportId}/action/warn-user`,
+      { message },
+      { headers: { Authorization: `Bearer ${token}` } }
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Error warning user:", error.response?.data || error.message);
+    throw new Error(error.response?.data?.error || "Failed to warn user.");
+  }
+}
+
+// Suspend user for reported content
+export async function suspendReportedUser(reportId, durationDays, message, token) {
+  try {
+    const response = await axios.post(
+      `${API_URL}/api/admin/reports/${reportId}/action/suspend-user`,
+      { durationDays, message },
+      { headers: { Authorization: `Bearer ${token}` } }
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Error suspending user:", error.response?.data || error.message);
+    throw new Error(error.response?.data?.error || "Failed to suspend user.");
+  }
+}
+
+// Ban user for reported content
+export async function banReportedUser(reportId, reason, token) {
+  try {
+    const response = await axios.post(
+      `${API_URL}/api/admin/reports/${reportId}/action/ban-user`,
+      { reason },
+      { headers: { Authorization: `Bearer ${token}` } }
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Error banning user:", error.response?.data || error.message);
+    throw new Error(error.response?.data?.error || "Failed to ban user.");
+  }
+}
+
+// Remove reported content
+export async function removeReportedContent(reportId, token) {
+  try {
+    const response = await axios.post(
+      `${API_URL}/api/admin/reports/${reportId}/action/remove-content`,
+      {},
+      { headers: { Authorization: `Bearer ${token}` } }
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Error removing content:", error.response?.data || error.message);
+    throw new Error(error.response?.data?.error || "Failed to remove content.");
+  }
+}
+
+// Dismiss report
+export async function dismissReport(reportId, reason, token) {
+  try {
+    const response = await axios.post(
+      `${API_URL}/api/admin/reports/${reportId}/action/dismiss`,
+      { reason },
+      { headers: { Authorization: `Bearer ${token}` } }
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Error dismissing report:", error.response?.data || error.message);
+    throw new Error(error.response?.data?.error || "Failed to dismiss report.");
+  }
+}

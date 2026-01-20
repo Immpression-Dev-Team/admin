@@ -20,6 +20,7 @@ function Sidebar({ isOpen, toggleSidebar, email, logout }) {
     { path: "/review-art", label: "Review Art", icon: "🎨" },
     { path: "/user-base", label: "User Base", icon: "👤" },
     { path: "/orders", label: "Orders", icon: "🧾" },
+    { path: "/reports", label: "Reports", icon: "🚩" },
     { path: "/analytics", label: "Analytics", icon: "📊" },
     { path: "/settings", label: "Settings", icon: "⚙️" }
   ];

@@ -7,6 +7,8 @@ import ArtDetails from "./components/ArtDetails";
 import UserDetails from "./components/UserDetails";
 import Orders from "./components/Orders";
 import OrderDetails from "./components/OrderDetails"; // ✅ NEW IMPORT
+import Reports from "./components/Reports"; // Apple Guideline 1.2 Compliance
+import ReportDetails from "./components/ReportDetails"; // Apple Guideline 1.2 Compliance
 
 import './App.css';
 
@@ -28,6 +30,8 @@ function App() {
         <Route path="/user/:id" element={<PrivateRoute><UserDetails /></PrivateRoute>} />
         <Route path="/orders" element={<PrivateRoute><Orders /></PrivateRoute>} />
         <Route path="/order/:id" element={<PrivateRoute><OrderDetails /></PrivateRoute>} /> {/* ✅ NEW ROUTE */}
+        <Route path="/reports" element={<PrivateRoute><Reports /></PrivateRoute>} />
+        <Route path="/report/:id" element={<PrivateRoute><ReportDetails /></PrivateRoute>} />
         <Route path="*" element={<h2>404 - Page Not Found</h2>} />
       </Routes>
     </Router>
