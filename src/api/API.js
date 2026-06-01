@@ -479,3 +479,45 @@ export async function saveAdminSettings(token, payload) {
 export function getExportUrl(type, token) {
   return `${API_URL}/api/admin/settings/export/${type}?token=${token}`;
 }
+
+
+// ========= Public Art Curator (Admin) =========
+
+export async function getFeaturedPublicArt(token) {
+  try {
+    const response = await axios.get(`${API_URL}/api/admin/public-art/featured`, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching featured public art:", error.response?.data || error.message);
+    return { success: false, data: [] };
+  }
+}
+
+export async function saveFeaturedPublicArt(token, artworks) {
+  try {
+    const response = await axios.put(
+      `${API_URL}/api/admin/public-art/featured`,
+      { artworks },
+      { headers: { Authorization: `Bearer ${token}` } }
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Error saving featured public art:", error.response?.data || error.message);
+    throw new Error(error.response?.data?.error || "Failed to save featured artworks.");
+  }
+}
+
+export async function searchAdminPublicArt(token, query, source = "all", limit = 20) {
+  try {
+    const response = await axios.get(`${API_URL}/api/admin/public-art/search`, {
+      headers: { Authorization: `Bearer ${token}` },
+      params: { q: query, source, limit },
+    });
+    return response.data;
+  } catch (error) {
+    console.error("Error searching public art:", error.response?.data || error.message);
+    return { success: false, data: [] };
+  }
+}
