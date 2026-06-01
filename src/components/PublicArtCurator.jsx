@@ -97,11 +97,8 @@ export default function PublicArtCurator() {
   async function handleSave() {
     setSaving(true);
     try {
-      const refs = featured.map(({ id }) => {
-        const [src, ...rest] = id.split(":");
-        return { source: src, id: rest.join(":") };
-      });
-      await saveFeaturedPublicArt(token, refs);
+      // Send full artwork objects — backend stores them directly, no re-fetching needed
+      await saveFeaturedPublicArt(token, featured);
       showNotice("success", `Saved ${featured.length} featured artworks.`);
     } catch (err) {
       showNotice("error", err.message);
