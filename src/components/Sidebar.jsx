@@ -22,6 +22,7 @@ function Sidebar({ isOpen, toggleSidebar, email, logout }) {
     { path: "/orders", label: "Orders", icon: "🧾" },
     { path: "/reports", label: "Reports", icon: "🚩" },
     { path: "/analytics", label: "Analytics", icon: "📊" },
+    { path: "/public-art", label: "Public Art", icon: "🖼️" },
     { path: "/settings", label: "Settings", icon: "⚙️" }
   ];
 
