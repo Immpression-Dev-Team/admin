@@ -68,6 +68,18 @@ const NAV_CARDS = [
       </svg>
     ),
   },
+  {
+    key: "public-art",
+    title: "Public Art",
+    description: "Curate the 20 public domain artworks shown in the mobile app's featured section.",
+    path: "/public-art",
+    gradient: "linear-gradient(135deg, #0f766e 0%, #14b8a6 100%)",
+    icon: (
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+        <rect x="3" y="3" width="18" height="18" rx="2" /><circle cx="8.5" cy="8.5" r="1.5" /><polyline points="21 15 16 10 5 21" />
+      </svg>
+    ),
+  },
 ];
 
 function Home() {
