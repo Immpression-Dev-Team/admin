@@ -6,9 +6,12 @@ import "@/styles/publicartcurator.css";
 
 const MAX_FEATURED = 20;
 const SOURCE_OPTIONS = [
-  { value: "all", label: "All Sources" },
-  { value: "met", label: "MET Museum" },
-  { value: "chicago", label: "Art Institute of Chicago" },
+  { value: "all",          label: "All Sources" },
+  { value: "wikimedia",    label: "Wikimedia Commons" },
+  { value: "met",          label: "MET Museum" },
+  { value: "chicago",      label: "Art Institute of Chicago" },
+  { value: "cleveland",    label: "Cleveland Museum of Art" },
+  { value: "rijksmuseum",  label: "Rijksmuseum (needs API key)" },
 ];
 
 export default function PublicArtCurator() {
@@ -20,6 +23,7 @@ export default function PublicArtCurator() {
   const [query, setQuery] = useState("");
   const [source, setSource] = useState("all");
   const [searching, setSearching] = useState(false);
+  const [searched, setSearched] = useState(false);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [notice, setNotice] = useState(null);
@@ -46,9 +50,12 @@ export default function PublicArtCurator() {
     if (!query.trim()) return;
     setSearching(true);
     setSearchResults([]);
+    setSearched(false);
     const res = await searchAdminPublicArt(token, query.trim(), source, 20);
+    console.log("[PublicArtCurator] search response:", res);
     if (res.success) setSearchResults(res.data);
-    else showNotice("error", "Search failed. Try again.");
+    else showNotice("error", `Search failed: ${res.error || "Unknown error. Check the browser console."}`);
+    setSearched(true);
     setSearching(false);
   }
 
@@ -183,8 +190,11 @@ export default function PublicArtCurator() {
             </button>
           </form>
 
-          {searchResults.length === 0 && !searching && (
+          {!searching && !searched && (
             <p className="pac-empty">Search results will appear here.</p>
+          )}
+          {!searching && searched && searchResults.length === 0 && (
+            <p className="pac-empty">No results found. Try a different term (e.g. "monet", "impressionism").</p>
           )}
 
           <div className="pac-results-grid">
@@ -200,7 +210,10 @@ export default function PublicArtCurator() {
                   <div className="pac-result-info">
                     <span className="pac-result-title">{artwork.title}</span>
                     <span className="pac-result-artist">{artwork.artist}</span>
-                    <span className="pac-result-source">{artwork.source === "met" ? "MET" : "Chicago"}</span>
+                    <span className="pac-result-source">{{
+                      met: "MET", chicago: "Chicago", cleveland: "Cleveland",
+                      wikimedia: "Wikimedia", rijksmuseum: "Rijksmuseum",
+                    }[artwork.source] || artwork.source}</span>
                   </div>
                   <button
                     className="pac-add-btn"
