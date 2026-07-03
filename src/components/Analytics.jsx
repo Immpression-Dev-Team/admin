@@ -441,6 +441,28 @@ function Analytics() {
             {mobileError && !mobileLoading && <div className="an-state an-state--error"><p>{mobileError}</p></div>}
             {mobileData && !mobileLoading && (
               <>
+                {/* All-time KPI */}
+                <div className="an-kpi-row">
+                  <div className="an-kpi">
+                    <span className="an-kpi-value">${mobileData.allTime.earnings.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
+                    <span className="an-kpi-label">All-Time Earnings</span>
+                    <span className="an-kpi-bar an-kpi-bar--orange" />
+                  </div>
+                  <div className="an-kpi-divider" />
+                  <div className="an-kpi">
+                    <span className="an-kpi-value">{fmt(mobileData.allTime.impressions)}</span>
+                    <span className="an-kpi-label">All-Time Impressions</span>
+                    <span className="an-kpi-bar an-kpi-bar--purple" />
+                  </div>
+                  <div className="an-kpi-divider" />
+                  <div className="an-kpi">
+                    <span className="an-kpi-value">{fmt(mobileData.allTime.clicks)}</span>
+                    <span className="an-kpi-label">All-Time Clicks</span>
+                    <span className="an-kpi-bar an-kpi-bar--blue" />
+                  </div>
+                </div>
+
+                {/* 30-day stat cards */}
                 <div className="an-stat-row an-stat-row--4">
                   <StatCard label="Earnings (30d)"    value={`$${mobileData.summary.earnings.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`} />
                   <StatCard label="Impressions (30d)" value={fmt(mobileData.summary.impressions)} />
@@ -448,6 +470,28 @@ function Analytics() {
                   <StatCard label="eCPM"              value={`$${mobileData.summary.eCPM.toFixed(2)}`} sub={`${mobileData.summary.ctr}%`} subLabel="CTR" />
                 </div>
 
+                {/* Monthly bar chart */}
+                <div className="an-chart-card">
+                  <p className="an-chart-label">Monthly Earnings (12 months)</p>
+                  <ResponsiveContainer width="100%" height={220}>
+                    <BarChart data={mobileData.monthly} margin={{ top: 4, right: 16, left: -10, bottom: 0 }}>
+                      <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" vertical={false} />
+                      <XAxis dataKey="month" tick={{ fontSize: 11 }} />
+                      <YAxis tick={{ fontSize: 11 }} tickFormatter={(v) => `$${v.toFixed(2)}`} />
+                      <Tooltip
+                        contentStyle={{ fontSize: 12, border: "1px solid #e2e8f0" }}
+                        formatter={(v) => [`$${v.toFixed(2)}`, "Earnings"]}
+                      />
+                      <Bar dataKey="earnings" name="Earnings" radius={[3, 3, 0, 0]}>
+                        {mobileData.monthly.map((_, i) => (
+                          <Cell key={i} fill={i === mobileData.monthly.length - 1 ? "#ea580c" : "#fed7aa"} />
+                        ))}
+                      </Bar>
+                    </BarChart>
+                  </ResponsiveContainer>
+                </div>
+
+                {/* Daily composed chart */}
                 <div className="an-chart-card">
                   <p className="an-chart-label">Daily Earnings &amp; Impressions (30d)</p>
                   <ResponsiveContainer width="100%" height={220}>
