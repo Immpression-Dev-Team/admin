@@ -307,6 +307,18 @@ export async function getSearchConsoleAnalytics(token) {
   }
 }
 
+export async function getMobileAnalytics(token) {
+  try {
+    const response = await axios.get(`${API_URL}/api/admin/analytics/mobile`, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching mobile analytics:", error.response?.data || error.message);
+    return { success: false, error: error.response?.data?.error || "Failed to load mobile analytics." };
+  }
+}
+
 export async function getAnalytics(token) {
   try {
     const response = await axios.get(`${API_URL}/api/admin/analytics`, {
