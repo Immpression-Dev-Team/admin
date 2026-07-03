@@ -34,8 +34,10 @@ function ArtCard({ art }) {
               <h3 className="art-card-title">{art.name}</h3>
               <p className="art-card-artist">{art.artistName}</p>
             </div>
-            {/* ✅ Status badge aligned with text */}
-            <div className="art-stage-container">{getStageLabel()}</div>
+            <div className="art-stage-container">
+              {art.isSold && <span className="art-stage sold">Sold</span>}
+              {getStageLabel()}
+            </div>
           </div>
           
           {/* ✅ Show Reviewer Info if Available */}
