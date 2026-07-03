@@ -51,31 +51,34 @@
 .an-nav-tab--dark:hover:not(.an-nav-tab--active)   { background: #f1f5f9; box-shadow: 0 4px 12px rgba(0,0,0,0.12); }
 .an-nav-tab--blue:hover:not(.an-nav-tab--active)   { background: #dbeafe; box-shadow: 0 4px 12px rgba(26,115,232,0.2); }
 .an-nav-tab--green:hover:not(.an-nav-tab--active)  { background: #dcfce7; box-shadow: 0 4px 12px rgba(24,128,56,0.2); }
+.an-nav-tab--mobile:hover:not(.an-nav-tab--active) { background: #fff7ed; box-shadow: 0 4px 12px rgba(234,88,12,0.2); }
 
 .an-nav-tab--dark.an-nav-tab--active   { box-shadow: 0 4px 14px rgba(15,23,42,0.35); }
 .an-nav-tab--blue.an-nav-tab--active   { box-shadow: 0 4px 14px rgba(26,115,232,0.4); }
 .an-nav-tab--green.an-nav-tab--active  { box-shadow: 0 4px 14px rgba(24,128,56,0.4); }
+.an-nav-tab--mobile.an-nav-tab--active { box-shadow: 0 4px 14px rgba(234,88,12,0.4); }
 
 /* inactive color tints */
 .an-nav-tab--dark   { background: #f8fafc; border-color: #e2e8f0; }
 .an-nav-tab--blue   { background: #eff6ff; border-color: #bfdbfe; }
 .an-nav-tab--green  { background: #f0fdf4; border-color: #bbf7d0; }
-.an-nav-tab--mobile { background: #f8fafc; border-color: #e2e8f0; }
+.an-nav-tab--mobile { background: #fff7ed; border-color: #fed7aa; }
 
 .an-nav-tab--dark  .an-nav-tab-label { color: #0f172a; }
 .an-nav-tab--blue  .an-nav-tab-label { color: #1a73e8; }
 .an-nav-tab--green .an-nav-tab-label { color: #188038; }
-.an-nav-tab--mobile .an-nav-tab-label { color: #64748b; }
+.an-nav-tab--mobile .an-nav-tab-label { color: #ea580c; }
 
 .an-nav-tab--dark  .an-nav-tab-sub { color: #94a3b8; }
 .an-nav-tab--blue  .an-nav-tab-sub { color: #93c5fd; }
 .an-nav-tab--green .an-nav-tab-sub { color: #86efac; }
-.an-nav-tab--mobile .an-nav-tab-sub { color: #cbd5e1; }
+.an-nav-tab--mobile .an-nav-tab-sub { color: #fdba74; }
 
 /* active states */
 .an-nav-tab--dark.an-nav-tab--active   { background: #0f172a; border-color: #0f172a; }
 .an-nav-tab--blue.an-nav-tab--active   { background: #1a73e8; border-color: #1a73e8; }
 .an-nav-tab--green.an-nav-tab--active  { background: #188038; border-color: #188038; }
+.an-nav-tab--mobile.an-nav-tab--active { background: #ea580c; border-color: #ea580c; }
 
 .an-nav-tab--active .an-nav-tab-label { color: #fff; }
 .an-nav-tab--active .an-nav-tab-sub   { color: rgba(255,255,255,0.55); }

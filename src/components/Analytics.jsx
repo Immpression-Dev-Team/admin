@@ -3,10 +3,11 @@ import { useNavigate } from "react-router-dom";
 import {
   AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip,
   ResponsiveContainer, BarChart, Bar, Cell, LineChart, Line, Legend,
+  ComposedChart,
 } from "recharts";
 import ScreenTemplate from "./Template/ScreenTemplate";
 import { useAuth } from "@/context/authContext";
-import { getAnalytics, getWebAnalytics, getSearchConsoleAnalytics } from "@/api/API";
+import { getAnalytics, getWebAnalytics, getSearchConsoleAnalytics, getMobileAnalytics } from "@/api/API";
 import "@/styles/analytics.css";
 
 const SOURCE_COLORS = ["#6366f1","#10b981","#f59e0b","#ef4444","#3b82f6","#8b5cf6","#ec4899","#14b8a6"];
@@ -25,7 +26,7 @@ const NAV = [
   { key: "inhouse",  label: "In-House",      sub: "Backend · Live",           color: "dark" },
   { key: "website",  label: "Website",        sub: "Google Analytics · 30d",   color: "blue" },
   { key: "search",   label: "Search Console", sub: "Search Console · 28d",     color: "green" },
-  { key: "mobile",   label: "Mobile",         sub: "Coming soon",              color: "mobile", disabled: true },
+  { key: "mobile",   label: "Mobile",         sub: "AdMob · 30d",              color: "mobile" },
 ];
 
 function StatCard({ label, value, sub, subLabel }) {
@@ -56,6 +57,10 @@ function Analytics() {
   const [gscData, setGscData]       = useState(null);
   const [gscLoading, setGscLoading] = useState(true);
   const [gscError, setGscError]     = useState("");
+
+  const [mobileData, setMobileData]       = useState(null);
+  const [mobileLoading, setMobileLoading] = useState(true);
+  const [mobileError, setMobileError]     = useState("");
 
   useEffect(() => {
     if (!authState?.token) { navigate("/login"); return; }
@@ -91,6 +96,20 @@ function Analytics() {
         if (res.success) setGscData(res.data);
         else setGscError(res.error || "Failed to load Search Console data.");
         setGscLoading(false);
+      }
+    })();
+    return () => { cancelled = true; };
+  }, [authState?.token]);
+
+  useEffect(() => {
+    if (!authState?.token) return;
+    let cancelled = false;
+    (async () => {
+      const res = await getMobileAnalytics(authState.token);
+      if (!cancelled) {
+        if (res.success) setMobileData(res.data);
+        else setMobileError(res.error || "Failed to load mobile analytics.");
+        setMobileLoading(false);
       }
     })();
     return () => { cancelled = true; };
@@ -414,21 +433,79 @@ function Analytics() {
         )}
 
         {/* ══════════════════════════════════
-            MOBILE  (coming soon)
+            MOBILE  (AdMob)
         ══════════════════════════════════ */}
         {activeTab === "mobile" && (
           <div className="an-content">
-            <div className="an-coming-soon">
-              <div className="an-coming-soon-label">Coming Soon</div>
-              <h2 className="an-coming-soon-title">Mobile Analytics</h2>
-              <p className="an-coming-soon-desc">
-                Google Analytics for the iOS App Store and Google Play apps will appear here once integrated.
-              </p>
-              <div className="an-coming-soon-platforms">
-                <span className="an-platform-badge">iOS · App Store</span>
-                <span className="an-platform-badge">Android · Google Play</span>
-              </div>
-            </div>
+            {mobileLoading && <div className="an-state"><div className="an-spinner" /><p>Loading…</p></div>}
+            {mobileError && !mobileLoading && <div className="an-state an-state--error"><p>{mobileError}</p></div>}
+            {mobileData && !mobileLoading && (
+              <>
+                <div className="an-stat-row an-stat-row--4">
+                  <StatCard label="Earnings (30d)"    value={`$${mobileData.summary.earnings.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`} />
+                  <StatCard label="Impressions (30d)" value={fmt(mobileData.summary.impressions)} />
+                  <StatCard label="Clicks (30d)"      value={fmt(mobileData.summary.clicks)} />
+                  <StatCard label="eCPM"              value={`$${mobileData.summary.eCPM.toFixed(2)}`} sub={`${mobileData.summary.ctr}%`} subLabel="CTR" />
+                </div>
+
+                <div className="an-chart-card">
+                  <p className="an-chart-label">Daily Earnings &amp; Impressions (30d)</p>
+                  <ResponsiveContainer width="100%" height={220}>
+                    <ComposedChart data={mobileData.daily} margin={{ top: 4, right: 40, left: -10, bottom: 0 }}>
+                      <defs>
+                        <linearGradient id="gEarn" x1="0" y1="0" x2="0" y2="1">
+                          <stop offset="5%"  stopColor="#ea580c" stopOpacity={0.15} />
+                          <stop offset="95%" stopColor="#ea580c" stopOpacity={0} />
+                        </linearGradient>
+                      </defs>
+                      <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" />
+                      <XAxis dataKey="date" tick={{ fontSize: 11 }} interval="preserveStartEnd" />
+                      <YAxis yAxisId="left"  tick={{ fontSize: 11 }} tickFormatter={(v) => `$${v.toFixed(2)}`} />
+                      <YAxis yAxisId="right" orientation="right" tick={{ fontSize: 11 }} tickFormatter={fmt} />
+                      <Tooltip
+                        contentStyle={{ fontSize: 12, border: "1px solid #e2e8f0" }}
+                        formatter={(v, name) => name === "Earnings" ? [`$${v.toFixed(2)}`, name] : [v.toLocaleString(), name]}
+                      />
+                      <Legend wrapperStyle={{ fontSize: 12 }} />
+                      <Area  yAxisId="left"  type="monotone" dataKey="earnings"    name="Earnings"    stroke="#ea580c" strokeWidth={2} fill="url(#gEarn)" dot={false} />
+                      <Line  yAxisId="right" type="monotone" dataKey="impressions" name="Impressions" stroke="#6366f1" strokeWidth={2} dot={false} />
+                    </ComposedChart>
+                  </ResponsiveContainer>
+                </div>
+
+                <div className="an-table-card">
+                  <p className="an-chart-label">Platform Breakdown</p>
+                  {mobileData.platforms.length > 0 ? (
+                    <table className="an-table">
+                      <thead>
+                        <tr>
+                          <th>Platform</th>
+                          <th>Earnings</th>
+                          <th>Impressions</th>
+                          <th>Clicks</th>
+                          <th>eCPM</th>
+                          <th>Fill Rate</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {mobileData.platforms.map((p) => (
+                          <tr key={p.platform} style={{ cursor: "default" }}>
+                            <td className="an-cell-primary">{p.platform}</td>
+                            <td className="an-cell-primary">${p.earnings.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+                            <td className="an-cell-secondary">{p.impressions.toLocaleString()}</td>
+                            <td className="an-cell-secondary">{p.clicks.toLocaleString()}</td>
+                            <td className="an-cell-primary">${p.eCPM.toFixed(2)}</td>
+                            <td className="an-cell-secondary">{p.fillRate}%</td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  ) : (
+                    <div className="an-empty-state"><p>No ad data yet for this period.</p></div>
+                  )}
+                </div>
+              </>
+            )}
           </div>
         )}
 
