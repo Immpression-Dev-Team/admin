@@ -12,6 +12,7 @@ import ReportDetails from "./components/ReportDetails"; // Apple Guideline 1.2 C
 import Analytics from "./components/Analytics";
 import Settings from "./components/Settings";
 import PublicArtCurator from "./components/PublicArtCurator";
+import FeaturedArticles from "./components/FeaturedArticles";
 
 import './App.css';
 
@@ -38,6 +39,7 @@ function App() {
         <Route path="/analytics" element={<PrivateRoute><Analytics /></PrivateRoute>} />
         <Route path="/settings" element={<PrivateRoute><Settings /></PrivateRoute>} />
         <Route path="/public-art" element={<PrivateRoute><PublicArtCurator /></PrivateRoute>} />
+        <Route path="/articles" element={<PrivateRoute><FeaturedArticles /></PrivateRoute>} />
         <Route path="*" element={<h2>404 - Page Not Found</h2>} />
       </Routes>
     </Router>
