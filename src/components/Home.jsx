@@ -80,6 +80,18 @@ const NAV_CARDS = [
       </svg>
     ),
   },
+  {
+    key: "articles",
+    title: "Featured Articles",
+    description: "Manage blog posts and guest features displayed on the landing page.",
+    path: "/articles",
+    gradient: "linear-gradient(135deg, #9d174d 0%, #ec4899 100%)",
+    icon: (
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M4 4h16v2H4z" /><rect x="4" y="8" width="16" height="12" rx="1" /><path d="M8 12h8M8 16h5" />
+      </svg>
+    ),
+  },
 ];
 
 function Home() {
