@@ -1,5 +1,5 @@
 .fin-page {
-  max-width: 1000px;
+  max-width: 1600px;
   margin: 0 auto;
   padding: 32px 24px 80px;
 }
@@ -29,7 +29,7 @@
 }
 
 .fin-kpi {
-  border-radius: 12px;
+  border-radius: 0;
   padding: 20px 24px;
   display: flex;
   flex-direction: column;
@@ -65,7 +65,7 @@
 .fin-section {
   background: #fff;
   border: 1px solid #e2e8f0;
-  border-radius: 12px;
+  border-radius: 0;
   overflow: hidden;
   box-shadow: 0 1px 6px rgba(0,0,0,0.05);
 }
@@ -98,7 +98,7 @@
   background: #1e293b;
   color: #fff;
   border: none;
-  border-radius: 7px;
+  border-radius: 0;
   padding: 7px 14px;
   font-size: 0.8rem;
   font-weight: 600;
@@ -120,7 +120,7 @@
 
 .fin-form input {
   border: 1px solid #cbd5e1;
-  border-radius: 7px;
+  border-radius: 0;
   padding: 8px 10px;
   font-size: 0.83rem;
   color: #0f172a;
@@ -141,7 +141,7 @@
   background: #f1f5f9;
   color: #475569;
   border: none;
-  border-radius: 7px;
+  border-radius: 0;
   padding: 7px 14px;
   font-size: 0.8rem;
   font-weight: 600;
@@ -151,7 +151,7 @@
   background: #1e293b;
   color: #fff;
   border: none;
-  border-radius: 7px;
+  border-radius: 0;
   padding: 7px 14px;
   font-size: 0.8rem;
   font-weight: 600;
@@ -218,7 +218,7 @@
   background: #f1f5f9;
   color: #475569;
   border: none;
-  border-radius: 5px;
+  border-radius: 0;
   padding: 4px 10px;
   font-size: 0.75rem;
   font-weight: 600;
@@ -234,7 +234,7 @@
   font-size: 0.85rem;
   cursor: pointer;
   padding: 4px 6px;
-  border-radius: 4px;
+  border-radius: 0;
   transition: color 0.15s, background 0.15s;
 }
 .fin-btn-delete:hover { color: #e11d48; background: #fff1f2; }
@@ -256,7 +256,7 @@
 .fin-error {
   background: #fff1f2;
   color: #e11d48;
-  border-radius: 8px;
+  border-radius: 0;
   padding: 10px 14px;
   font-size: 0.85rem;
   margin-bottom: 16px;
