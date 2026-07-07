@@ -16,7 +16,7 @@ const NAV_CARDS = [
     gradient: "linear-gradient(135deg, #7c3aed 0%, #a855f7 100%)",
     icon: (
       <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-        <rect x="3" y="3" width="18" height="18" rx="2" /><path d="m9 12 2 2 4-4" />
+        <rect x="3" y="3" width="18" height="18" rx="0" /><path d="m9 12 2 2 4-4" />
       </svg>
     ),
   },
@@ -76,7 +76,7 @@ const NAV_CARDS = [
     gradient: "linear-gradient(135deg, #0f766e 0%, #14b8a6 100%)",
     icon: (
       <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-        <rect x="3" y="3" width="18" height="18" rx="2" /><circle cx="8.5" cy="8.5" r="1.5" /><polyline points="21 15 16 10 5 21" />
+        <rect x="3" y="3" width="18" height="18" rx="0" /><circle cx="8.5" cy="8.5" r="1.5" /><polyline points="21 15 16 10 5 21" />
       </svg>
     ),
   },
@@ -88,7 +88,7 @@ const NAV_CARDS = [
     gradient: "linear-gradient(135deg, #9d174d 0%, #ec4899 100%)",
     icon: (
       <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-        <path d="M4 4h16v2H4z" /><rect x="4" y="8" width="16" height="12" rx="1" /><path d="M8 12h8M8 16h5" />
+        <path d="M4 4h16v2H4z" /><rect x="4" y="8" width="16" height="12" rx="0" /><path d="M8 12h8M8 16h5" />
       </svg>
     ),
   },
