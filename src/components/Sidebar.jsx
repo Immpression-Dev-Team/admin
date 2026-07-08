@@ -23,7 +23,7 @@ function Sidebar({ isOpen, toggleSidebar, email, logout }) {
     { path: "/reports", label: "Reports", icon: "🚩" },
     { path: "/analytics", label: "Analytics", icon: "📊" },
     { path: "/public-art", label: "Public Art", icon: "🖼️" },
-    { path: "/articles", label: "Articles", icon: "📰" },
+    { path: "/articles", label: "Blog", icon: "📰" },
     { path: "/finance", label: "Finance", icon: "💰" },
     { path: "/settings", label: "Settings", icon: "⚙️" }
   ];
