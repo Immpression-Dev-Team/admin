@@ -240,6 +240,181 @@
   margin-bottom: 16px;
 }
 
+/* ── Tabs ── */
+.fa-tabs {
+  display: flex;
+  gap: 0;
+  border-bottom: 2px solid #e2e8f0;
+  margin-bottom: 24px;
+}
+
+.fa-tab {
+  background: none;
+  border: none;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -2px;
+  padding: 10px 22px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #94a3b8;
+  cursor: pointer;
+  transition: color 0.15s, border-color 0.15s;
+}
+.fa-tab:hover { color: #475569; }
+.fa-tab-active { color: #0f172a; border-bottom-color: #0f172a; }
+
+.fa-tab-content { padding-top: 4px; }
+
+.fa-tab-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+
+.fa-tab-desc {
+  font-size: 0.875rem;
+  color: #64748b;
+  margin: 0;
+}
+
+/* ── Markdown editor ── */
+.fa-editor-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.fa-md-hint {
+  font-size: 0.72rem;
+  font-weight: 400;
+  color: #94a3b8;
+  text-transform: none;
+  letter-spacing: 0;
+}
+
+.fa-preview-toggle {
+  background: #f1f5f9;
+  color: #475569;
+  border: none;
+  padding: 5px 14px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  border-radius: 0;
+  transition: background 0.15s;
+  flex-shrink: 0;
+}
+.fa-preview-toggle:hover { background: #e2e8f0; }
+
+.fa-md-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  padding: 8px;
+  background: #f8fafc;
+  border: 1px solid #cbd5e1;
+  border-bottom: none;
+}
+
+.fa-md-btn {
+  background: #fff;
+  border: 1px solid #e2e8f0;
+  border-radius: 0;
+  padding: 4px 9px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: #334155;
+  cursor: pointer;
+  font-family: 'Courier New', monospace;
+  line-height: 1.4;
+  transition: background 0.12s, border-color 0.12s;
+}
+.fa-md-btn:hover { background: #f1f5f9; border-color: #94a3b8; }
+.fa-md-btn-italic { font-style: italic; }
+
+.fa-body-textarea {
+  width: 100%;
+  border: 1px solid #cbd5e1;
+  border-radius: 0;
+  padding: 12px;
+  font-size: 0.88rem;
+  font-family: 'Courier New', Courier, monospace;
+  color: #0f172a;
+  line-height: 1.65;
+  resize: vertical;
+  outline: none;
+  box-sizing: border-box;
+  transition: border-color 0.15s;
+}
+.fa-body-textarea:focus { border-color: #6366f1; }
+
+.fa-md-preview {
+  border: 1px solid #e2e8f0;
+  padding: 20px;
+  font-size: 0.9rem;
+  color: #1e293b;
+  line-height: 1.75;
+  min-height: 240px;
+  background: #fafafa;
+}
+.fa-md-preview h1, .fa-md-preview h2, .fa-md-preview h3 { margin: 0.8em 0 0.4em; font-weight: 700; }
+.fa-md-preview h1 { font-size: 1.5rem; }
+.fa-md-preview h2 { font-size: 1.25rem; }
+.fa-md-preview h3 { font-size: 1.05rem; }
+.fa-md-preview p { margin: 0 0 0.85em; }
+.fa-md-preview ul { padding-left: 1.5em; margin: 0 0 0.85em; }
+.fa-md-preview li { margin-bottom: 0.25em; }
+.fa-md-preview a { color: #6366f1; }
+.fa-md-preview code { background: #f1f5f9; padding: 1px 5px; font-family: monospace; font-size: 0.85em; }
+.fa-md-preview hr { border: none; border-top: 1px solid #e2e8f0; margin: 1.5em 0; }
+.fa-md-preview strong { font-weight: 700; }
+.fa-md-preview em { font-style: italic; }
+
+/* ── Published checkbox ── */
+.fa-published-row { flex-direction: row !important; align-items: center; }
+
+.fa-checkbox-label {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: #334155;
+}
+.fa-checkbox-label input[type="checkbox"] { width: 16px; height: 16px; cursor: pointer; }
+
+.fa-publish-hint {
+  font-size: 0.75rem;
+  font-weight: 400;
+  color: #94a3b8;
+}
+
+/* ── Post list extras ── */
+.fa-status-badge {
+  display: inline-block;
+  font-size: 0.65rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  padding: 2px 8px;
+  border-radius: 0;
+}
+.fa-status-live { background: #dcfce7; color: #15803d; }
+.fa-status-draft { background: #f1f5f9; color: #64748b; }
+
+.fa-row-excerpt {
+  font-size: 0.75rem;
+  color: #94a3b8;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 @media (max-width: 600px) {
   .fa-form-two-col { grid-template-columns: 1fr; }
   .fa-row { flex-wrap: wrap; }
