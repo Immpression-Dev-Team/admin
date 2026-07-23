@@ -295,3 +295,13 @@
   .artd-image-col { position: static; }
   .artd-page { padding: 20px 20px 48px; }
 }
+
+.artd-original-link {
+  display: inline-block;
+  margin-top: 8px;
+  font-size: 11px;
+  color: #64748b;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+.artd-original-link:hover { color: #334155; }

@@ -118,6 +118,16 @@ export default function ArtDetails() {
           {/* LEFT — artwork image */}
           <div className="artd-image-col">
             <img className="artd-image" src={art.imageLink} alt={art.name} />
+            {art.originalImageLink && art.originalImageLink !== art.imageLink && (
+              <a
+                className="artd-original-link"
+                href={art.originalImageLink}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                View original (uncropped)
+              </a>
+            )}
           </div>
 
           {/* RIGHT — all info + actions */}
