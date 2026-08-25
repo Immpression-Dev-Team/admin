@@ -3,9 +3,10 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import logo from "@/assets/Logo_T.png";
 import immpressionLogo from "@/assets/Immpression.png";
+import { ADMIN_ROLES, CONTENT_EDITOR_DEFAULT_PATH } from "@/constants/adminRoles";
 import "@/styles/sidebar.css";
 
-function Sidebar({ isOpen, toggleSidebar, email, logout }) {
+function Sidebar({ isOpen, toggleSidebar, email, role, logout }) {
   const location = useLocation();
   const navigate = useNavigate();
   const [isUserPanelOpen, setIsUserPanelOpen] = useState(false);
@@ -16,7 +17,7 @@ function Sidebar({ isOpen, toggleSidebar, email, logout }) {
     }
   }, [isOpen]);
 
-  const menuItems = [
+  const allMenuItems = [
     { path: "/review-art", label: "Review Art", icon: "🎨" },
     { path: "/user-base", label: "User Base", icon: "👤" },
     { path: "/orders", label: "Orders", icon: "🧾" },
@@ -28,8 +29,12 @@ function Sidebar({ isOpen, toggleSidebar, email, logout }) {
     { path: "/settings", label: "Settings", icon: "⚙️" }
   ];
 
+  const menuItems = role === ADMIN_ROLES.CONTENT_EDITOR
+    ? allMenuItems.filter((item) => item.path === "/analytics" || item.path === "/articles")
+    : allMenuItems;
+
   const handleLogoClick = () => {
-    navigate("/home");
+    navigate(role === ADMIN_ROLES.CONTENT_EDITOR ? CONTENT_EDITOR_DEFAULT_PATH : "/home");
   };
 
   const toggleUserPanel = () => {

@@ -14,22 +14,30 @@ export const AuthProvider = ({ children }) => {
     const [authState, setAuthState] = useState(() => {
         const token = localStorage.getItem("token");
         const email = localStorage.getItem("email");
+        const role = localStorage.getItem("role");
+        const id = localStorage.getItem("adminId");
         return {
             token: token || null,
             email: email || null,
+            role: role || null,
+            id: id || null,
         };
     });
 
-    const login = (token, email) => {
-        setAuthState({ token, email });
+    const login = (token, email, role, id) => {
+        setAuthState({ token, email, role, id });
         localStorage.setItem("token", token);
         localStorage.setItem("email", email);
+        localStorage.setItem("role", role);
+        localStorage.setItem("adminId", id);
     };
 
     const logout = useCallback(() => {
-        setAuthState({ token: null, email: null });
+        setAuthState({ token: null, email: null, role: null, id: null });
         localStorage.removeItem("token");
         localStorage.removeItem("email");
+        localStorage.removeItem("role");
+        localStorage.removeItem("adminId");
     }, []);
 
     // update w/ new token

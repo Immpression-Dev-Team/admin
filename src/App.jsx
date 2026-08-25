@@ -14,12 +14,18 @@ import Settings from "./components/Settings";
 import PublicArtCurator from "./components/PublicArtCurator";
 import FeaturedArticles from "./components/FeaturedArticles";
 import Finance from "./components/Finance";
+import { ADMIN_ROLES, CONTENT_EDITOR_DEFAULT_PATH } from "./constants/adminRoles";
 
 import './App.css';
 
-function PrivateRoute({ children }) {
+function PrivateRoute({ children, allowAllRoles = true }) {
   const token = localStorage.getItem("token");
-  return token ? children : <Navigate to="/login" replace />;
+  const role = localStorage.getItem("role");
+  if (!token) return <Navigate to="/login" replace />;
+  if (!allowAllRoles && role === ADMIN_ROLES.CONTENT_EDITOR) {
+    return <Navigate to={CONTENT_EDITOR_DEFAULT_PATH} replace />;
+  }
+  return children;
 }
 
 function App() {
@@ -28,20 +34,20 @@ function App() {
       <Routes>
         <Route path="/" element={<Navigate to="/login" replace />} />
         <Route path="/login" element={<Login />} />
-        <Route path="/home" element={<PrivateRoute><Home /></PrivateRoute>} />
-        <Route path="/review-art" element={<PrivateRoute><ReviewArt /></PrivateRoute>} />
-        <Route path="/user-base" element={<PrivateRoute><UserBase /></PrivateRoute>} />
-        <Route path="/art/:id" element={<PrivateRoute><ArtDetails /></PrivateRoute>} />
-        <Route path="/user/:id" element={<PrivateRoute><UserDetails /></PrivateRoute>} />
-        <Route path="/orders" element={<PrivateRoute><Orders /></PrivateRoute>} />
-        <Route path="/order/:id" element={<PrivateRoute><OrderDetails /></PrivateRoute>} /> {/* ✅ NEW ROUTE */}
-        <Route path="/reports" element={<PrivateRoute><Reports /></PrivateRoute>} />
-        <Route path="/report/:id" element={<PrivateRoute><ReportDetails /></PrivateRoute>} />
+        <Route path="/home" element={<PrivateRoute allowAllRoles={false}><Home /></PrivateRoute>} />
+        <Route path="/review-art" element={<PrivateRoute allowAllRoles={false}><ReviewArt /></PrivateRoute>} />
+        <Route path="/user-base" element={<PrivateRoute allowAllRoles={false}><UserBase /></PrivateRoute>} />
+        <Route path="/art/:id" element={<PrivateRoute allowAllRoles={false}><ArtDetails /></PrivateRoute>} />
+        <Route path="/user/:id" element={<PrivateRoute allowAllRoles={false}><UserDetails /></PrivateRoute>} />
+        <Route path="/orders" element={<PrivateRoute allowAllRoles={false}><Orders /></PrivateRoute>} />
+        <Route path="/order/:id" element={<PrivateRoute allowAllRoles={false}><OrderDetails /></PrivateRoute>} /> {/* ✅ NEW ROUTE */}
+        <Route path="/reports" element={<PrivateRoute allowAllRoles={false}><Reports /></PrivateRoute>} />
+        <Route path="/report/:id" element={<PrivateRoute allowAllRoles={false}><ReportDetails /></PrivateRoute>} />
         <Route path="/analytics" element={<PrivateRoute><Analytics /></PrivateRoute>} />
-        <Route path="/settings" element={<PrivateRoute><Settings /></PrivateRoute>} />
-        <Route path="/public-art" element={<PrivateRoute><PublicArtCurator /></PrivateRoute>} />
+        <Route path="/settings" element={<PrivateRoute allowAllRoles={false}><Settings /></PrivateRoute>} />
+        <Route path="/public-art" element={<PrivateRoute allowAllRoles={false}><PublicArtCurator /></PrivateRoute>} />
         <Route path="/articles" element={<PrivateRoute><FeaturedArticles /></PrivateRoute>} />
-        <Route path="/finance" element={<PrivateRoute><Finance /></PrivateRoute>} />
+        <Route path="/finance" element={<PrivateRoute allowAllRoles={false}><Finance /></PrivateRoute>} />
         <Route path="*" element={<h2>404 - Page Not Found</h2>} />
       </Routes>
     </Router>

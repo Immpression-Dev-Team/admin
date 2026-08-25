@@ -73,7 +73,7 @@ export default function ScreenTemplate({ children }) {
             <Navbar height={navHeight} toggleSidebar={toggleSidebar} sidebarOpen={sidebarOpen} />
 
             <div className="content-row">
-                <Sidebar isOpen={sidebarOpen} toggleSidebar={toggleSidebar} email={email} logout={logoutUser} />
+                <Sidebar isOpen={sidebarOpen} toggleSidebar={toggleSidebar} email={email} role={authState?.role} logout={logoutUser} />
                 <div className={`main-panel ${sidebarOpen ? 'sidebar-open' : 'sidebar-closed'}`}>
                     {children}
                 </div>

@@ -4,6 +4,7 @@ import { loginAdmin } from "../api/API";
 import logo from "@assets/Immpression_Logo_Transparent.png";
 import ImmpressionLogo from "@assets/Immpression.png";
 import { useAuth } from "@/context/authContext";
+import { ADMIN_ROLES, CONTENT_EDITOR_DEFAULT_PATH } from "@/constants/adminRoles";
 import "@styles/login.css";
 
 function Login() {
@@ -16,8 +17,8 @@ function Login() {
     e.preventDefault();
     try {
       const response = await loginAdmin(email, password);
-      login(response.token, response.email);
-      navigate("/home");
+      login(response.token, response.email, response.role, response.id);
+      navigate(response.role === ADMIN_ROLES.CONTENT_EDITOR ? CONTENT_EDITOR_DEFAULT_PATH : "/home");
     } catch (err) {
       setMsg({ type: "error", message: err.message });
     }

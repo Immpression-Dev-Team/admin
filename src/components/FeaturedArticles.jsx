@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import ScreenTemplate from "./Template/ScreenTemplate";
 import { useAuth } from "@/context/authContext";
+import { ADMIN_ROLES } from "@/constants/adminRoles";
 import "@/styles/featuredArticles.css";
 
 const API_URL = import.meta.env.VITE_API_URL;
@@ -9,7 +10,9 @@ const API_URL = import.meta.env.VITE_API_URL;
 /* ─── Press (guest posts) ─────────────────────────────── */
 const EMPTY_PRESS = { title: "", url: "", imageUrl: "", publication: "", publishedAt: "", order: "0" };
 
-function PressTab({ token }) {
+function PressTab({ token, role, adminId }) {
+  const canEdit = (item) => role !== ADMIN_ROLES.CONTENT_EDITOR || (item.createdBy && String(item.createdBy) === String(adminId));
+  const canDelete = role !== ADMIN_ROLES.CONTENT_EDITOR;
   const [articles, setArticles] = useState([]);
   const [loading, setLoading] = useState(true);
   const [showForm, setShowForm] = useState(false);
@@ -146,8 +149,8 @@ function PressTab({ token }) {
                 <span className="fa-row-date">{new Date(a.publishedAt).toLocaleDateString("en-US", { year: "numeric", month: "short", day: "numeric" })}</span>
               </div>
               <div className="fa-row-actions">
-                <button className="fa-btn-edit" onClick={() => openEdit(a)}>Edit</button>
-                <button className="fa-btn-delete" onClick={() => handleDelete(a._id)}>Delete</button>
+                {canEdit(a) && <button className="fa-btn-edit" onClick={() => openEdit(a)}>Edit</button>}
+                {canDelete && <button className="fa-btn-delete" onClick={() => handleDelete(a._id)}>Delete</button>}
               </div>
             </div>
           ))}
@@ -160,7 +163,9 @@ function PressTab({ token }) {
 /* ─── Blog posts ──────────────────────────────────────── */
 const EMPTY_POST = { title: "", coverImageUrl: "", body: "", published: false };
 
-function PostsTab({ token }) {
+function PostsTab({ token, role, adminId }) {
+  const canEdit = (item) => role !== ADMIN_ROLES.CONTENT_EDITOR || (item.createdBy && String(item.createdBy) === String(adminId));
+  const canDelete = role !== ADMIN_ROLES.CONTENT_EDITOR;
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [showForm, setShowForm] = useState(false);
@@ -365,8 +370,8 @@ function PostsTab({ token }) {
                 <span className="fa-row-excerpt">{p.body.replace(/[#*`_\[\]]/g, "").slice(0, 120)}…</span>
               </div>
               <div className="fa-row-actions">
-                <button className="fa-btn-edit" onClick={() => openEdit(p)}>Edit</button>
-                <button className="fa-btn-delete" onClick={() => handleDelete(p._id)}>Delete</button>
+                {canEdit(p) && <button className="fa-btn-edit" onClick={() => openEdit(p)}>Edit</button>}
+                {canDelete && <button className="fa-btn-delete" onClick={() => handleDelete(p._id)}>Delete</button>}
               </div>
             </div>
           ))}
@@ -403,6 +408,8 @@ function FeaturedArticles() {
   const [activeTab, setActiveTab] = useState("press");
 
   const token = authState?.token;
+  const role = authState?.role;
+  const adminId = authState?.id;
 
   useEffect(() => {
     if (!token) navigate("/login");
@@ -434,7 +441,9 @@ function FeaturedArticles() {
         </div>
 
         <div className="fa-tab-content">
-          {activeTab === "press" ? <PressTab token={token} /> : <PostsTab token={token} />}
+          {activeTab === "press"
+            ? <PressTab token={token} role={role} adminId={adminId} />
+            : <PostsTab token={token} role={role} adminId={adminId} />}
         </div>
       </div>
     </ScreenTemplate>
