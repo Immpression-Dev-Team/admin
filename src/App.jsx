@@ -13,6 +13,7 @@ import Analytics from "./components/Analytics";
 import Settings from "./components/Settings";
 import PublicArtCurator from "./components/PublicArtCurator";
 import FeaturedArticles from "./components/FeaturedArticles";
+import Referrals from "./components/Referrals";
 import Finance from "./components/Finance";
 import { ADMIN_ROLES, CONTENT_EDITOR_DEFAULT_PATH } from "./constants/adminRoles";
 
@@ -47,6 +48,7 @@ function App() {
         <Route path="/settings" element={<PrivateRoute allowAllRoles={false}><Settings /></PrivateRoute>} />
         <Route path="/public-art" element={<PrivateRoute allowAllRoles={false}><PublicArtCurator /></PrivateRoute>} />
         <Route path="/articles" element={<PrivateRoute><FeaturedArticles /></PrivateRoute>} />
+        <Route path="/referrals" element={<PrivateRoute allowAllRoles={false}><Referrals /></PrivateRoute>} />
         <Route path="/finance" element={<PrivateRoute allowAllRoles={false}><Finance /></PrivateRoute>} />
         <Route path="*" element={<h2>404 - Page Not Found</h2>} />
       </Routes>

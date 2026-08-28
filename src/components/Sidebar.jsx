@@ -25,6 +25,7 @@ function Sidebar({ isOpen, toggleSidebar, email, role, logout }) {
     { path: "/analytics", label: "Analytics", icon: "📊" },
     { path: "/public-art", label: "Public Art", icon: "🖼️" },
     { path: "/articles", label: "Blog", icon: "📰" },
+    { path: "/referrals", label: "Referrals", icon: "🔗" },
     { path: "/finance", label: "Finance", icon: "💰" },
     { path: "/settings", label: "Settings", icon: "⚙️" }
   ];

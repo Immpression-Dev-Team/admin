@@ -1,0 +1,216 @@
+.ref-page {
+  max-width: 1600px;
+  margin: 0 auto;
+  padding: 32px 24px 80px;
+}
+
+.ref-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 32px;
+  flex-wrap: wrap;
+}
+
+.ref-title {
+  font-size: 1.75rem;
+  font-weight: 700;
+  margin: 0 0 4px;
+  color: #0f172a;
+}
+
+.ref-subtitle {
+  font-size: 0.875rem;
+  color: #64748b;
+  margin: 0;
+}
+
+.ref-add-btn {
+  background: #1e293b;
+  color: #fff;
+  border: none;
+  border-radius: 0;
+  padding: 10px 18px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background 0.15s;
+}
+.ref-add-btn:hover { background: #0f172a; }
+
+/* ── Form card ── */
+.ref-form-card {
+  background: #fff;
+  border: 1px solid #e2e8f0;
+  border-radius: 0;
+  padding: 24px;
+  margin-bottom: 32px;
+  box-shadow: 0 1px 6px rgba(0,0,0,0.06);
+}
+
+.ref-form-title {
+  font-size: 1.125rem;
+  font-weight: 700;
+  margin: 0 0 20px;
+  color: #0f172a;
+}
+
+.ref-form { display: flex; flex-direction: column; gap: 16px; }
+
+.ref-form-row { display: flex; flex-direction: column; gap: 6px; }
+
+.ref-form-row label {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #475569;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.ref-form-row input {
+  border: 1px solid #cbd5e1;
+  border-radius: 0;
+  padding: 9px 12px;
+  font-size: 0.9rem;
+  color: #0f172a;
+  outline: none;
+  transition: border-color 0.15s;
+}
+.ref-form-row input:focus { border-color: #6366f1; }
+
+.ref-form-actions { display: flex; gap: 10px; justify-content: flex-end; }
+
+.ref-btn-cancel {
+  background: #f1f5f9;
+  color: #475569;
+  border: none;
+  border-radius: 0;
+  padding: 9px 18px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+.ref-btn-save {
+  background: #1e293b;
+  color: #fff;
+  border: none;
+  border-radius: 0;
+  padding: 9px 18px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+.ref-btn-save:hover:not(:disabled) { background: #0f172a; }
+.ref-btn-save:disabled { opacity: 0.5; cursor: not-allowed; }
+
+/* ── List ── */
+.ref-list { display: flex; flex-direction: column; gap: 12px; }
+
+.ref-row {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  background: #fff;
+  border: 1px solid #e2e8f0;
+  border-radius: 0;
+  padding: 14px 16px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+  flex-wrap: wrap;
+}
+
+.ref-row-info {
+  flex: 1;
+  min-width: 220px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.ref-row-label {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #0f172a;
+}
+
+.ref-row-name {
+  font-size: 0.75rem;
+  color: #6366f1;
+  font-weight: 600;
+}
+
+.ref-row-url {
+  font-size: 0.75rem;
+  color: #94a3b8;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-decoration: none;
+}
+.ref-row-url:hover { color: #6366f1; text-decoration: underline; }
+
+.ref-row-date {
+  font-size: 0.75rem;
+  color: #94a3b8;
+}
+
+.ref-row-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  flex-shrink: 0;
+}
+
+.ref-btn-copy,
+.ref-btn-edit,
+.ref-btn-regenerate {
+  background: #f1f5f9;
+  color: #475569;
+  border: none;
+  border-radius: 0;
+  padding: 6px 14px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+.ref-btn-copy:hover,
+.ref-btn-edit:hover,
+.ref-btn-regenerate:hover { background: #e2e8f0; }
+
+.ref-btn-delete {
+  background: #fff1f2;
+  color: #e11d48;
+  border: none;
+  border-radius: 0;
+  padding: 6px 14px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+.ref-btn-delete:hover { background: #ffe4e6; }
+
+/* ── States ── */
+.ref-loading, .ref-empty {
+  text-align: center;
+  padding: 60px 0;
+  color: #94a3b8;
+  font-size: 0.9rem;
+}
+
+.ref-error {
+  background: #fff1f2;
+  color: #e11d48;
+  border-radius: 0;
+  padding: 10px 14px;
+  font-size: 0.85rem;
+  margin-bottom: 16px;
+}
+
+@media (max-width: 600px) {
+  .ref-row { flex-wrap: wrap; }
+  .ref-row-actions { flex-direction: row; }
+}
