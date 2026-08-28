@@ -21,7 +21,6 @@ function Referrals() {
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState("");
   const [copiedId, setCopiedId] = useState(null);
-  const [expandedId, setExpandedId] = useState(null);
 
   useEffect(() => {
     if (!token) navigate("/login");
@@ -90,19 +89,6 @@ function Referrals() {
     } catch { setError("Delete failed."); }
   }
 
-  function toggleStats(id) {
-    setExpandedId((current) => (current === id ? null : id));
-  }
-
-  function formatPercent(value) {
-    return `${(value || 0).toFixed(1)}%`;
-  }
-
-  function formatLastActivity(value) {
-    if (!value) return "No activity yet";
-    return new Date(value).toLocaleString("en-US", { year: "numeric", month: "short", day: "numeric", hour: "numeric", minute: "2-digit" });
-  }
-
   async function handleCopy(id, url) {
     try {
       await navigator.clipboard.writeText(url);
@@ -153,7 +139,6 @@ function Referrals() {
           <div className="ref-list">
             {referrals.map((r) => {
               const stats = r.stats || {};
-              const expanded = expandedId === r._id;
               return (
                 <div key={r._id} className="ref-row-wrap">
                   <div className="ref-row">
@@ -162,64 +147,18 @@ function Referrals() {
                       <span className="ref-row-name">{r.name}</span>
                       <a href={r.publicUrl} target="_blank" rel="noopener noreferrer" className="ref-row-url">{r.publicUrl}</a>
                       <span className="ref-row-date">Created {new Date(r.createdAt).toLocaleDateString("en-US", { year: "numeric", month: "short", day: "numeric" })}</span>
+                      <span className="ref-row-summary">
+                        Views: {stats.pageViews || 0} · Roles: {stats.totalRoleSelections || 0} · Store Clicks: {stats.totalStoreClicks || 0}
+                      </span>
                     </div>
                     <div className="ref-row-actions">
                       <button className="ref-btn-copy" onClick={() => handleCopy(r._id, r.publicUrl)}>{copiedId === r._id ? "Copied!" : "Copy Link"}</button>
-                      <button className="ref-btn-stats" onClick={() => toggleStats(r._id)}>{expanded ? "Hide Stats" : "View Stats"}</button>
+                      <button className="ref-btn-stats" onClick={() => navigate(`/referrals/${r._id}`)}>View Analytics</button>
                       <button className="ref-btn-edit" onClick={() => openEdit(r)}>Edit</button>
                       <button className="ref-btn-regenerate" onClick={() => handleRegenerate(r._id)}>Regenerate Code</button>
                       <button className="ref-btn-delete" onClick={() => handleDelete(r._id)}>Delete</button>
                     </div>
                   </div>
-
-                  {expanded && (
-                    <div className="ref-stats-panel">
-                      <div className="ref-stat">
-                        <span className="ref-stat-value">{stats.pageViews || 0}</span>
-                        <span className="ref-stat-label">Page Views</span>
-                      </div>
-                      <div className="ref-stat">
-                        <span className="ref-stat-value">{stats.artistSelections || 0}</span>
-                        <span className="ref-stat-label">Artist Selections</span>
-                      </div>
-                      <div className="ref-stat">
-                        <span className="ref-stat-value">{stats.artLoverSelections || 0}</span>
-                        <span className="ref-stat-label">Art Lover Selections</span>
-                      </div>
-                      <div className="ref-stat">
-                        <span className="ref-stat-value">{stats.bothSelections || 0}</span>
-                        <span className="ref-stat-label">Both Selections</span>
-                      </div>
-                      <div className="ref-stat">
-                        <span className="ref-stat-value">{stats.totalRoleSelections || 0}</span>
-                        <span className="ref-stat-label">Total Role Selections</span>
-                      </div>
-                      <div className="ref-stat">
-                        <span className="ref-stat-value">{stats.appStoreClicks || 0}</span>
-                        <span className="ref-stat-label">App Store Clicks</span>
-                      </div>
-                      <div className="ref-stat">
-                        <span className="ref-stat-value">{stats.playStoreClicks || 0}</span>
-                        <span className="ref-stat-label">Google Play Clicks</span>
-                      </div>
-                      <div className="ref-stat">
-                        <span className="ref-stat-value">{stats.totalStoreClicks || 0}</span>
-                        <span className="ref-stat-label">Total Store Clicks</span>
-                      </div>
-                      <div className="ref-stat">
-                        <span className="ref-stat-value">{formatPercent(stats.visitToRoleConversion)}</span>
-                        <span className="ref-stat-label">Visit → Role Selection</span>
-                      </div>
-                      <div className="ref-stat">
-                        <span className="ref-stat-value">{formatPercent(stats.visitToStoreConversion)}</span>
-                        <span className="ref-stat-label">Visit → Store Click</span>
-                      </div>
-                      <div className="ref-stat ref-stat-wide">
-                        <span className="ref-stat-value">{formatLastActivity(stats.lastActivity)}</span>
-                        <span className="ref-stat-label">Last Activity</span>
-                      </div>
-                    </div>
-                  )}
                 </div>
               );
             })}

@@ -161,6 +161,13 @@
   color: #94a3b8;
 }
 
+.ref-row-summary {
+  font-size: 0.75rem;
+  color: #475569;
+  font-weight: 600;
+  margin-top: 2px;
+}
+
 .ref-row-actions {
   display: flex;
   flex-wrap: wrap;
@@ -187,15 +194,80 @@
 .ref-btn-edit:hover,
 .ref-btn-regenerate:hover { background: #e2e8f0; }
 
-/* ── Stats panel ── */
-.ref-stats-panel {
+/* ── Detail page ── */
+.ref-back-link {
+  background: none;
+  border: none;
+  color: #6366f1;
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 0;
+  margin-bottom: 8px;
+}
+.ref-back-link:hover { text-decoration: underline; }
+
+.ref-detail-card {
+  background: #fff;
+  border: 1px solid #e2e8f0;
+  padding: 20px 24px;
+  margin-bottom: 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.ref-detail-row {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.ref-detail-label {
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: #94a3b8;
+  width: 140px;
+  flex-shrink: 0;
+}
+
+.ref-detail-value {
+  font-size: 0.9rem;
+  color: #0f172a;
+  font-weight: 600;
+}
+
+.ref-detail-url {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.ref-detail-url a {
+  color: #6366f1;
+  text-decoration: none;
+  font-weight: 500;
+}
+.ref-detail-url a:hover { text-decoration: underline; }
+
+.ref-section-title {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #0f172a;
+  margin: 0 0 14px;
+}
+
+/* ── Stats grid (standalone, used on the detail page) ── */
+.ref-stats-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
   gap: 1px;
   background: #e2e8f0;
   border: 1px solid #e2e8f0;
-  border-top: none;
-  margin-top: -1px;
+  margin-bottom: 32px;
 }
 
 .ref-stat {
@@ -236,6 +308,47 @@
   transition: background 0.15s;
 }
 .ref-btn-delete:hover { background: #ffe4e6; }
+
+/* ── Recent activity ── */
+.ref-activity-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  background: #e2e8f0;
+  border: 1px solid #e2e8f0;
+}
+
+.ref-activity-item {
+  background: #fff;
+  padding: 10px 16px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.85rem;
+}
+
+.ref-activity-time {
+  color: #94a3b8;
+  font-variant-numeric: tabular-nums;
+  flex-shrink: 0;
+}
+
+.ref-activity-sep {
+  color: #cbd5e1;
+}
+
+.ref-activity-label {
+  color: #0f172a;
+  font-weight: 600;
+}
+
+.ref-activity-platform {
+  color: #6366f1;
+  font-weight: 600;
+}
 
 /* ── States ── */
 .ref-loading, .ref-empty {
