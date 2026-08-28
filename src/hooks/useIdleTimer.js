@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react';
 
 // automatically display warn message / logout after certain time threshold (in min)
-const IDLE_LIMIT = 60;
-const WARNING_LIMIT = 59;
+const IDLE_LIMIT = 120;
+const WARNING_LIMIT = 119;
 
 export const useIdleTimer = (logoutUser, setMsg, idleLimit=IDLE_LIMIT, warningLimit=WARNING_LIMIT) => {
     const [idleTime, setIdleTime] = useState(0);
@@ -27,12 +27,23 @@ export const useIdleTimer = (logoutUser, setMsg, idleLimit=IDLE_LIMIT, warningLi
             window.addEventListener(event, resetIdleTime);
         });
 
+        // returning to the tab counts as activity too — switching tabs and
+        // coming back shouldn't read as idle time just because no mouse
+        // event fired while the tab was in the background
+        const handleVisibility = () => {
+            if (document.visibilityState === 'visible') {
+                resetIdleTime();
+            }
+        };
+        document.addEventListener('visibilitychange', handleVisibility);
+
         // cleanup timer & remove event listener when component is unmounted
         return () => {
             clearInterval(idleTimer);
             events.forEach((event) => {
                 window.removeEventListener(event, resetIdleTime);
             });
+            document.removeEventListener('visibilitychange', handleVisibility);
         };
     }, []);
 

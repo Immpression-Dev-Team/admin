@@ -58,6 +58,21 @@ export async function loginAdmin(email, password) {
   }
 }
 
+// ✅ Function to verify the 2-step sign-in code emailed after password check
+export async function verifyLoginOtp(email, otp) {
+  try {
+    const response = await axios.post(`${API_URL}/api/admin/login/verify-otp`, {
+      email,
+      otp,
+    });
+
+    return response.data;
+  } catch (error) {
+    console.error("Verify OTP error:", error.response?.data || error.message);
+    throw new Error(error.response?.data?.error || "Invalid or expired code. Please try again.");
+  }
+}
+
 // ✅ Function to renew auth user token before session expired
 export async function renewToken(token){
   try{

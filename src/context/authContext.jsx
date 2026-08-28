@@ -47,8 +47,9 @@ export const AuthProvider = ({ children }) => {
     }, []);
 
     // ─── Auto token renewal ───
-    // Renews proactively every 50 min and immediately when the user
-    // returns to the tab after being away (visibilitychange).
+    // Renews proactively every 100 min (well under the 2hr token life) and
+    // immediately when the user returns to the tab after being away
+    // (visibilitychange).
     const isRenewing = useRef(false);
 
     const tryRenew = useCallback(async () => {
@@ -57,7 +58,11 @@ export const AuthProvider = ({ children }) => {
         isRenewing.current = true;
         try {
             const res = await renewToken(currentToken);
-            if (res?.success && res?.token) {
+            // Only res.token actually matters — don't gate this on res.success
+            // too, since a backend response ever omitting that field must not
+            // be treated as a failed renewal (that bug used to log admins out
+            // on every single renewal, including successful ones).
+            if (res?.token) {
                 renewAuthToken(res.token);
             } else {
                 logout();
@@ -72,8 +77,8 @@ export const AuthProvider = ({ children }) => {
     useEffect(() => {
         if (!authState?.token) return;
 
-        // Renew every 50 minutes
-        const interval = setInterval(tryRenew, 50 * 60 * 1000);
+        // Renew every 100 minutes
+        const interval = setInterval(tryRenew, 100 * 60 * 1000);
 
         // Renew immediately when user returns to the tab
         const handleVisibility = () => {
