@@ -187,6 +187,10 @@ function Referrals() {
                         <span className="ref-stat-label">Art Lover Selections</span>
                       </div>
                       <div className="ref-stat">
+                        <span className="ref-stat-value">{stats.bothSelections || 0}</span>
+                        <span className="ref-stat-label">Both Selections</span>
+                      </div>
+                      <div className="ref-stat">
                         <span className="ref-stat-value">{stats.totalRoleSelections || 0}</span>
                         <span className="ref-stat-label">Total Role Selections</span>
                       </div>
