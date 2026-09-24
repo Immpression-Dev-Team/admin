@@ -172,6 +172,7 @@ export default function OrderDetails() {
     });
     setOrder(res.data.data);
     if (!imageLink && res.data.data?.imageLink) setImageLink(res.data.data.imageLink);
+    return res.data.data;
   }
 
   async function reloadPreview() {
@@ -192,8 +193,10 @@ export default function OrderDetails() {
         return;
       }
       try {
-        await reloadOrder();
-        await reloadPreview();
+        const fetched = await reloadOrder();
+        if (String(fetched?.status || "").toLowerCase() === "paid") {
+          await reloadPreview();
+        }
       } catch (e) {
         console.error(e);
       } finally {
@@ -218,6 +221,9 @@ export default function OrderDetails() {
   const sellerStripe = order.artistStripeId || "—";
   const chargeId = order.chargeId || "—";
   const transferGroup = order.transferGroup || `(order_${order._id})`;
+  const isPaid = String(order.status || "").toLowerCase() === "paid";
+  const isPrintOnDemand = order.fulfillmentType === "print_on_demand";
+  const prodigiShipped = order.prodigiOrderStatus === "Complete";
 
   const pv = preview || {};
   const stripe = pv.stripe || {};
@@ -311,27 +317,53 @@ export default function OrderDetails() {
                   <dl style={sx.dl}>
                     <dt style={sx.dt}>Payment Intent</dt><dd style={sx.dd}>{order.paymentIntentId || "—"}</dd>
                     <dt style={sx.dt}>Charge ID</dt><dd style={sx.dd}>{chargeId}</dd>
-                    <dt style={sx.dt}>Stripe Fee (BT)</dt><dd style={sx.dd}>{stripe.fee != null ? toUSD(stripe.fee) : "—"}</dd>
-                    <dt style={sx.dt}>Stripe Net</dt><dd style={sx.dd}>{stripe.net != null ? toUSD(stripe.net) : "—"}</dd>
-                    <dt style={sx.dt}>Platform hold (3% base)</dt><dd style={sx.dd}>{policy.platformHoldOnBase != null ? toUSD(policy.platformHoldOnBase) : "—"}</dd>
-                    <dt style={sx.dt}>Seller target</dt><dd style={sx.dd}>{seller.target != null ? toUSD(seller.target) : "—"}</dd>
-                    <dt style={sx.dt}>Already sent</dt><dd style={sx.dd}>{seller.alreadySent != null ? toUSD(seller.alreadySent) : "—"}</dd>
-                    <dt style={sx.dt}>Remaining to seller</dt><dd style={sx.dd}>{seller.remaining != null ? toUSD(seller.remaining) : "—"}</dd>
-                    <dt style={sx.dt}>Tax held</dt><dd style={sx.dd}>{pv?.amounts?.tax != null ? toUSD(pv.amounts.tax) : "—"}</dd>
+                    <dt style={sx.dt}>Fulfillment</dt>
+                    <dd style={sx.dd}>{isPrintOnDemand ? "Print on Demand" : "Physical (seller-shipped)"}</dd>
+                    {isPrintOnDemand && (
+                      <>
+                        <dt style={sx.dt}>Prodigi status</dt>
+                        <dd style={sx.dd}>{order.prodigiOrderStatus || "—"}</dd>
+                      </>
+                    )}
                   </dl>
 
-                  {previewError && <div style={{ color: "#b91c1c", marginTop: 8 }}>{previewError}</div>}
+                  {isPaid ? (
+                    <>
+                      <dl style={{ ...sx.dl, marginTop: 12 }}>
+                        <dt style={sx.dt}>Stripe Fee (BT)</dt><dd style={sx.dd}>{stripe.fee != null ? toUSD(stripe.fee) : "—"}</dd>
+                        <dt style={sx.dt}>Stripe Net</dt><dd style={sx.dd}>{stripe.net != null ? toUSD(stripe.net) : "—"}</dd>
+                        <dt style={sx.dt}>Platform hold (3% base)</dt><dd style={sx.dd}>{policy.platformHoldOnBase != null ? toUSD(policy.platformHoldOnBase) : "—"}</dd>
+                        <dt style={sx.dt}>Seller target</dt><dd style={sx.dd}>{seller.target != null ? toUSD(seller.target) : "—"}</dd>
+                        <dt style={sx.dt}>Already sent</dt><dd style={sx.dd}>{seller.alreadySent != null ? toUSD(seller.alreadySent) : "—"}</dd>
+                        <dt style={sx.dt}>Remaining to seller</dt><dd style={sx.dd}>{seller.remaining != null ? toUSD(seller.remaining) : "—"}</dd>
+                        <dt style={sx.dt}>Tax held</dt><dd style={sx.dd}>{pv?.amounts?.tax != null ? toUSD(pv.amounts.tax) : "—"}</dd>
+                      </dl>
 
-                  <div style={{ marginTop: 14 }}>
-                    <PayoutButton
-                      orderId={order._id}
-                      token={authState?.token}
-                      onPayout={async () => {
-                        await reloadPreview();
-                        await reloadOrder();
-                      }}
-                    />
-                  </div>
+                      {previewError && <div style={{ color: "#b91c1c", marginTop: 8 }}>{previewError}</div>}
+
+                      {isPrintOnDemand && !prodigiShipped ? (
+                        <div style={{ marginTop: 14, padding: 12, borderRadius: 10, background: "#fff7ed", border: "1px solid #fed7aa", color: "#9a3412", fontSize: 13.5 }}>
+                          Payout withheld — Prodigi hasn't shipped this yet (status: {order.prodigiOrderStatus || "unknown"}).
+                          It's paid automatically 10 days after Prodigi confirms shipment; this button will only work once that happens.
+                        </div>
+                      ) : (
+                        <div style={{ marginTop: 14 }}>
+                          <PayoutButton
+                            orderId={order._id}
+                            token={authState?.token}
+                            onPayout={async () => {
+                              await reloadPreview();
+                              await reloadOrder();
+                            }}
+                          />
+                        </div>
+                      )}
+                    </>
+                  ) : (
+                    <div style={{ marginTop: 12, padding: 12, borderRadius: 10, background: "#f1f5f9", border: "1px solid #e2e8f0", color: "#475569", fontSize: 13.5 }}>
+                      Payout becomes available once this order's status is PAID.
+                    </div>
+                  )}
                 </div>
               </div>
             </div>
