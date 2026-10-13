@@ -23,18 +23,44 @@ const fmtDuration = (s) => {
 };
 
 const NAV = [
-  { key: "inhouse",  label: "In-House",      sub: "Backend · Live",           color: "dark" },
-  { key: "website",  label: "Website",        sub: "Google Analytics · Monthly", color: "blue" },
-  { key: "search",   label: "Search Console", sub: "Search Console · 28d",     color: "green" },
-  { key: "mobile",   label: "Mobile",         sub: "AdMob · 30d",              color: "mobile" },
+  { key: "inhouse",  label: "In-House" },
+  { key: "website",  label: "Website" },
+  { key: "search",   label: "Search Console" },
+  { key: "mobile",   label: "Mobile" },
 ];
 
-function StatCard({ label, value, sub, subLabel, accent }) {
+// Small inline icons (no icon-library dependency) — stroke="currentColor" so
+// color comes from the .an-stat-icon--{accent} wrapper class.
+const ICONS = {
+  users: (
+    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" /><circle cx="9" cy="7" r="4" /><path d="M23 21v-2a4 4 0 0 0-3-3.87" /><path d="M16 3.13a4 4 0 0 1 0 7.75" />
+    </svg>
+  ),
+  image: (
+    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <rect x="3" y="3" width="18" height="18" rx="2" /><circle cx="8.5" cy="8.5" r="1.5" /><path d="M21 15l-5-5L5 21" />
+    </svg>
+  ),
+  orders: (
+    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z" /><path d="M3 6h18" /><path d="M16 10a4 4 0 0 1-8 0" />
+    </svg>
+  ),
+  revenue: (
+    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <line x1="12" y1="1" x2="12" y2="23" /><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />
+    </svg>
+  ),
+};
+
+function StatCard({ label, value, sub, subLabel, accent, icon }) {
   return (
     <div className="an-stat-card">
       <div className="an-stat-card-top">
+        {icon && <span className={`an-stat-icon an-stat-icon--${accent || "blue"}`}>{ICONS[icon]}</span>}
         <p className="an-stat-card-label">{label}</p>
-        {accent && <span className={`an-stat-dot an-stat-dot--${accent}`} />}
+        {!icon && accent && <span className={`an-stat-dot an-stat-dot--${accent}`} />}
       </div>
       <p className="an-stat-card-value">{value ?? "—"}</p>
       {sub !== undefined && (
@@ -129,12 +155,11 @@ function Analytics() {
             {NAV.map((n) => (
               <button
                 key={n.key}
-                className={`an-nav-tab an-nav-tab--${n.color} ${activeTab === n.key ? "an-nav-tab--active" : ""} ${n.disabled ? "an-nav-tab--disabled" : ""}`}
+                className={`an-nav-tab ${activeTab === n.key ? "an-nav-tab--active" : ""} ${n.disabled ? "an-nav-tab--disabled" : ""}`}
                 onClick={() => !n.disabled && setActiveTab(n.key)}
                 disabled={n.disabled}
               >
                 <span className="an-nav-tab-label">{n.label}</span>
-                <span className="an-nav-tab-sub">{n.sub}</span>
               </button>
             ))}
           </div>
@@ -157,10 +182,10 @@ function Analytics() {
                 <>
                   {/* KPI row */}
                   <div className="an-stat-row an-stat-row--4">
-                    <StatCard label="Total Users"    value={u.total.toLocaleString()}            accent="blue" />
-                    <StatCard label="Live Artworks"  value={img.approved.toLocaleString()}       accent="purple" />
-                    <StatCard label="Total Orders"   value={o.total.toLocaleString()}            accent="orange" />
-                    <StatCard label="Revenue"        value={fmtCents(o.totalRevenueCents)}       accent="green" />
+                    <StatCard label="Total Users"    value={u.total.toLocaleString()}            icon="users"   accent="blue" />
+                    <StatCard label="Live Artworks"  value={img.approved.toLocaleString()}       icon="image"   accent="purple" />
+                    <StatCard label="Total Orders"   value={o.total.toLocaleString()}            icon="orders"  accent="orange" />
+                    <StatCard label="Revenue"        value={fmtCents(o.totalRevenueCents)}       icon="revenue" accent="green" />
                   </div>
 
                   {/* Breakdown */}
@@ -276,11 +301,11 @@ function Analytics() {
             {webData && !webLoading && (
               <>
                 <div className="an-stat-row">
-                  <StatCard label="Users (This Month)"       value={fmt(webData.thisMonth.users)}       sub={fmt(webData.lastMonth.users)}       subLabel="last month" />
-                  <StatCard label="Sessions (This Month)"    value={fmt(webData.thisMonth.sessions)}    sub={fmt(webData.lastMonth.sessions)}    subLabel="last month" />
-                  <StatCard label="Page Views (This Month)"  value={fmt(webData.thisMonth.pageViews)}   sub={fmt(webData.lastMonth.pageViews)}   subLabel="last month" />
-                  <StatCard label="Bounce Rate"               value={`${webData.thisMonth.bounceRate}%`} />
-                  <StatCard label="Avg. Session"              value={fmtDuration(webData.thisMonth.avgSessionDuration)} />
+                  <StatCard label="Users This Month"       value={fmt(webData.thisMonth.users)}       sub={fmt(webData.lastMonth.users)}       subLabel="last month" />
+                  <StatCard label="Sessions This Month"    value={fmt(webData.thisMonth.sessions)}    sub={fmt(webData.lastMonth.sessions)}    subLabel="last month" />
+                  <StatCard label="Page Views This Month"  value={fmt(webData.thisMonth.pageViews)}   sub={fmt(webData.lastMonth.pageViews)}   subLabel="last month" />
+                  <StatCard label="Bounce Rate"             value={`${webData.thisMonth.bounceRate}%`} />
+                  <StatCard label="Average Session Duration" value={fmtDuration(webData.thisMonth.avgSessionDuration)} />
                 </div>
 
                 <div className="an-chart-card">
