@@ -24,7 +24,7 @@ const fmtDuration = (s) => {
 
 const NAV = [
   { key: "inhouse",  label: "In-House",      sub: "Backend · Live",           color: "dark" },
-  { key: "website",  label: "Website",        sub: "Google Analytics · 30d",   color: "blue" },
+  { key: "website",  label: "Website",        sub: "Google Analytics · Monthly", color: "blue" },
   { key: "search",   label: "Search Console", sub: "Search Console · 28d",     color: "green" },
   { key: "mobile",   label: "Mobile",         sub: "AdMob · 30d",              color: "mobile" },
 ];
@@ -278,17 +278,17 @@ function Analytics() {
             {webData && !webLoading && (
               <>
                 <div className="an-stat-row">
-                  <StatCard label="Users (30d)"       value={fmt(webData.last30Days.users)}       sub={fmt(webData.last7Days.users)}       subLabel="last 7d" />
-                  <StatCard label="Sessions (30d)"    value={fmt(webData.last30Days.sessions)}    sub={fmt(webData.last7Days.sessions)}    subLabel="last 7d" />
-                  <StatCard label="Page Views (30d)"  value={fmt(webData.last30Days.pageViews)}   sub={fmt(webData.last7Days.pageViews)}   subLabel="last 7d" />
-                  <StatCard label="Bounce Rate"       value={`${webData.last30Days.bounceRate}%`} />
-                  <StatCard label="Avg. Session"      value={fmtDuration(webData.last30Days.avgSessionDuration)} />
+                  <StatCard label="Users (This Month)"       value={fmt(webData.thisMonth.users)}       sub={fmt(webData.lastMonth.users)}       subLabel="last month" />
+                  <StatCard label="Sessions (This Month)"    value={fmt(webData.thisMonth.sessions)}    sub={fmt(webData.lastMonth.sessions)}    subLabel="last month" />
+                  <StatCard label="Page Views (This Month)"  value={fmt(webData.thisMonth.pageViews)}   sub={fmt(webData.lastMonth.pageViews)}   subLabel="last month" />
+                  <StatCard label="Bounce Rate"               value={`${webData.thisMonth.bounceRate}%`} />
+                  <StatCard label="Avg. Session"              value={fmtDuration(webData.thisMonth.avgSessionDuration)} />
                 </div>
 
                 <div className="an-chart-card">
-                  <p className="an-chart-label">Daily Page Views &amp; Users</p>
+                  <p className="an-chart-label">Monthly Page Views &amp; Users</p>
                   <ResponsiveContainer width="100%" height={220}>
-                    <AreaChart data={webData.daily} margin={{ top: 4, right: 16, left: -10, bottom: 0 }}>
+                    <AreaChart data={webData.monthly} margin={{ top: 4, right: 16, left: -10, bottom: 0 }}>
                       <defs>
                         <linearGradient id="gPV" x1="0" y1="0" x2="0" y2="1">
                           <stop offset="5%" stopColor="#6366f1" stopOpacity={0.15} />
@@ -300,7 +300,7 @@ function Analytics() {
                         </linearGradient>
                       </defs>
                       <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" />
-                      <XAxis dataKey="date" tick={{ fontSize: 11 }} interval="preserveStartEnd" />
+                      <XAxis dataKey="month" tick={{ fontSize: 11 }} interval="preserveStartEnd" />
                       <YAxis tick={{ fontSize: 11 }} />
                       <Tooltip contentStyle={{ fontSize: 12, border: "1px solid #e2e8f0" }} />
                       <Area type="monotone" dataKey="pageViews" name="Page Views" stroke="#6366f1" strokeWidth={2} fill="url(#gPV)" dot={false} />
