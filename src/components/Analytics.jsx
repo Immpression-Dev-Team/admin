@@ -29,10 +29,13 @@ const NAV = [
   { key: "mobile",   label: "Mobile",         sub: "AdMob · 30d",              color: "mobile" },
 ];
 
-function StatCard({ label, value, sub, subLabel }) {
+function StatCard({ label, value, sub, subLabel, accent }) {
   return (
     <div className="an-stat-card">
-      <p className="an-stat-card-label">{label}</p>
+      <div className="an-stat-card-top">
+        <p className="an-stat-card-label">{label}</p>
+        {accent && <span className={`an-stat-dot an-stat-dot--${accent}`} />}
+      </div>
       <p className="an-stat-card-value">{value ?? "—"}</p>
       {sub !== undefined && (
         <p className="an-stat-card-sub">{sub} <span>{subLabel}</span></p>
@@ -153,30 +156,11 @@ function Analytics() {
               return (
                 <>
                   {/* KPI row */}
-                  <div className="an-kpi-row">
-                    <div className="an-kpi">
-                      <span className="an-kpi-value">{u.total.toLocaleString()}</span>
-                      <span className="an-kpi-label">Total Users</span>
-                      <span className="an-kpi-bar an-kpi-bar--blue" />
-                    </div>
-                    <div className="an-kpi-divider" />
-                    <div className="an-kpi">
-                      <span className="an-kpi-value">{img.approved.toLocaleString()}</span>
-                      <span className="an-kpi-label">Live Artworks</span>
-                      <span className="an-kpi-bar an-kpi-bar--purple" />
-                    </div>
-                    <div className="an-kpi-divider" />
-                    <div className="an-kpi">
-                      <span className="an-kpi-value">{o.total.toLocaleString()}</span>
-                      <span className="an-kpi-label">Total Orders</span>
-                      <span className="an-kpi-bar an-kpi-bar--orange" />
-                    </div>
-                    <div className="an-kpi-divider" />
-                    <div className="an-kpi">
-                      <span className="an-kpi-value">{fmtCents(o.totalRevenueCents)}</span>
-                      <span className="an-kpi-label">Revenue</span>
-                      <span className="an-kpi-bar an-kpi-bar--green" />
-                    </div>
+                  <div className="an-stat-row an-stat-row--4">
+                    <StatCard label="Total Users"    value={u.total.toLocaleString()}            accent="blue" />
+                    <StatCard label="Live Artworks"  value={img.approved.toLocaleString()}       accent="purple" />
+                    <StatCard label="Total Orders"   value={o.total.toLocaleString()}            accent="orange" />
+                    <StatCard label="Revenue"        value={fmtCents(o.totalRevenueCents)}       accent="green" />
                   </div>
 
                   {/* Breakdown */}
@@ -212,7 +196,7 @@ function Analytics() {
                   {/* Monthly sign-ups */}
                   <div className="an-chart-card">
                     <p className="an-chart-label">Monthly User Sign-ups</p>
-                    <ResponsiveContainer width="100%" height={220}>
+                    <ResponsiveContainer width="100%" height={190}>
                       <LineChart data={u.signupsByMonth} margin={{ top: 4, right: 16, left: -10, bottom: 0 }}>
                         <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" />
                         <XAxis dataKey="month" tick={{ fontSize: 11 }} interval="preserveStartEnd" />
@@ -254,13 +238,13 @@ function Analytics() {
                       <p className="an-breakdown-title">Recent Orders</p>
                       {o.recent.length > 0 ? (
                         <table className="an-table">
-                          <thead><tr><th>Artwork</th><th>Artist</th><th>Amount</th><th>Status</th><th>Date</th></tr></thead>
+                          <thead><tr><th>Artwork</th><th>Artist</th><th className="an-col-num">Amount</th><th>Status</th><th>Date</th></tr></thead>
                           <tbody>
                             {o.recent.map((r) => (
                               <tr key={r._id} onClick={() => navigate(`/order/${r._id}`)}>
                                 <td className="an-cell-primary">{r.artName || "Untitled"}</td>
                                 <td className="an-cell-secondary">{r.artistName || "Unknown"}</td>
-                                <td className="an-cell-primary">{fmtCents(r.totalAmount)}</td>
+                                <td className="an-cell-primary an-cell-num">{fmtCents(r.totalAmount)}</td>
                                 <td>
                                   <span className={`an-tag tag-${(r.status || "pending").toLowerCase()}`}>
                                     {(r.status || "pending").toUpperCase()}
@@ -301,7 +285,7 @@ function Analytics() {
 
                 <div className="an-chart-card">
                   <p className="an-chart-label">Monthly Page Views &amp; Users</p>
-                  <ResponsiveContainer width="100%" height={220}>
+                  <ResponsiveContainer width="100%" height={190}>
                     <LineChart data={webData.monthly} margin={{ top: 4, right: 16, left: -10, bottom: 0 }}>
                       <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" />
                       <XAxis dataKey="month" tick={{ fontSize: 11 }} interval="preserveStartEnd" />
@@ -318,13 +302,13 @@ function Analytics() {
                   <div className="an-table-card">
                     <p className="an-chart-label">Top Pages</p>
                     <table className="an-table">
-                      <thead><tr><th>Page</th><th>Views</th><th>Users</th></tr></thead>
+                      <thead><tr><th>Page</th><th className="an-col-num">Views</th><th className="an-col-num">Users</th></tr></thead>
                       <tbody>
                         {webData.topPages.map((p) => (
                           <tr key={p.path}>
                             <td className="an-cell-secondary an-cell-truncate" title={p.path}>{p.path}</td>
-                            <td className="an-cell-primary">{p.pageViews.toLocaleString()}</td>
-                            <td className="an-cell-secondary">{p.users.toLocaleString()}</td>
+                            <td className="an-cell-primary an-cell-num">{p.pageViews.toLocaleString()}</td>
+                            <td className="an-cell-secondary an-cell-num">{p.users.toLocaleString()}</td>
                           </tr>
                         ))}
                       </tbody>
@@ -333,7 +317,7 @@ function Analytics() {
 
                   <div className="an-table-card">
                     <p className="an-chart-label">Traffic Sources</p>
-                    <ResponsiveContainer width="100%" height={180}>
+                    <ResponsiveContainer width="100%" height={160}>
                       <BarChart data={webData.sources} layout="vertical" margin={{ top: 0, right: 12, left: 0, bottom: 0 }}>
                         <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" horizontal={false} />
                         <XAxis type="number" tick={{ fontSize: 11 }} />
@@ -378,7 +362,7 @@ function Analytics() {
 
                 <div className="an-chart-card">
                   <p className="an-chart-label">Daily Clicks &amp; Impressions</p>
-                  <ResponsiveContainer width="100%" height={220}>
+                  <ResponsiveContainer width="100%" height={190}>
                     <LineChart data={gscData.daily} margin={{ top: 4, right: 16, left: -10, bottom: 0 }}>
                       <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" />
                       <XAxis dataKey="date" tick={{ fontSize: 11 }} interval="preserveStartEnd" />
@@ -396,15 +380,15 @@ function Analytics() {
                   <div className="an-table-card">
                     <p className="an-chart-label">Top Search Queries</p>
                     <table className="an-table">
-                      <thead><tr><th>Query</th><th>Clicks</th><th>Impr.</th><th>CTR</th><th>Pos.</th></tr></thead>
+                      <thead><tr><th>Query</th><th className="an-col-num">Clicks</th><th className="an-col-num">Impr.</th><th className="an-col-num">CTR</th><th className="an-col-num">Pos.</th></tr></thead>
                       <tbody>
                         {gscData.topQueries.length > 0 ? gscData.topQueries.map((q) => (
                           <tr key={q.query}>
                             <td className="an-cell-primary an-cell-truncate">{q.query}</td>
-                            <td className="an-cell-primary">{q.clicks}</td>
-                            <td className="an-cell-secondary">{q.impressions}</td>
-                            <td className="an-cell-secondary">{q.ctr}</td>
-                            <td className="an-cell-secondary">{q.position}</td>
+                            <td className="an-cell-primary an-cell-num">{q.clicks}</td>
+                            <td className="an-cell-secondary an-cell-num">{q.impressions}</td>
+                            <td className="an-cell-secondary an-cell-num">{q.ctr}</td>
+                            <td className="an-cell-secondary an-cell-num">{q.position}</td>
                           </tr>
                         )) : (
                           <tr><td colSpan={5} className="an-empty-cell">No search data yet — check back once Google has indexed your pages.</td></tr>
@@ -416,14 +400,14 @@ function Analytics() {
                   <div className="an-table-card">
                     <p className="an-chart-label">Top Pages from Search</p>
                     <table className="an-table">
-                      <thead><tr><th>Page</th><th>Clicks</th><th>Impr.</th><th>Pos.</th></tr></thead>
+                      <thead><tr><th>Page</th><th className="an-col-num">Clicks</th><th className="an-col-num">Impr.</th><th className="an-col-num">Pos.</th></tr></thead>
                       <tbody>
                         {gscData.topPages.length > 0 ? gscData.topPages.map((p) => (
                           <tr key={p.fullUrl}>
                             <td className="an-cell-secondary an-cell-truncate" title={p.page}>{p.page}</td>
-                            <td className="an-cell-primary">{p.clicks}</td>
-                            <td className="an-cell-secondary">{p.impressions}</td>
-                            <td className="an-cell-secondary">{p.position}</td>
+                            <td className="an-cell-primary an-cell-num">{p.clicks}</td>
+                            <td className="an-cell-secondary an-cell-num">{p.impressions}</td>
+                            <td className="an-cell-secondary an-cell-num">{p.position}</td>
                           </tr>
                         )) : (
                           <tr><td colSpan={4} className="an-empty-cell">No page data yet.</td></tr>
@@ -447,24 +431,10 @@ function Analytics() {
             {mobileData && !mobileLoading && (
               <>
                 {/* All-time KPI */}
-                <div className="an-kpi-row">
-                  <div className="an-kpi">
-                    <span className="an-kpi-value">${mobileData.allTime.earnings.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
-                    <span className="an-kpi-label">All-Time Earnings</span>
-                    <span className="an-kpi-bar an-kpi-bar--orange" />
-                  </div>
-                  <div className="an-kpi-divider" />
-                  <div className="an-kpi">
-                    <span className="an-kpi-value">{fmt(mobileData.allTime.impressions)}</span>
-                    <span className="an-kpi-label">All-Time Impressions</span>
-                    <span className="an-kpi-bar an-kpi-bar--purple" />
-                  </div>
-                  <div className="an-kpi-divider" />
-                  <div className="an-kpi">
-                    <span className="an-kpi-value">{fmt(mobileData.allTime.clicks)}</span>
-                    <span className="an-kpi-label">All-Time Clicks</span>
-                    <span className="an-kpi-bar an-kpi-bar--blue" />
-                  </div>
+                <div className="an-stat-row an-stat-row--3">
+                  <StatCard label="All-Time Earnings"    value={`$${mobileData.allTime.earnings.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`} accent="orange" />
+                  <StatCard label="All-Time Impressions" value={fmt(mobileData.allTime.impressions)} accent="purple" />
+                  <StatCard label="All-Time Clicks"      value={fmt(mobileData.allTime.clicks)}      accent="blue" />
                 </div>
 
                 {/* 30-day stat cards */}
@@ -478,7 +448,7 @@ function Analytics() {
                 {/* Monthly bar chart */}
                 <div className="an-chart-card">
                   <p className="an-chart-label">Monthly Earnings (12 months)</p>
-                  <ResponsiveContainer width="100%" height={220}>
+                  <ResponsiveContainer width="100%" height={190}>
                     <BarChart data={mobileData.monthly} margin={{ top: 4, right: 16, left: -10, bottom: 0 }}>
                       <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" vertical={false} />
                       <XAxis dataKey="month" tick={{ fontSize: 11 }} />
@@ -499,7 +469,7 @@ function Analytics() {
                 {/* Daily composed chart */}
                 <div className="an-chart-card">
                   <p className="an-chart-label">Daily Earnings &amp; Impressions (30d)</p>
-                  <ResponsiveContainer width="100%" height={220}>
+                  <ResponsiveContainer width="100%" height={190}>
                     <ComposedChart data={mobileData.daily} margin={{ top: 4, right: 40, left: -10, bottom: 0 }}>
                       <defs>
                         <linearGradient id="gEarn" x1="0" y1="0" x2="0" y2="1">
@@ -529,22 +499,22 @@ function Analytics() {
                       <thead>
                         <tr>
                           <th>Platform</th>
-                          <th>Earnings</th>
-                          <th>Impressions</th>
-                          <th>Clicks</th>
-                          <th>eCPM</th>
-                          <th>Fill Rate</th>
+                          <th className="an-col-num">Earnings</th>
+                          <th className="an-col-num">Impressions</th>
+                          <th className="an-col-num">Clicks</th>
+                          <th className="an-col-num">eCPM</th>
+                          <th className="an-col-num">Fill Rate</th>
                         </tr>
                       </thead>
                       <tbody>
                         {mobileData.platforms.map((p) => (
                           <tr key={p.platform} style={{ cursor: "default" }}>
                             <td className="an-cell-primary">{p.platform}</td>
-                            <td className="an-cell-primary">${p.earnings.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
-                            <td className="an-cell-secondary">{p.impressions.toLocaleString()}</td>
-                            <td className="an-cell-secondary">{p.clicks.toLocaleString()}</td>
-                            <td className="an-cell-primary">${p.eCPM.toFixed(2)}</td>
-                            <td className="an-cell-secondary">{p.fillRate}%</td>
+                            <td className="an-cell-primary an-cell-num">${p.earnings.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+                            <td className="an-cell-secondary an-cell-num">{p.impressions.toLocaleString()}</td>
+                            <td className="an-cell-secondary an-cell-num">{p.clicks.toLocaleString()}</td>
+                            <td className="an-cell-primary an-cell-num">${p.eCPM.toFixed(2)}</td>
+                            <td className="an-cell-secondary an-cell-num">{p.fillRate}%</td>
                           </tr>
                         ))}
                       </tbody>
