@@ -209,6 +209,20 @@ function Analytics() {
                     </div>
                   </div>
 
+                  {/* Monthly sign-ups */}
+                  <div className="an-chart-card">
+                    <p className="an-chart-label">Monthly User Sign-ups</p>
+                    <ResponsiveContainer width="100%" height={220}>
+                      <LineChart data={u.signupsByMonth} margin={{ top: 4, right: 16, left: -10, bottom: 0 }}>
+                        <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" />
+                        <XAxis dataKey="month" tick={{ fontSize: 11 }} interval="preserveStartEnd" />
+                        <YAxis tick={{ fontSize: 11 }} allowDecimals={false} />
+                        <Tooltip contentStyle={{ fontSize: 12, border: "1px solid #e2e8f0" }} />
+                        <Line type="linear" dataKey="signups" name="Sign-ups" stroke="#6366f1" strokeWidth={2} dot={{ r: 3 }} />
+                      </LineChart>
+                    </ResponsiveContainer>
+                  </div>
+
                   {/* Recent tables */}
                   <div className="an-tables-grid">
                     <div className="an-table-card">
