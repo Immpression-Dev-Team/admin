@@ -288,24 +288,15 @@ function Analytics() {
                 <div className="an-chart-card">
                   <p className="an-chart-label">Monthly Page Views &amp; Users</p>
                   <ResponsiveContainer width="100%" height={220}>
-                    <AreaChart data={webData.monthly} margin={{ top: 4, right: 16, left: -10, bottom: 0 }}>
-                      <defs>
-                        <linearGradient id="gPV" x1="0" y1="0" x2="0" y2="1">
-                          <stop offset="5%" stopColor="#6366f1" stopOpacity={0.15} />
-                          <stop offset="95%" stopColor="#6366f1" stopOpacity={0} />
-                        </linearGradient>
-                        <linearGradient id="gU" x1="0" y1="0" x2="0" y2="1">
-                          <stop offset="5%" stopColor="#10b981" stopOpacity={0.15} />
-                          <stop offset="95%" stopColor="#10b981" stopOpacity={0} />
-                        </linearGradient>
-                      </defs>
+                    <LineChart data={webData.monthly} margin={{ top: 4, right: 16, left: -10, bottom: 0 }}>
                       <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" />
                       <XAxis dataKey="month" tick={{ fontSize: 11 }} interval="preserveStartEnd" />
                       <YAxis tick={{ fontSize: 11 }} />
                       <Tooltip contentStyle={{ fontSize: 12, border: "1px solid #e2e8f0" }} />
-                      <Area type="monotone" dataKey="pageViews" name="Page Views" stroke="#6366f1" strokeWidth={2} fill="url(#gPV)" dot={false} />
-                      <Area type="monotone" dataKey="users"     name="Users"      stroke="#10b981" strokeWidth={2} fill="url(#gU)"  dot={false} />
-                    </AreaChart>
+                      <Legend wrapperStyle={{ fontSize: 12 }} />
+                      <Line type="linear" dataKey="pageViews" name="Page Views" stroke="#6366f1" strokeWidth={2} dot={{ r: 3 }} />
+                      <Line type="linear" dataKey="users"     name="Users"      stroke="#10b981" strokeWidth={2} dot={{ r: 3 }} />
+                    </LineChart>
                   </ResponsiveContainer>
                 </div>
 
