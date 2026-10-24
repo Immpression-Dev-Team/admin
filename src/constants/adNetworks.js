@@ -21,8 +21,8 @@ export const AD_NETWORKS = [
     placements: [
       {
         id: "marketplaceRailSecond",
-        name: "Marketplace — right column, under Adsterra",
-        description: "300 × 250 banner directly below the Adsterra ad on /marketplace.",
+        name: "Marketplace — right column, middle",
+        description: "300 × 250 banner below \"From Immpression\" on /marketplace.",
       },
     ],
   },
