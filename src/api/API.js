@@ -499,7 +499,7 @@ export async function saveAdminSettings(token, payload) {
     return response.data;
   } catch (error) {
     console.error("Error saving admin settings:", error.response?.data || error.message);
-    throw new Error("Failed to save settings.");
+    throw new Error(error.response?.data?.error || "Failed to save settings.");
   }
 }
 

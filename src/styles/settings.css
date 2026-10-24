@@ -291,3 +291,72 @@
   .st-page { padding: 20px 16px 48px; }
   .st-export-grid { grid-template-columns: 1fr; }
 }
+
+/* ─── Ad Networks ─── */
+.st-ad-slot {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 12px 0 4px 16px;
+  border-left: 2px solid #e2e8f0;
+  transition: opacity 0.15s;
+}
+.st-ad-slot--off { opacity: 0.55; }
+
+.st-ad-code-input {
+  width: 100%;
+  box-sizing: border-box;
+  resize: vertical;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 12px;
+}
+
+.st-ad-code-current {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  font-size: 12px;
+  color: #475569;
+}
+.st-ad-code-current code {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  background: #f1f5f9;
+  padding: 1px 5px;
+  word-break: break-all;
+}
+
+.st-ad-code-clear {
+  flex-shrink: 0;
+  padding: 4px 10px;
+  font-size: 12px;
+  color: #b91c1c;
+  background: transparent;
+  border: 1px solid #fecaca;
+  cursor: pointer;
+}
+.st-ad-code-clear:hover { background: #fef2f2; }
+
+.st-ad-code-error {
+  font-size: 12px;
+  color: #b91c1c;
+}
+
+.st-ad-status {
+  display: inline-block;
+  margin-left: 8px;
+  padding: 1px 7px;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  vertical-align: middle;
+  color: #64748b;
+  background: #f1f5f9;
+  border: 1px solid #e2e8f0;
+}
+.st-ad-status--live {
+  color: #15803d;
+  background: #f0fdf4;
+  border-color: #bbf7d0;
+}
