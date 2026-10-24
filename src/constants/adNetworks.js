@@ -14,6 +14,18 @@ export const AD_NETWORKS = [
       },
     ],
   },
+  {
+    id: "hilltop",
+    name: "HilltopAds",
+    description: "Display banners on immpression.art.",
+    placements: [
+      {
+        id: "marketplaceRailSecond",
+        name: "Marketplace — right column, under Adsterra",
+        description: "300 × 250 banner directly below the Adsterra ad on /marketplace.",
+      },
+    ],
+  },
 ];
 
 // Counts live placements (network on + placement on) for dashboard summaries.
