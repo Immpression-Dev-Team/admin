@@ -16,6 +16,7 @@ import FeaturedArticles from "./components/FeaturedArticles";
 import Referrals from "./components/Referrals";
 import ReferralDetails from "./components/ReferralDetails";
 import Finance from "./components/Finance";
+import AdNetworks from "./components/AdNetworks";
 import { ADMIN_ROLES, CONTENT_EDITOR_DEFAULT_PATH } from "./constants/adminRoles";
 
 import './App.css';
@@ -52,6 +53,7 @@ function App() {
         <Route path="/referrals" element={<PrivateRoute allowAllRoles={false}><Referrals /></PrivateRoute>} />
         <Route path="/referrals/:id" element={<PrivateRoute allowAllRoles={false}><ReferralDetails /></PrivateRoute>} />
         <Route path="/finance" element={<PrivateRoute allowAllRoles={false}><Finance /></PrivateRoute>} />
+        <Route path="/ad-networks" element={<PrivateRoute allowAllRoles={false}><AdNetworks /></PrivateRoute>} />
         <Route path="*" element={<h2>404 - Page Not Found</h2>} />
       </Routes>
     </Router>

@@ -303,45 +303,6 @@
 }
 .st-ad-slot--off { opacity: 0.55; }
 
-.st-ad-code-input {
-  width: 100%;
-  box-sizing: border-box;
-  resize: vertical;
-  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-  font-size: 12px;
-}
-
-.st-ad-code-current {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-  font-size: 12px;
-  color: #475569;
-}
-.st-ad-code-current code {
-  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-  background: #f1f5f9;
-  padding: 1px 5px;
-  word-break: break-all;
-}
-
-.st-ad-code-clear {
-  flex-shrink: 0;
-  padding: 4px 10px;
-  font-size: 12px;
-  color: #b91c1c;
-  background: transparent;
-  border: 1px solid #fecaca;
-  cursor: pointer;
-}
-.st-ad-code-clear:hover { background: #fef2f2; }
-
-.st-ad-code-error {
-  font-size: 12px;
-  color: #b91c1c;
-}
-
 .st-ad-status {
   display: inline-block;
   margin-left: 8px;

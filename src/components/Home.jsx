@@ -2,7 +2,8 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import ScreenTemplate from "./Template/ScreenTemplate";
 import { useAuth } from "@/context/authContext";
-import { getAllImagesStats, getAnalytics } from "@/api/API";
+import { getAllImagesStats, getAnalytics, getAdminSettings } from "@/api/API";
+import { countLivePlacements } from "@/constants/adNetworks";
 import "@/styles/home.css";
 
 const LAST_USER_COUNT_KEY = "immpression_last_user_count";
@@ -116,12 +117,32 @@ const NAV_CARDS = [
       </svg>
     ),
   },
+  {
+    key: "ads",
+    title: "Ad Networks",
+    description: "Turn ad networks and individual ad slots on the website on or off.",
+    path: "/ad-networks",
+    gradient: "linear-gradient(135deg, #1e293b 0%, #64748b 100%)",
+    icon: (
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M3 11v2a1 1 0 0 0 1 1h3l5 4V6L7 10H4a1 1 0 0 0-1 1z" /><path d="M16 9a3 3 0 0 1 0 6" /><path d="M19 6a7 7 0 0 1 0 12" />
+      </svg>
+    ),
+  },
 ];
 
 function Home() {
   const navigate = useNavigate();
   const { authState } = useAuth();
   const [stats, setStats] = useState({ pending: 0, users: 0, orders: 0, newUsers: 0 });
+  const [adSlots, setAdSlots] = useState(null); // { live, total }
+
+  useEffect(() => {
+    if (!authState?.token) return;
+    getAdminSettings(authState.token)
+      .then((res) => setAdSlots(countLivePlacements(res?.data?.ads)))
+      .catch(() => {});
+  }, [authState?.token]);
 
   useEffect(() => {
     if (!authState?.token) return;
@@ -161,6 +182,9 @@ function Home() {
     if (key === "users") return `${stats.users.toLocaleString()} total users`;
     if (key === "orders") return `${stats.orders.toLocaleString()} total orders`;
     if (key === "review") return stats.pending > 0 ? `${stats.pending} awaiting review` : "All caught up ✓";
+    if (key === "ads" && adSlots) {
+      return adSlots.live > 0 ? `${adSlots.live} of ${adSlots.total} ad slots live` : "All ads off";
+    }
     return null;
   };
 
