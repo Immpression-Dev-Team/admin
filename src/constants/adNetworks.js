@@ -10,7 +10,7 @@ export const AD_NETWORKS = [
       {
         id: "marketplaceRailTop",
         name: "Marketplace — right column, top",
-        description: "300 × 250 banner above \"From Immpression\" on /marketplace.",
+        description: "300 × 250 banner above \"From Immpression\" on /marketplace. On phones: after the first 2 rows of art.",
       },
     ],
   },
@@ -22,7 +22,7 @@ export const AD_NETWORKS = [
       {
         id: "marketplaceRailSecond",
         name: "Marketplace — right column, middle",
-        description: "300 × 250 banner below \"From Immpression\" on /marketplace.",
+        description: "300 × 250 banner below \"From Immpression\" on /marketplace. On phones: after the first 4 rows of art.",
       },
     ],
   },
