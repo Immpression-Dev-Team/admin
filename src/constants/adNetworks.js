@@ -10,7 +10,12 @@ export const AD_NETWORKS = [
       {
         id: "marketplaceRailTop",
         name: "Marketplace — right column, top",
-        description: "300 × 250 banner above \"From Immpression\" on /marketplace. On phones: after the first 2 rows of art.",
+        description: "300 × 250 banner above \"From Immpression\" on the home page (marketplace). On phones: after the first 2 rows of art.",
+      },
+      {
+        id: "marketplaceNative",
+        name: "Marketplace — native banner in the art grid",
+        description: "Native ad tiles spanning the art grid on the home page (marketplace), after the 3rd row of art. On phones: after the 6th row.",
       },
     ],
   },
@@ -22,7 +27,7 @@ export const AD_NETWORKS = [
       {
         id: "marketplaceRailSecond",
         name: "Marketplace — right column, middle",
-        description: "300 × 250 banner below \"From Immpression\" on /marketplace. On phones: after the first 4 rows of art.",
+        description: "300 × 250 banner below \"From Immpression\" on the home page (marketplace). On phones: after the first 4 rows of art.",
       },
     ],
   },
